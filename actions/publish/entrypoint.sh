@@ -2,6 +2,9 @@
 
 set -eu
 
+export GIT_AUTHOR_NAME=Pushbot
+export GIT_AUTHOR_EMAIL=pushbot@azurefire.net
+
 printf "Installing dependencies\n"
 npm ci
 
