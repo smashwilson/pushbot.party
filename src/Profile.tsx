@@ -1,34 +1,34 @@
-import React, {Component} from 'react'
-import {QueryRenderer} from 'react-relay'
-import {graphql} from 'babel-plugin-relay/macro'
+import React, {Component} from "react";
+import {QueryRenderer} from "react-relay";
+import {graphql} from "babel-plugin-relay/macro";
 
-import {getEnvironment} from './Transport'
-import {Chart} from './Chart'
-import EmojiConverter from 'emoji-js'
+import {getEnvironment} from "./Transport";
+import {Chart} from "./Chart";
+import EmojiConverter from "emoji-js";
 
-import './Profile.css'
+import "./Profile.css";
 
 interface ProfileProps {
   match: {
     params: {
-      name: string,
-    }
+      name: string;
+    };
   };
 }
 
 export class Profile extends Component<ProfileProps> {
-  constructor (props: ProfileProps) {
-    super(props)
+  constructor(props: ProfileProps) {
+    super(props);
 
-    this.environment = getEnvironment()
-    this.emoji = new EmojiConverter()
+    this.environment = getEnvironment();
+    this.emoji = new EmojiConverter();
 
-    this.emoji.img_sets.apple.sheet = '/sheet_apple_64.png'
-    this.emoji.use_sheet = true
-    this.emoji.include_title = true
+    this.emoji.img_sets.apple.sheet = "/sheet_apple_64.png";
+    this.emoji.use_sheet = true;
+    this.emoji.include_title = true;
   }
 
-  render () {
+  render() {
     const query = graphql`
       query ProfileQuery($name: String!, $titleCriteria: Criteria!) {
         users {
@@ -69,13 +69,13 @@ export class Profile extends Component<ProfileProps> {
           rank(speaker: $name)
         }
       }
-    `
+    `;
 
-    const username = this.props.match.params.name
+    const username = this.props.match.params.name;
     const variables = {
       name: username,
-      titleCriteria: {subject: username}
-    }
+      titleCriteria: {subject: username},
+    };
 
     return (
       <QueryRenderer
@@ -84,110 +84,119 @@ export class Profile extends Component<ProfileProps> {
         variables={variables}
         render={this.renderResult}
       />
-    )
+    );
   }
 
   renderResult = ({error, props}) => {
     if (error) {
-      return <div>{error.message}</div>
+      return <div>{error.message}</div>;
     }
 
     if (!props) {
       return (
-        <div className='pushbot-loading'>
-          <i className='fa fa-circle-o-notch fa-spin' aria-hidden='true' />
+        <div className="pushbot-loading">
+          <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true" />
           sluuuuurp
         </div>
-      )
+      );
     }
 
     return (
-      <div className='pushbot-profile row'>
-        <div className='col-md-6'>
+      <div className="pushbot-profile row">
+        <div className="col-md-6">
           <img
-            className='pushbot-profile-avatar img-responsive img-rounded'
+            className="pushbot-profile-avatar img-responsive img-rounded"
             src={props.users.current.avatar.image192}
           />
           {this.renderReactionsReceivedChart(props)}
           {this.renderReactionsGivenChart(props)}
         </div>
-        <div className='col-md-6'>
-          <h1 className='pushbot-profile-username'>@{this.props.match.params.name}</h1>
+        <div className="col-md-6">
+          <h1 className="pushbot-profile-username">
+            @{this.props.match.params.name}
+          </h1>
           {this.renderTitles(props)}
           {this.renderQuoteRank(props)}
         </div>
       </div>
-    )
+    );
+  };
+
+  renderReactionsGivenChart(props) {
+    return this.renderReactionChart(
+      props.users.current.topReactionsGiven,
+      "Emoji reactions given"
+    );
   }
 
-  renderReactionsGivenChart (props) {
-    return this.renderReactionChart(props.users.current.topReactionsGiven, 'Emoji reactions given')
+  renderReactionsReceivedChart(props) {
+    return this.renderReactionChart(
+      props.users.current.topReactionsReceived,
+      "Emoji reactions received"
+    );
   }
 
-  renderReactionsReceivedChart (props) {
-    return this.renderReactionChart(props.users.current.topReactionsReceived, 'Emoji reactions received')
-  }
-
-  renderReactionChart (results, name) {
+  renderReactionChart(results, name) {
     const data = {
       labels: results.map(each => {
         if (each.emoji.url) {
-          return `<img class="emoji" src="${each.emoji.url}" title="${each.emoji.name}">`
+          return `<img class="emoji" src="${each.emoji.url}" title="${each.emoji.name}">`;
         }
 
-        return this.emoji.replace_colons(`:${each.emoji.name}:`)
+        return this.emoji.replace_colons(`:${each.emoji.name}:`);
       }),
-      series: [
-        results.map(each => each.count)
-      ]
-    }
+      series: [results.map(each => each.count)],
+    };
 
     const options = {
       low: 0,
       axisY: {
-        onlyInteger: true
-      }
-    }
+        onlyInteger: true,
+      },
+    };
 
     return (
-      <p className='pushbot-profile-reaction-chart'>
+      <p className="pushbot-profile-reaction-chart">
         <h4>{name}</h4>
         <Chart data={data} options={options} />
       </p>
-    )
+    );
   }
 
-  renderTitles (props) {
-    const edges = props.titles.all.edges
+  renderTitles(props) {
+    const edges = props.titles.all.edges;
     if (edges.length === 0) {
       return (
-        <p className='pushbot-profile-titles-empty'>
-          No titles yet. Set one with <code>!settitle {this.props.match.params.name}: ...</code>.
+        <p className="pushbot-profile-titles-empty">
+          No titles yet. Set one with{" "}
+          <code>!settitle {this.props.match.params.name}: ...</code>.
         </p>
-      )
+      );
     }
 
     return (
-      <p className='pushbot-profile-titles'>
+      <p className="pushbot-profile-titles">
         {props.titles.all.edges.map(t => this.titleFrom(t.node.text))}
       </p>
-    )
+    );
   }
 
-  renderQuoteRank (props) {
-    const rank = props.quotes.rank
+  renderQuoteRank(props) {
+    const rank = props.quotes.rank;
     return (
-      <p className='pushbot-profile-quoterank'>
+      <p className="pushbot-profile-quoterank">
         Rank #{rank} in the quotefile.
       </p>
-    )
+    );
   }
 
-  titleFrom (title) {
+  titleFrom(title) {
     if (/^https?:/.test(title)) {
-      return <img className='pushbot-profile-title img-responsive' src={title} />
+      return (
+        <img className="pushbot-profile-title img-responsive" src={title} />
+      );
     }
 
-    return <span className='pushbot-profile-title'>{title}</span>
+    return <span className="pushbot-profile-title">{title}</span>;
   }
 }
