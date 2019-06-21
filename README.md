@@ -1,2 +1,3 @@
 # pushbot.party
-Frontend for pushbot's web interface
+
+The React app used as a frontend to [pushbot](https://github.com/smashwilson/pushbot).
