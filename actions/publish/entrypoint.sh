@@ -15,7 +15,8 @@ printf "Writing to gh-pages\n"
 
 git add -f build/
 TREE=$(git write-tree --prefix=build/)
-git commit-tree "${TREE}" -p gh-pages
+COMMIT=$(git commit-tree "${TREE}" -p gh-pages -m "Built from ${GITHUB_SHA:-unknown sha}")
+git update-ref refs/heads/gh-pages "${COMMIT}"
 
 printf "Pushing built files\n"
 git push origin gh-pages:gh-pages
