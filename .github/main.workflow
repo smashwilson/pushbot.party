@@ -11,5 +11,5 @@ action "Only on master" {
 action "Build GitHub page" {
   uses = "./actions/publish"
   needs = "Only on master"
-  secrets = "DEPLOY_KEY"
+  secrets = [ "DEPLOY_KEY" ]
 }
