@@ -103,7 +103,7 @@ export class Profile extends Component<ProfileProps> {
     if (!props) {
       return (
         <div className="pushbot-loading">
-          <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true" />
+          <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
           sluuuuurp
         </div>
       );

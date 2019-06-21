@@ -87,7 +87,7 @@ export class App extends Component {
     } else {
       body = (
         <div className="pushbot-loading">
-          <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true" />
+          <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
           loading
         </div>
       );

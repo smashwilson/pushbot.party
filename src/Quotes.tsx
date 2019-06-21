@@ -131,7 +131,7 @@ class QuotePage extends Component<QuotePageProps> {
     if (!props && !this.lastResults) {
       return (
         <div className="pushbot-loading">
-          <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true" />
+          <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
           performing query
         </div>
       );
@@ -224,8 +224,12 @@ class RandomQuote extends Component<{}, RandomQuoteState> {
             Type a search term above to find specific quotes. In the meantime,
             enjoy this random quote.
           </p>
-          <button type="button" className="btn btn-sm" onClick={this.another}>
-            <i className="fa fa-refresh" aria-hidden="true" />
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={this.another}
+          >
+            <i className="fas fa-sync" aria-hidden="true" />
             Another
           </button>
         </div>

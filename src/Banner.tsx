@@ -23,7 +23,7 @@ export const Banner = (props: BannerProps) => {
 
           <i
             key="1"
-            className="fa fa-circle pushbot-navbar-separator"
+            className="far fa-circle pushbot-navbar-separator"
             aria-hidden="true"
           />
         </span>
@@ -48,7 +48,7 @@ export const Banner = (props: BannerProps) => {
           </li>
           <li className="navbar-item">
             <a href={LOGOUT_URL} className="pushbot-navbar-logout">
-              <i className="fa fa-sign-out" aria-hidden="true" />
+              <i className="fas fa-sign-out-alt" aria-hidden="true" />
               Log out
             </a>
           </li>
@@ -59,7 +59,7 @@ export const Banner = (props: BannerProps) => {
 
   return (
     <div className="container-fluid">
-      <nav className="navbar navbar-expand-lg navbar-light">
+      <nav className="navbar navbar-expand-lg navbar-light border-bottom">
         <button
           type="button"
           className="navbar-toggler collapsed"

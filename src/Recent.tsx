@@ -208,7 +208,7 @@ class History extends Component<HistoryProps> {
   renderLoading() {
     return (
       <div className="pushbot-history pushbot-loading">
-        <i className="fa fa-circle-o-notch fa-spin" aria-hidden="true" />
+        <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
         loading
       </div>
     );
@@ -518,7 +518,7 @@ export class Recent extends Component<{}, RecentState> {
             className="btn btn-secondary pushbot-recent-refresh"
             onClick={this.refresh}
           >
-            <i className="fa fa-refresh" aria-hidden /> Refresh
+            <i className="fas fa-sync" aria-hidden /> Refresh
           </button>
         </form>
         <History lines={history} selection={this.state.selection} />
