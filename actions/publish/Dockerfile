@@ -9,3 +9,7 @@ LABEL "repository"="https://github.com/pushbot.party"
 LABEL "maintainer"="Ash Wilson <smashwilson@gmail.com>"
 
 RUN apk add --no-cache nodejs npm git
+
+ADD ./entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
