@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {QueryRenderer, graphql} from "react-relay";
+import {QueryRenderer} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 
 import {getEnvironment} from "./Transport";

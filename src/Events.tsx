@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {QueryRenderer, graphql} from "react-relay";
+import {QueryRenderer} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 
