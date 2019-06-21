@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const path = require("path");
+const fetch = require("node-fetch");
+
+const URL =
+  "https://github.com/smashwilson/pushbot/raw/master/scripts/api/schema.graphql";
+const schemaFile = path.resolve(__dirname, "../schema/pushbot.graphql");
+
+fetch(URL)
+  .then(response => response.text())
+  .then(text => {
+    fs.writeFileSync(schemaFile, text, {encoding: "utf8"});
+  })
+  .then(
+    () => console.log("Schema updated."),
+    err => {
+      console.error("Unable to update schema:");
+      console.error(err.stack);
+      process.exit(1);
+    }
+  );

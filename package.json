@@ -28,8 +28,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write src/**/*.{tsx,ts,d.ts}",
-    "lint": "prettier --check src/**/*.{tsx,ts,d.ts}",
+    "format": "prettier --write src/**/*.{tsx,ts,d.ts} script/*",
+    "lint": "prettier --check src/**/*.{tsx,ts,d.ts} script/*",
+    "update-schema": "script/update-schema",
     "relay-compiler": "relay-compiler --src ./src --schema ./schema/pushbot.graphql ---language typescript --artifactDirectory ./src/__generated__"
   },
   "eslintConfig": {
