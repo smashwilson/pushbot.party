@@ -13,7 +13,7 @@ npm run build
 
 printf "Writing to gh-pages\n"
 
-git add build/
+git add -f build/
 TREE=$(git write-tree --prefix=build/)
 git commit-tree "${TREE}" -p gh-pages
 
