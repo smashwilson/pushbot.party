@@ -1,16 +1,26 @@
 import React, {Component} from "react";
-import {QueryRenderer} from "react-relay";
+import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import {BrowserRouter as Router} from "react-router-dom";
 
-import {getEnvironment, AUTH_URL} from "./Transport";
+import {
+  getEnvironment,
+  AUTH_URL,
+  QueryResult,
+  isNetworkError,
+} from "./Transport";
+import {Authenticated} from "./Authenticated";
 import {Banner} from "./Banner";
 import {Login} from "./Login";
+
+import {AppQuery} from "./__generated__/AppQuery.graphql";
 
 import "./App.css";
 
 export class App extends Component {
-  constructor(props) {
+  private environment: Environment;
+
+  constructor(props: {}) {
     super(props);
     this.environment = getEnvironment();
   }
@@ -41,26 +51,37 @@ export class App extends Component {
     `;
 
     return (
-      <QueryRenderer
+      <QueryRenderer<AppQuery>
         environment={this.environment}
         query={query}
+        variables={{}}
         render={this.renderResult}
       />
     );
   }
 
-  renderResult = ({error, props}) => {
+  renderResult = (result: QueryResult<AppQuery>) => {
     let body = null;
+    let username = "";
+    let title = "";
+    let avatar = "";
 
-    if (error) {
-      if (error.status === 401) {
-        const backTo = encodeURIComponent(document.location.pathname);
+    if (isNetworkError(result.error)) {
+      if (result.error.status === 401) {
+        const backTo = encodeURIComponent(document.location!.pathname);
         body = <Login authUrl={`${AUTH_URL}?backTo=${backTo}`} />;
       } else {
-        body = <div>{error.message}</div>;
+        body = <div>{result.error.message}</div>;
       }
-    } else if (props) {
-      const user = props.users.me;
+    } else if (result.props) {
+      const user = result.props.users.me;
+      username = user.name;
+      if (result.props.title) {
+        title = result.props.title.mine.text;
+      }
+      if (user.avatar && user.avatar.image48) {
+        avatar = user.avatar.image48;
+      }
 
       body = <Authenticated user={user} />;
     } else {
@@ -71,12 +92,6 @@ export class App extends Component {
         </div>
       );
     }
-
-    const username = props && props.users.me.name;
-    const title =
-      props && props.title && props.title.mine.found && props.title.mine.text;
-    const avatar =
-      props && props.users.me.avatar && props.users.me.avatar.image48;
 
     return (
       <Router>

@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import {QueryRenderer} from "react-relay";
+import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
-
-import {getEnvironment} from "./Transport";
-import {Chart} from "./Chart";
 import EmojiConverter from "emoji-js";
+
+import {getEnvironment, QueryResult} from "./Transport";
+import {Chart} from "./Chart";
+import {ProfileQuery} from "./__generated__/ProfileQuery.graphql";
 
 import "./Profile.css";
 
@@ -16,7 +17,14 @@ interface ProfileProps {
   };
 }
 
+type User = NonNullable<ProfileQuery["response"]["users"]["current"]>;
+
+type EmojiCount = User["topReactionsGiven"] | User["topReactionsReceived"];
+
 export class Profile extends Component<ProfileProps> {
+  private environment: Environment;
+  private emoji: EmojiConverter;
+
   constructor(props: ProfileProps) {
     super(props);
 
@@ -78,7 +86,7 @@ export class Profile extends Component<ProfileProps> {
     };
 
     return (
-      <QueryRenderer
+      <QueryRenderer<ProfileQuery>
         environment={this.environment}
         query={query}
         variables={variables}
@@ -87,7 +95,7 @@ export class Profile extends Component<ProfileProps> {
     );
   }
 
-  renderResult = ({error, props}) => {
+  renderResult = ({error, props}: QueryResult<ProfileQuery>) => {
     if (error) {
       return <div>{error.message}</div>;
     }
@@ -101,15 +109,23 @@ export class Profile extends Component<ProfileProps> {
       );
     }
 
+    const user = props.users.current;
+    if (!user) {
+      return null;
+    }
+
+    const avatar = user.avatar.image192 || "";
+
     return (
       <div className="pushbot-profile row">
         <div className="col-md-6">
           <img
             className="pushbot-profile-avatar img-responsive img-rounded"
-            src={props.users.current.avatar.image192}
+            src={avatar}
+            alt=""
           />
-          {this.renderReactionsReceivedChart(props)}
-          {this.renderReactionsGivenChart(props)}
+          {this.renderReactionsReceivedChart(user)}
+          {this.renderReactionsGivenChart(user)}
         </div>
         <div className="col-md-6">
           <h1 className="pushbot-profile-username">
@@ -122,25 +138,25 @@ export class Profile extends Component<ProfileProps> {
     );
   };
 
-  renderReactionsGivenChart(props) {
+  renderReactionsGivenChart(user: User) {
     return this.renderReactionChart(
-      props.users.current.topReactionsGiven,
+      user.topReactionsGiven,
       "Emoji reactions given"
     );
   }
 
-  renderReactionsReceivedChart(props) {
+  renderReactionsReceivedChart(user: User) {
     return this.renderReactionChart(
-      props.users.current.topReactionsReceived,
+      user.topReactionsReceived,
       "Emoji reactions received"
     );
   }
 
-  renderReactionChart(results, name) {
+  renderReactionChart(results: EmojiCount, name: string) {
     const data = {
       labels: results.map(each => {
         if (each.emoji.url) {
-          return `<img class="emoji" src="${each.emoji.url}" title="${each.emoji.name}">`;
+          return `<img class="emoji" alt="${each.emoji.name}" src="${each.emoji.url}" title="${each.emoji.name}">`;
         }
 
         return this.emoji.replace_colons(`:${each.emoji.name}:`);
@@ -163,8 +179,8 @@ export class Profile extends Component<ProfileProps> {
     );
   }
 
-  renderTitles(props) {
-    const edges = props.titles.all.edges;
+  renderTitles(props: NonNullable<QueryResult<ProfileQuery>["props"]>) {
+    const edges = props.titles ? props.titles.all.edges : [];
     if (edges.length === 0) {
       return (
         <p className="pushbot-profile-titles-empty">
@@ -176,12 +192,20 @@ export class Profile extends Component<ProfileProps> {
 
     return (
       <p className="pushbot-profile-titles">
-        {props.titles.all.edges.map(t => this.titleFrom(t.node.text))}
+        {edges.map(t => this.titleFrom(t.node.text))}
       </p>
     );
   }
 
-  renderQuoteRank(props) {
+  renderQuoteRank(props: NonNullable<QueryResult<ProfileQuery>["props"]>) {
+    if (!props.quotes) {
+      return (
+        <p className="pushbot-profile-quoterank">
+          You have not yet been immortalized in the quotefile.
+        </p>
+      );
+    }
+
     const rank = props.quotes.rank;
     return (
       <p className="pushbot-profile-quoterank">
@@ -190,10 +214,14 @@ export class Profile extends Component<ProfileProps> {
     );
   }
 
-  titleFrom(title) {
+  titleFrom(title: string) {
     if (/^https?:/.test(title)) {
       return (
-        <img className="pushbot-profile-title img-responsive" src={title} />
+        <img
+          className="pushbot-profile-title img-responsive"
+          alt=""
+          src={title}
+        />
       );
     }
 

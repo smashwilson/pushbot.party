@@ -11,7 +11,7 @@ interface BannerProps {
   avatar: string;
 }
 
-export default Banner = (props: BannerProps) => {
+export const Banner = (props: BannerProps) => {
   let accountControl = null;
 
   if (props.username) {
@@ -46,7 +46,7 @@ export default Banner = (props: BannerProps) => {
           <p className="navbar-text">{accountElements}</p>
         </li>
         <li>
-          <img className="pushbot-navbar-avatar" src={props.avatar} />
+          <img className="pushbot-navbar-avatar" src={props.avatar} alt="" />
         </li>
         <li>
           <a href={LOGOUT_URL} className="pushbot-navbar-logout">

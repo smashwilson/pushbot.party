@@ -1,23 +1,23 @@
 import React, {Component} from "react";
-import {QueryRenderer} from "react-relay";
+import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import {Link} from "react-router-dom";
 
-import {getEnvironment} from "./Transport";
+import {getEnvironment, QueryResult} from "./Transport";
+
+import {PeopleQuery} from "./__generated__/PeopleQuery.graphql";
 
 import "./People.css";
 
+interface User {
+  readonly name: string;
+  readonly presence: string;
+  readonly avatar: {image48: string | null};
+  readonly status: {readonly message: string | null};
+}
+
 interface PersonProps {
-  user: {
-    name: string;
-    presence: string;
-    avatar: {
-      image48: string;
-    };
-    status: {
-      message: string;
-    };
-  };
+  user: User;
   title: string;
 }
 
@@ -33,7 +33,7 @@ const Person = (props: PersonProps) => {
   return (
     <div className="pushbot-person row">
       <div className="col-xs-1">
-        <img src={avatarURL} className="img-rounded" />
+        <img src={avatarURL!} className="img-rounded" alt="" />
       </div>
       <div className="col-xs-11">
         <p>
@@ -44,7 +44,7 @@ const Person = (props: PersonProps) => {
           <Link to={`/people/${name}`} className="pushbot-person-name">
             {name}
           </Link>
-          <span className="pushbot-person-title">{this.props.title}</span>
+          <span className="pushbot-person-title">{props.title}</span>
         </p>
         <p className="pushbot-person-status-message">{message}</p>
       </div>
@@ -53,6 +53,8 @@ const Person = (props: PersonProps) => {
 };
 
 export class People extends Component {
+  private environment: Environment;
+
   constructor(props: {}) {
     super(props);
 
@@ -92,15 +94,16 @@ export class People extends Component {
     `;
 
     return (
-      <QueryRenderer
+      <QueryRenderer<PeopleQuery>
         environment={this.environment}
         query={query}
+        variables={{}}
         render={this.renderResult}
       />
     );
   }
 
-  renderResult({error, props}) {
+  renderResult({error, props}: QueryResult<PeopleQuery>) {
     if (error) {
       return <div>{error.message}</div>;
     }
@@ -124,14 +127,23 @@ export class People extends Component {
     );
   }
 
-  collateUsers(props) {
+  collateUsers(
+    props: QueryResult<PeopleQuery>["props"]
+  ): {user: User; title: string}[] {
     if (!props) {
       return [];
     }
 
-    const titlesByUsername = {};
-    for (const title of props.titles.all.edges) {
-      titlesByUsername[title.node.subject] = title.node.text;
+    const titles = props.titles;
+    if (!titles) {
+      return [];
+    }
+
+    const titlesByUsername: {[username: string]: string} = {};
+    for (const title of titles.all.edges) {
+      if (title.node.subject) {
+        titlesByUsername[title.node.subject] = title.node.text;
+      }
     }
 
     const userData = props.users.all.map(user => {

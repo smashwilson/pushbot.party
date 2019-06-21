@@ -3,7 +3,7 @@ import {Link, Route} from "react-router-dom";
 
 interface PillProps {
   to: string;
-  exact: boolean;
+  exact?: boolean;
   children: string;
 }
 
@@ -12,8 +12,8 @@ const Pill = (props: PillProps) => {
     <Route
       path={props.to}
       exact={props.exact}
-      children={props => {
-        const klass = props.match ? "active" : "";
+      children={rp => {
+        const klass = rp.match ? "active" : "";
 
         return (
           <li role="presentation" className={klass}>

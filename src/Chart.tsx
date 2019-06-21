@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import Chartist from "chartist";
 
 Chartist.plugins = Chartist.plugins || {};
-Chartist.plugins.ctHtmlLabels = function(options) {
-  return function(chart) {
-    chart.on("draw", function(context) {
+Chartist.plugins.ctHtmlLabels = function() {
+  return function(chart: any) {
+    chart.on("draw", function(context: any) {
       if (context.type === "label") {
         context.element.empty()._node.innerHTML = context.text;
       }
@@ -18,6 +18,9 @@ interface ChartProps {
 }
 
 export class Chart extends Component<ChartProps> {
+  private refElement?: HTMLElement | null;
+  private chart?: Chartist.IChartistBarChart;
+
   render() {
     return (
       <div
@@ -34,5 +37,9 @@ export class Chart extends Component<ChartProps> {
     options.plugins = [Chartist.plugins.ctHtmlLabels()];
 
     this.chart = new Chartist.Bar(this.refElement, this.props.data, options);
+  }
+
+  componentWillUnmount() {
+    this.chart && this.chart.detach();
   }
 }

@@ -4,36 +4,32 @@ import {Environment} from "relay-runtime";
 import {graphql} from "babel-plugin-relay/macro";
 import moment from "moment";
 
-import {getEnvironment} from "./Transport";
+import {getEnvironment, QueryResult} from "./Transport";
 import {Role} from "./Role";
+
+import {RecentChannelQuery} from "./__generated__/RecentChannelQuery.graphql";
+import {RecentHistoryQuery} from "./__generated__/RecentHistoryQuery.graphql";
 
 import "./Recent.css";
 
-interface Speaker {
-  id: string;
-  name: string;
-  avatar?: {image32: string};
-}
-
-interface Line {
-  id: string;
-  speaker: Speaker;
-  timstamp: string;
-  text: string;
-}
+type ILine = NonNullable<
+  RecentHistoryQuery["response"]["cache"]["linesForChannel"]
+> extends ReadonlyArray<infer E>
+  ? E
+  : void;
 
 const ALL = Symbol("all");
 
-type Change = Line | typeof ALL;
+type Change = ILine | typeof ALL;
 
 interface Disposable {
   dispose(): void;
 }
 
 class Selection {
+  public isSelecting: boolean;
   private ids: Set<string>;
-  private isSelecting: boolean;
-  private subs: ((arg: Change) => {})[];
+  private subs: ((arg: Change) => any)[];
 
   constructor() {
     this.ids = new Set();
@@ -41,7 +37,7 @@ class Selection {
     this.subs = [];
   }
 
-  onDidChange(cb: (arg: Change) => {}): Disposable {
+  onDidChange(cb: (arg: Change) => any): Disposable {
     this.subs.push(cb);
     return {
       dispose: () => {
@@ -57,13 +53,13 @@ class Selection {
     }
   }
 
-  isSelected(line: Line): boolean {
-    return this.ids.has(line.id);
+  isSelected(line: ILine): boolean {
+    return this.ids.has(line.id!);
   }
 
-  select(line: Line): boolean {
-    const wasSelected = this.ids.has(line.id);
-    this.ids.add(line.id);
+  select(line: ILine): boolean {
+    const wasSelected = this.ids.has(line.id!);
+    this.ids.add(line.id!);
     if (!wasSelected) this.didChange(line);
     return !wasSelected;
   }
@@ -76,9 +72,9 @@ class Selection {
     this.isSelecting = false;
   }
 
-  toggle(line: Line) {
-    if (!this.ids.delete(line.id)) {
-      this.ids.add(line.id);
+  toggle(line: ILine) {
+    if (!this.ids.delete(line.id!)) {
+      this.ids.add(line.id!);
     }
     this.didChange(line);
   }
@@ -108,12 +104,14 @@ class Selection {
 }
 
 interface LineProps {
-  previous?: Line;
-  line: Line;
+  previous?: ILine;
+  line: ILine;
   selection: Selection;
 }
 
 class Line extends Component<LineProps> {
+  private sub?: Disposable;
+
   componentDidMount() {
     this.sub = this.props.selection.onDidChange(kind => {
       if (kind === ALL) this.forceUpdate();
@@ -127,7 +125,7 @@ class Line extends Component<LineProps> {
   render() {
     const {line, previous} = this.props;
     const ts = moment(parseInt(line.timestamp));
-    const sameSpeaker = previous && previous.speaker.id === line.speaker.id;
+    const sameSpeaker = previous && previous.speaker!.id === line.speaker!.id;
 
     const lineClasses = ["pushbot-line"];
     if (this.props.selection.isSelected(line))
@@ -138,9 +136,9 @@ class Line extends Component<LineProps> {
       speakerBanner = (
         <div className="pushbot-speaker-banner">
           <span className="pushbot-line-avatar">
-            <img src={line.speaker.avatar.image32} />
+            <img src={line.speaker!.avatar!.image32!} alt="" />
           </span>
-          <span className="pushbot-line-name">{line.speaker.name}</span>
+          <span className="pushbot-line-name">{line.speaker!.name}</span>
         </div>
       );
     }
@@ -158,7 +156,7 @@ class Line extends Component<LineProps> {
     );
   }
 
-  didMouseDown = event => {
+  didMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
 
     event.preventDefault();
@@ -167,7 +165,7 @@ class Line extends Component<LineProps> {
     this.forceUpdate();
   };
 
-  didMouseMove = event => {
+  didMouseMove = (event: React.MouseEvent) => {
     if (!this.props.selection.isSelecting) return;
 
     event.preventDefault();
@@ -178,11 +176,13 @@ class Line extends Component<LineProps> {
 }
 
 interface HistoryProps {
-  lines?: Line[];
+  lines: ReadonlyArray<ILine> | null;
   selection: Selection;
 }
 
 class History extends Component<HistoryProps> {
+  private bottom?: HTMLElement | null;
+
   componentDidMount() {
     window.addEventListener("mouseup", this.didMouseUp);
 
@@ -220,12 +220,12 @@ class History extends Component<HistoryProps> {
         className="pushbot-history pushbot-history-loaded"
         onMouseOut={this.didMouseOut}
       >
-        {this.props.lines.map((line, i) => {
+        {this.props.lines!.map((line, i) => {
           return (
             <Line
-              key={line.id}
+              key={line.id!}
               line={line}
-              previous={this.props.lines[i - 1]}
+              previous={this.props.lines![i - 1]}
               selection={this.props.selection}
             />
           );
@@ -242,6 +242,10 @@ class History extends Component<HistoryProps> {
   didMouseUp = () => {
     this.props.selection.stopSelecting();
   };
+
+  didMouseOut = () => {
+    this.props.selection.stopSelecting();
+  };
 }
 
 interface ActionBarProps {
@@ -251,7 +255,11 @@ interface ActionBarProps {
 }
 
 class ActionBar extends Component<ActionBarProps> {
-  constructor(props) {
+  private sub?: Disposable;
+  private didSubmitQuote: () => void;
+  private didSubmitLim: () => void;
+
+  constructor(props: ActionBarProps) {
     super(props);
 
     this.didSubmitQuote = this.submit.bind(this, "quote");
@@ -315,7 +323,7 @@ class ActionBar extends Component<ActionBarProps> {
     this.props.selection.clear();
   };
 
-  submit(set) {
+  submit(set: string) {
     if (!this.props.channel) return;
 
     const mutation = graphql`
@@ -346,16 +354,16 @@ class ActionBar extends Component<ActionBarProps> {
 
 interface RecentState {
   environment: Environment;
-  currentChannel?: string;
+  currentChannel: string | null;
   selection: Selection;
 }
 
 export class Recent extends Component<{}, RecentState> {
-  private knownChannels?: string[];
-  private history: Line[];
+  private knownChannels: ReadonlyArray<string> | null;
+  private history: ReadonlyArray<ILine> | null;
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super({});
 
     this.knownChannels = null;
     this.history = null;
@@ -376,7 +384,7 @@ export class Recent extends Component<{}, RecentState> {
     return this.renderHistoryQuery();
   }
 
-  renderError(error) {
+  renderError(error: Error) {
     return (
       <div className="pushbot-recent pushbot-recent-error">
         <h3>Recent Chatter</h3>
@@ -404,22 +412,22 @@ export class Recent extends Component<{}, RecentState> {
     `;
 
     return (
-      <QueryRenderer
+      <QueryRenderer<RecentChannelQuery>
         environment={this.state.environment}
         query={query}
+        variables={{}}
         render={this.renderChannelResult}
       />
     );
   }
 
-  renderChannelResult = ({error, props}) => {
+  renderChannelResult = ({error, props}: QueryResult<RecentChannelQuery>) => {
     if (error) {
       return this.renderError(error);
     }
 
     const channelNames = props ? props.cache.knownChannels : this.knownChannels;
-
-    return this.renderCurrent(channelNames, null);
+    return this.renderCurrent(channelNames || [], null);
   };
 
   renderHistoryQuery() {
@@ -444,11 +452,11 @@ export class Recent extends Component<{}, RecentState> {
     `;
 
     const variables = {
-      channel: this.state.currentChannel,
+      channel: this.state.currentChannel || "",
     };
 
     return (
-      <QueryRenderer
+      <QueryRenderer<RecentHistoryQuery>
         environment={this.state.environment}
         query={query}
         variables={variables}
@@ -457,19 +465,21 @@ export class Recent extends Component<{}, RecentState> {
     );
   }
 
-  renderHistoryResult = ({error, props}) => {
+  renderHistoryResult = ({error, props}: QueryResult<RecentHistoryQuery>) => {
     if (error) {
       return this.renderError(error);
     }
 
     const channelNames = props ? props.cache.knownChannels : this.knownChannels;
-
     const history = props ? props.cache.linesForChannel : this.history;
 
     return this.renderCurrent(channelNames, history);
   };
 
-  renderCurrent(channelNames, history) {
+  renderCurrent(
+    channelNames: ReadonlyArray<string> | null,
+    history: ReadonlyArray<ILine> | null
+  ) {
     if (channelNames) {
       if (!this.state.currentChannel && channelNames.length > 0) {
         setTimeout(() => this.setState({currentChannel: channelNames[0]}), 0);
@@ -514,20 +524,20 @@ export class Recent extends Component<{}, RecentState> {
         <History lines={history} selection={this.state.selection} />
         <ActionBar
           environment={this.state.environment}
-          channel={this.state.currentChannel}
+          channel={this.state.currentChannel || ""}
           selection={this.state.selection}
         />
       </div>
     );
   }
 
-  didChangeChannel = event => {
+  didChangeChannel = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.history = null;
     this.state.selection.clear();
     this.setState({currentChannel: event.target.value});
   };
 
-  refresh = event => {
+  refresh = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.setState({environment: getEnvironment()});
   };

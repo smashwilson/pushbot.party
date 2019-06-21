@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import {QueryRenderer} from "react-relay";
+import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 
-import {getEnvironment} from "./Transport";
+import {getEnvironment, QueryResult} from "./Transport";
+import {QuotesPageQuery} from "./__generated__/QuotesPageQuery.graphql";
+import {QuotesRandomQuery} from "./__generated__/QuotesRandomQuery.graphql";
 
 import "./Quotes.css";
 
@@ -44,6 +46,10 @@ const ABOUT = {
 
 const modes: QueryMode[] = [CONTAINING, BY, ABOUT];
 
+type IQuotes = NonNullable<
+  QuotesPageQuery["response"]["documents"]
+>["all"]["edges"];
+
 interface QuoteProps {
   text: string;
 }
@@ -61,9 +67,14 @@ interface QuotePageProps {
 }
 
 class QuotePage extends Component<QuotePageProps> {
+  private environment: Environment;
+  private lastTotal: number | null;
+  private lastResults: IQuotes | null;
+
   constructor(props: QuotePageProps) {
     super(props);
     this.environment = getEnvironment();
+    this.lastTotal = null;
     this.lastResults = null;
   }
 
@@ -88,7 +99,7 @@ class QuotePage extends Component<QuotePageProps> {
       }
     `;
 
-    const criteria = {query: this.props.query};
+    const criteria: any = {query: this.props.query};
     this.props.mode.when({
       by: () => {
         criteria.speakers = this.props.people;
@@ -98,14 +109,12 @@ class QuotePage extends Component<QuotePageProps> {
       },
     });
 
-    const variables = {
+    const variables: QuotesPageQuery["variables"] = {
       c: criteria,
-      perPage: 20,
-      cursor: null,
     };
 
     return (
-      <QueryRenderer
+      <QueryRenderer<QuotesPageQuery>
         environment={this.environment}
         query={query}
         variables={variables}
@@ -114,7 +123,7 @@ class QuotePage extends Component<QuotePageProps> {
     );
   }
 
-  renderResult = ({error, props}) => {
+  renderResult = ({error, props}: QueryResult<QuotesPageQuery>) => {
     if (error) {
       return <div>{error.message}</div>;
     }
@@ -126,19 +135,19 @@ class QuotePage extends Component<QuotePageProps> {
           performing query
         </div>
       );
-    } else if (!props && this.lastResults) {
+    } else if (!props && this.lastResults && this.lastTotal) {
       return this.renderDocuments(this.lastTotal, this.lastResults);
     } else if (props) {
-      this.lastTotal = props.documents.all.pageInfo.count;
-      this.lastResults = props.documents.all.edges;
+      this.lastTotal = props.documents!.all.pageInfo.count;
+      this.lastResults = props.documents!.all.edges;
 
       return this.renderDocuments(this.lastTotal, this.lastResults);
     }
   };
 
-  renderDocuments(total, documents) {
+  renderDocuments(total: number, documents: IQuotes) {
     const quotes = documents.map(document => {
-      return <Quote key={document.node.id} text={document.node.text} />;
+      return <Quote key={document.node.id!} text={document.node.text} />;
     });
 
     const more = documents.length < total ? "the first of" : "";
@@ -157,9 +166,15 @@ class QuotePage extends Component<QuotePageProps> {
   }
 }
 
-class RandomQuote extends Component {
-  constructor(props) {
-    super(props);
+interface RandomQuoteState {
+  environment: Environment;
+}
+
+class RandomQuote extends Component<{}, RandomQuoteState> {
+  private lastQuote: string | null;
+
+  constructor() {
+    super({});
 
     this.lastQuote = null;
     this.state = {
@@ -180,20 +195,21 @@ class RandomQuote extends Component {
     `;
 
     return (
-      <QueryRenderer
+      <QueryRenderer<QuotesRandomQuery>
         environment={this.state.environment}
         query={query}
+        variables={{}}
         render={this.renderResult}
       />
     );
   }
 
-  renderResult = ({error, props}) => {
+  renderResult = ({error, props}: QueryResult<QuotesRandomQuery>) => {
     if (error) {
       return <div>{error.message}</div>;
     }
 
-    const quoteText = props ? props.documents.random.text : this.lastQuote;
+    const quoteText = props ? props.documents!.random.text : this.lastQuote;
 
     if (!quoteText) {
       return null;
@@ -225,18 +241,24 @@ class RandomQuote extends Component {
   };
 }
 
+interface Search {
+  query: string;
+  people: string;
+  mode: QueryMode;
+}
+
 export class Quotes extends Component {
-  readSearch() {
+  readSearch(): Search {
     const params = new URLSearchParams(window.location.search);
 
     let mode = CONTAINING;
     let people = "";
     if (params.has("by")) {
       mode = BY;
-      people = params.get("by");
+      people = params.get("by")!;
     } else if (params.has("about")) {
       mode = ABOUT;
-      people = params.get("about");
+      people = params.get("about")!;
     }
 
     return {
@@ -246,7 +268,7 @@ export class Quotes extends Component {
     };
   }
 
-  writeSearch(changes) {
+  writeSearch(changes: Partial<Search>) {
     const previous = this.readSearch();
     const current = Object.assign(previous, changes);
 
@@ -269,8 +291,8 @@ export class Quotes extends Component {
       (nextSearch.length > 0 ? "?" + nextSearch : "") +
       window.location.hash;
 
-    if (history.replaceState) {
-      history.replaceState({}, "", nextURL);
+    if (window.history.replaceState) {
+      window.history.replaceState({}, "", nextURL);
     } else {
       window.location.href = nextURL;
     }
@@ -279,7 +301,7 @@ export class Quotes extends Component {
 
   render() {
     const search = this.readSearch();
-    const showPeople: boolean = search.mode.when({
+    const showPeople = search.mode.when({
       containing: () => false,
       by: () => true,
       about: () => true,
@@ -327,7 +349,7 @@ export class Quotes extends Component {
     );
   }
 
-  renderResult(search) {
+  renderResult(search: Search) {
     const people = search.people
       .split(/[,+;]|\s/)
       .map(person => person.replace(/^@/, ""))
@@ -349,16 +371,16 @@ export class Quotes extends Component {
     }
   }
 
-  didChangeMode = event => {
+  didChangeMode = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const mode = modes.find(mode => mode.label === event.target.value);
     this.writeSearch({mode});
   };
 
-  didChangeQuery = event => {
+  didChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.writeSearch({query: event.target.value});
   };
 
-  didChangePeople = event => {
+  didChangePeople = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.writeSearch({people: event.target.value});
   };
 }

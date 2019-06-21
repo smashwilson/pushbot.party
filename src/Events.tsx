@@ -1,9 +1,11 @@
 import React, {Component} from "react";
-import {QueryRenderer} from "react-relay";
+import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
-import {CopyToClipboard} from "react-copy-to-clipboard";
+import CopyToClipboard from "react-copy-to-clipboard";
 
-import {getEnvironment} from "./Transport";
+import {getEnvironment, QueryResult} from "./Transport";
+
+import {EventsQuery} from "./__generated__/EventsQuery.graphql";
 
 import "./Events.css";
 
@@ -48,9 +50,10 @@ class FeedForm extends Component<FeedFormProps, FeedFormState> {
 }
 
 export class Events extends Component {
-  constructor(props) {
-    super(props);
+  private environment: Environment;
 
+  constructor() {
+    super({});
     this.environment = getEnvironment();
   }
 
@@ -62,30 +65,31 @@ export class Events extends Component {
     `;
 
     return (
-      <QueryRenderer
+      <QueryRenderer<EventsQuery>
         environment={this.environment}
         query={query}
+        variables={{}}
         render={this.renderResult}
       />
     );
   }
 
-  renderResult = ({error, props}) => {
+  renderResult = (result: QueryResult<EventsQuery>) => {
     return (
       <div>
         <h3>Goings On and Happenings</h3>
-        {this.renderResultBody({error, props})}
+        {this.renderResultBody(result)}
       </div>
     );
   };
 
-  renderResultBody({error, props}) {
+  renderResultBody({error, props}: QueryResult<EventsQuery>) {
     if (error) {
       return <div>{error.message}</div>;
     }
 
     const ready = Boolean(props);
-    const feedURL = ready ? props.calendarURL : "...";
+    const feedURL = props ? props.calendarURL : "...";
 
     return (
       <div>
@@ -99,6 +103,7 @@ export class Events extends Component {
           <a
             href="https://calendar.google.com/calendar/r/settings/addbyurl"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Google calendar
           </a>

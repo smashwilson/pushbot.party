@@ -1,9 +1,13 @@
-import React, {Component, useContext} from "react";
+import React, {useContext} from "react";
+
+interface IRole {
+  readonly name: string;
+}
 
 export interface IUser {
-  id: string;
-  name: string;
-  roles: {name: string}[];
+  readonly id: string;
+  readonly name: string;
+  readonly roles: ReadonlyArray<IRole>;
 }
 
 export const UserContext = React.createContext<IUser | null>(null);
@@ -15,8 +19,10 @@ interface RoleProps {
 
 export const Role = (props: RoleProps) => {
   const user = useContext(UserContext);
-  const match = user.roles.some(role => role.name === this.props.name);
+  if (!user) return null;
+
+  const match = user.roles.some(role => role.name === props.name);
   if (!match) return null;
 
-  return this.props.children;
+  return props.children;
 };
