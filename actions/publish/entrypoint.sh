@@ -15,6 +15,9 @@ git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 printf "Installing dependencies\n"
 npm ci
 
+printf "Running Relay compiler\n"
+npm run relay-compiler
+
 printf "Creating production build\n"
 npm run build
 
