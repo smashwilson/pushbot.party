@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, Route} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 interface PillProps {
   to: string;
@@ -7,23 +7,18 @@ interface PillProps {
   children: string;
 }
 
-const Pill = (props: PillProps) => {
-  return (
-    <Route
-      path={props.to}
+const Pill = (props: PillProps) => (
+  <li role="presentation" className="nav-item">
+    <NavLink
+      to={props.to}
       exact={props.exact}
-      children={rp => {
-        const klass = rp.match ? "active" : "";
-
-        return (
-          <li role="presentation" className={klass}>
-            <Link to={props.to}>{props.children}</Link>
-          </li>
-        );
-      }}
-    />
-  );
-};
+      className="nav-link"
+      activeClassName={"active"}
+    >
+      {props.children}
+    </NavLink>
+  </li>
+);
 
 export const SideNav = () => (
   <ul className="nav nav-pills flex-column">

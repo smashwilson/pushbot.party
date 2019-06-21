@@ -103,7 +103,7 @@ export class People extends Component {
     );
   }
 
-  renderResult({error, props}: QueryResult<PeopleQuery>) {
+  renderResult = ({error, props}: QueryResult<PeopleQuery>) => {
     if (error) {
       return <div>{error.message}</div>;
     }
@@ -125,7 +125,7 @@ export class People extends Component {
         </ul>
       </div>
     );
-  }
+  };
 
   collateUsers(
     props: QueryResult<PeopleQuery>["props"]

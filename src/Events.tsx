@@ -24,7 +24,9 @@ class FeedForm extends Component<FeedFormProps, FeedFormState> {
   };
 
   render() {
-    const btnClass = this.state.copied ? "btn btn-success" : "btn btn-default";
+    const btnClass = this.state.copied
+      ? "btn btn-success"
+      : "btn btn-secondary";
     const btnMessage = this.state.copied ? "Copied" : "Copy";
 
     return (

@@ -515,7 +515,7 @@ export class Recent extends Component<{}, RecentState> {
             })}
           </select>
           <button
-            className="btn btn-default pushbot-recent-refresh"
+            className="btn btn-secondary pushbot-recent-refresh"
             onClick={this.refresh}
           >
             <i className="fa fa-refresh" aria-hidden /> Refresh
