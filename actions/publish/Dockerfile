@@ -8,7 +8,7 @@ LABEL "com.github.actions.color"="purple"
 LABEL "repository"="https://github.com/pushbot.party"
 LABEL "maintainer"="Ash Wilson <smashwilson@gmail.com>"
 
-RUN apk add --no-cache nodejs npm git
+RUN apk add --no-cache nodejs npm git openssh-client
 
 ADD ./entrypoint.sh /entrypoint.sh
 
