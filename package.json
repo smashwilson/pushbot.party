@@ -28,6 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "format": "prettier --write src/**/*.{tsx,ts,d.ts}",
+    "lint": "prettier --check src/**/*.{tsx,ts,d.ts}",
     "relay-compiler": "relay-compiler --src ./src --schema ./schema/pushbot.graphql ---language typescript --artifactDirectory ./src/__generated__"
   },
   "eslintConfig": {
@@ -58,6 +60,7 @@
     "@types/react-router-dom": "^4.3.4",
     "@types/relay-runtime": "5.0.0",
     "bootstrap": "^4.3.1",
+    "prettier": "1.18.2",
     "relay-compiler": "^5.0.0",
     "relay-compiler-language-typescript": "^4.3.0"
   }
