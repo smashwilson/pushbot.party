@@ -26,7 +26,7 @@ const Pill = (props: PillProps) => {
 };
 
 export const SideNav = () => (
-  <ul className="nav nav-pills nav-stacked">
+  <ul className="nav nav-pills flex-column">
     <Pill to="/" exact>
       dashboard
     </Pill>

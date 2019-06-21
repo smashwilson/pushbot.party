@@ -18,69 +18,66 @@ export const Banner = (props: BannerProps) => {
     let accountElements = [];
     if (props.title) {
       accountElements.push(
-        <span key="0" className="pushbot-navbar-title">
+        <span key="0" className="navbar-text pushbot-navbar-title">
           {props.title}
+
+          <i
+            key="1"
+            className="fa fa-circle pushbot-navbar-separator"
+            aria-hidden="true"
+          />
         </span>
-      );
-      accountElements.push(
-        <i
-          key="1"
-          className="fa fa-circle pushbot-navbar-separator"
-          aria-hidden="true"
-        />
       );
     }
     accountElements.push(
       <Link
         to={`/people/${props.username}`}
         key="2"
-        className="pushbot-navbar-username"
+        className="navbar-text pushbot-navbar-username"
       >
         @{props.username}
       </Link>
     );
 
     accountControl = (
-      <ul className="nav navbar-nav navbar-right">
-        <li>
-          <p className="navbar-text">{accountElements}</p>
-        </li>
-        <li>
-          <img className="pushbot-navbar-avatar" src={props.avatar} alt="" />
-        </li>
-        <li>
-          <a href={LOGOUT_URL} className="pushbot-navbar-logout">
-            <i className="fa fa-sign-out" aria-hidden="true" />
-            Log out
-          </a>
-        </li>
-      </ul>
+      <>
+        {accountElements}
+        <ul className="navbar-nav">
+          <li className="navbar-item">
+            <img className="pushbot-navbar-avatar" src={props.avatar} alt="" />
+          </li>
+          <li className="navbar-item">
+            <a href={LOGOUT_URL} className="pushbot-navbar-logout">
+              <i className="fa fa-sign-out" aria-hidden="true" />
+              Log out
+            </a>
+          </li>
+        </ul>
+      </>
     );
   }
 
   return (
-    <nav className="navbar navbar-default">
-      <div className="container-fluid">
-        <div className="navbar-header">
-          <button
-            type="button"
-            className="navbar-toggle collapsed"
-            data-toggle="collapse"
-            data-target="#bs-example-navbar-collapse-1"
-            aria-expanded="false"
-          >
-            <span className="sr-only">Toggle navigation</span>
-          </button>
-          <p className="navbar-brand">pushbot party</p>
-        </div>
+    <div className="container-fluid">
+      <nav className="navbar navbar-expand-lg navbar-light">
+        <button
+          type="button"
+          className="navbar-toggler collapsed"
+          data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1"
+          aria-expanded="false"
+        >
+          <span className="navbar-toggler-icon">Toggle navigation</span>
+        </button>
+        <div className="navbar-brand flex-grow-1">pushbot party</div>
 
         <div
-          className="collapse navbar-collapse"
+          className="collapse navbar-collapse flex-grow-0"
           id="bs-example-navbar-collapse-1"
         >
           {accountControl}
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 };
