@@ -16,7 +16,7 @@ interface AuthenticatedProps {
 
 export const Authenticated = (props: AuthenticatedProps) => (
   <UserContext.Provider value={props.user}>
-    <div className="row">
+    <div className="row mt-md-5">
       <div className="col-md-2">
         <SideNav />
       </div>

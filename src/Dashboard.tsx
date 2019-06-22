@@ -1,10 +1,10 @@
 import React from "react";
 
 export const Dashboard = () => (
-  <div className="card bg-info">
+  <div className="card">
     <div className="card-body">
       <h3 className="card-title">Why hello there</h3>
-      {"Pretend there's something awesome written here."}
+      <p className="card-text">{"Pretend there's something awesome written here."}</p>
     </div>
   </div>
 );
