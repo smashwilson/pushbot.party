@@ -86,9 +86,11 @@ export class App extends Component {
       body = <Authenticated user={user} />;
     } else {
       body = (
-        <div className="pushbot-loading">
-          <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
-          loading
+        <div className="row mt-md-5 pushbot-loading">
+          <p className="mx-auto">
+            <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
+            loading
+          </p>
         </div>
       );
     }
