@@ -33,7 +33,7 @@ export const Banner = (props: BannerProps) => {
       <Link
         to={`/people/${props.username}`}
         key="2"
-        className="navbar-text pushbot-navbar-username"
+        className="navbar-text pushbot-navbar-username font-weight-bolder"
       >
         @{props.username}
       </Link>
@@ -58,8 +58,8 @@ export const Banner = (props: BannerProps) => {
   }
 
   return (
-    <div className="container-fluid">
-      <nav className="navbar navbar-expand-lg navbar-light border-bottom">
+    <div className="container-fluid mx-0 px-0">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light mx-0">
         <button
           type="button"
           className="navbar-toggler collapsed"

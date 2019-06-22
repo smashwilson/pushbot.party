@@ -55,7 +55,7 @@ interface QuoteProps {
 }
 
 const Quote = (props: QuoteProps) => (
-  <blockquote className="pushbot-quote">
+  <blockquote className="mx-md-2 pushbot-quote">
     <p>{props.text}</p>
   </blockquote>
 );
@@ -154,8 +154,8 @@ class QuotePage extends Component<QuotePageProps> {
     const plural = total === 1 ? `matching quote` : `matching quotes`;
 
     return (
-      <div className="pushbot-results">
-        <div className="well well-sm">
+      <div className="pushbot-results card border-0">
+        <div className="card-body">
           <p>
             Showing {more} <strong>{total}</strong> {plural}.
           </p>
@@ -218,9 +218,9 @@ class RandomQuote extends Component<{}, RandomQuoteState> {
     this.lastQuote = quoteText;
 
     return (
-      <div className="pushbot-random-quote">
-        <div className="well well-sm">
-          <p>
+      <div className="pushbot-random-quote card border-0">
+        <div className="card-body">
+          <p className="card-text">
             Type a search term above to find specific quotes. In the meantime,
             enjoy this random quote.
           </p>

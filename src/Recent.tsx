@@ -207,7 +207,7 @@ class History extends Component<HistoryProps> {
 
   renderLoading() {
     return (
-      <div className="pushbot-history pushbot-loading">
+      <div className="pushbot-history border pushbot-loading">
         <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
         loading
       </div>
@@ -217,7 +217,7 @@ class History extends Component<HistoryProps> {
   renderLines() {
     return (
       <div
-        className="pushbot-history pushbot-history-loaded"
+        className="pushbot-history border pushbot-history-loaded"
         onMouseOut={this.didMouseOut}
       >
         {this.props.lines!.map((line, i) => {
@@ -498,14 +498,15 @@ export class Recent extends Component<{}, RecentState> {
       <div className="pushbot-recent">
         <h3>Recent Chatter</h3>
         <form className="pushbot-recent-form form-inline">
-          <label htmlFor="pushbot-recent-channel">Channel</label>
-          <select
-            className="pushbot-recent-channel form-control"
-            id="pushbot-recent-channel"
-            value={displayChannel}
-            disabled={!channelNames}
-            onChange={this.didChangeChannel}
-          >
+          <label className="mr-md-3" htmlFor="pushbot-recent-channel">Channel</label>
+          <div className="input-group">
+            <select
+              className="pushbot-recent-channel form-control input-group-prepend"
+              id="pushbot-recent-channel"
+              value={displayChannel}
+              disabled={!channelNames}
+              onChange={this.didChangeChannel}
+            >
             {displayChannelNames.map(name => {
               return (
                 <option key={name} value={name}>
@@ -513,13 +514,14 @@ export class Recent extends Component<{}, RecentState> {
                 </option>
               );
             })}
-          </select>
-          <button
-            className="btn btn-secondary pushbot-recent-refresh"
-            onClick={this.refresh}
-          >
-            <i className="fas fa-sync" aria-hidden /> Refresh
-          </button>
+            </select>
+            <button
+              className="btn btn-secondary pushbot-recent-refresh"
+              onClick={this.refresh}
+            >
+              <i className="fas fa-sync" aria-hidden /> Refresh
+            </button>
+          </div>
         </form>
         <History lines={history} selection={this.state.selection} />
         <ActionBar
