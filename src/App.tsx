@@ -8,7 +8,7 @@ import {
   AUTH_URL,
   QueryResult,
   isNetworkError,
-} from "./Transport";
+} from "./common/Transport";
 import {Authenticated} from "./Authenticated";
 import {Banner} from "./Banner";
 import {Login} from "./Login";

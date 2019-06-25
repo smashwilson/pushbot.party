@@ -2,13 +2,13 @@ import React from "react";
 import {Route} from "react-router-dom";
 
 import {SideNav} from "./SideNav";
-import {Dashboard} from "./Dashboard";
-import {People} from "./People";
-import {Profile} from "./Profile";
-import {Quotes} from "./Quotes";
-import {Events} from "./Events";
-import {Recent} from "./Recent";
-import {UserContext, IUser} from "./Role";
+import {Dashboard} from "./dashboard/Dashboard";
+import {People} from "./people/People";
+import {Profile} from "./profile/Profile";
+import {Quotes} from "./quotes/Quotes";
+import {Events} from "./events/Events";
+import {Recent} from "./recent/Recent";
+import {UserContext, IUser} from "./common/Role";
 
 interface AuthenticatedProps {
   user: IUser;

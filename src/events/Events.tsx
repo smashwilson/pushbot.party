@@ -1,61 +1,19 @@
 import React, {Component} from "react";
 import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
-import CopyToClipboard from "react-copy-to-clipboard";
 
-import {getEnvironment, QueryResult} from "./Transport";
+import {FeedForm} from "./FeedForm";
+import {getEnvironment, QueryResult} from "../common/Transport";
 
-import {EventsQuery} from "./__generated__/EventsQuery.graphql";
+import {EventsQuery} from "../__generated__/EventsQuery.graphql";
 
 import "./Events.css";
-
-interface FeedFormProps {
-  ready: boolean;
-  feedURL: string;
-}
-
-interface FeedFormState {
-  copied: boolean;
-}
-
-class FeedForm extends Component<FeedFormProps, FeedFormState> {
-  state = {
-    copied: false,
-  };
-
-  render() {
-    const btnClass = this.state.copied
-      ? "btn btn-success"
-      : "btn btn-secondary";
-    const btnMessage = this.state.copied ? "Copied" : "Copy";
-
-    return (
-      <p className="form-inline">
-        <input
-          type="text"
-          id="pushbot-events-feedurl"
-          className="form-control"
-          value={this.props.feedURL}
-          readOnly
-        />
-        <CopyToClipboard
-          text={this.props.feedURL}
-          onCopy={() => this.setState({copied: true})}
-        >
-          <button className={btnClass} disabled={!this.props.ready}>
-            {btnMessage}
-          </button>
-        </CopyToClipboard>
-      </p>
-    );
-  }
-}
 
 export class Events extends Component {
   private environment: Environment;
 
-  constructor() {
-    super({});
+  constructor(props: {}) {
+    super(props);
     this.environment = getEnvironment();
   }
 
