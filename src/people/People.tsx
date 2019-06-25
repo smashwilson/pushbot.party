@@ -3,9 +3,9 @@ import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import {Link} from "react-router-dom";
 
-import {getEnvironment, QueryResult} from "./Transport";
+import {getEnvironment, QueryResult} from "../common/Transport";
 
-import {PeopleQuery} from "./__generated__/PeopleQuery.graphql";
+import {PeopleQuery} from "../__generated__/PeopleQuery.graphql";
 
 import "./People.css";
 
@@ -44,9 +44,13 @@ const Person = (props: PersonProps) => {
           <Link to={`/people/${name}`} className="pushbot-person-name mr-2">
             {name}
           </Link>
-          <span className="pushbot-person-title font-weight-bold">{props.title}</span>
+          <span className="pushbot-person-title font-weight-bold">
+            {props.title}
+          </span>
         </p>
-        <p className="pushbot-person-status-message font-italic font-weight-light">{message}</p>
+        <p className="pushbot-person-status-message font-italic font-weight-light">
+          {message}
+        </p>
       </div>
     </div>
   );

@@ -3,9 +3,9 @@ import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import EmojiConverter from "emoji-js";
 
-import {getEnvironment, QueryResult} from "./Transport";
-import {Chart} from "./Chart";
-import {ProfileQuery} from "./__generated__/ProfileQuery.graphql";
+import {getEnvironment, QueryResult} from "../common/Transport";
+import {Chart} from "../common/Chart";
+import {ProfileQuery} from "../__generated__/ProfileQuery.graphql";
 
 import "./Profile.css";
 

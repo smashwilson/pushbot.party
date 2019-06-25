@@ -3,9 +3,9 @@ import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import CopyToClipboard from "react-copy-to-clipboard";
 
-import {getEnvironment, QueryResult} from "./Transport";
+import {getEnvironment, QueryResult} from "../common/Transport";
 
-import {EventsQuery} from "./__generated__/EventsQuery.graphql";
+import {EventsQuery} from "../__generated__/EventsQuery.graphql";
 
 import "./Events.css";
 

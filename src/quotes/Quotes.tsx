@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 
-import {getEnvironment, QueryResult} from "./Transport";
-import {QuotesPageQuery} from "./__generated__/QuotesPageQuery.graphql";
-import {QuotesRandomQuery} from "./__generated__/QuotesRandomQuery.graphql";
+import {getEnvironment, QueryResult} from "../common/Transport";
+import {QuotesPageQuery} from "../__generated__/QuotesPageQuery.graphql";
+import {QuotesRandomQuery} from "../__generated__/QuotesRandomQuery.graphql";
 
 import "./Quotes.css";
 

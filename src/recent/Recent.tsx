@@ -4,11 +4,11 @@ import {Environment} from "relay-runtime";
 import {graphql} from "babel-plugin-relay/macro";
 import moment from "moment";
 
-import {getEnvironment, QueryResult} from "./Transport";
-import {Role} from "./Role";
+import {getEnvironment, QueryResult} from "../common/Transport";
+import {Role} from "../common/Role";
 
-import {RecentChannelQuery} from "./__generated__/RecentChannelQuery.graphql";
-import {RecentHistoryQuery} from "./__generated__/RecentHistoryQuery.graphql";
+import {RecentChannelQuery} from "../__generated__/RecentChannelQuery.graphql";
+import {RecentHistoryQuery} from "../__generated__/RecentHistoryQuery.graphql";
 
 import "./Recent.css";
 
@@ -498,7 +498,9 @@ export class Recent extends Component<{}, RecentState> {
       <div className="pushbot-recent">
         <h3>Recent Chatter</h3>
         <form className="pushbot-recent-form form-inline">
-          <label className="mr-md-3" htmlFor="pushbot-recent-channel">Channel</label>
+          <label className="mr-md-3" htmlFor="pushbot-recent-channel">
+            Channel
+          </label>
           <div className="input-group">
             <select
               className="pushbot-recent-channel form-control input-group-prepend"
@@ -507,13 +509,13 @@ export class Recent extends Component<{}, RecentState> {
               disabled={!channelNames}
               onChange={this.didChangeChannel}
             >
-            {displayChannelNames.map(name => {
-              return (
-                <option key={name} value={name}>
-                  {name}
-                </option>
-              );
-            })}
+              {displayChannelNames.map(name => {
+                return (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                );
+              })}
             </select>
             <button
               className="btn btn-secondary pushbot-recent-refresh"
