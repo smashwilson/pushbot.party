@@ -9,25 +9,54 @@ import {Profile} from "./profile/Profile";
 import {Quotes} from "./quotes/Quotes";
 import {Events} from "./events/Events";
 import {Recent} from "./recent/Recent";
+import {Services} from "./admin/services/Services";
+import {ServiceEditor} from "./admin/services/ServiceEditor";
 import {UserContext, IUser} from "./common/Role";
-import {
-  CoordinatorContext,
-  Coordinator,
-  nullCoordinator,
-} from "./common/coordinator";
+import {CoordinatorContext, Coordinator} from "./common/coordinator";
 import {PendingDiff} from "./common/PendingDiff";
 
 interface AuthenticatedProps {
   user: IUser;
 }
 
+class StubCoordinator extends Coordinator {
+  async getDesiredState() {
+    return {
+      units: [
+        {
+          id: 1,
+          path: "/etc/systemd/system/az-pushbot.service",
+          type: "simple" as "simple",
+          container: {
+            name: "pushbot",
+            image_name: "quay.io/smashwilson/az-pushbot",
+            image_tag: "latest",
+          },
+          secrets: ["AZ_COORDINATOR_TOKEN"],
+          env: {
+            VAR0: "zero",
+            VAR1: "one",
+          },
+          ports: {
+            "80": 8080,
+            "443": 8443,
+          },
+          volumes: {},
+        },
+      ],
+    };
+  }
+}
+
 const coordinatorForUser = memo(
   (user: IUser): Coordinator => {
-    if (user.coordinatorToken) {
-      return new Coordinator(user.coordinatorToken);
-    } else {
-      return nullCoordinator;
-    }
+    return new StubCoordinator("");
+
+    // if (user.coordinatorToken) {
+    //   return new Coordinator(user.coordinatorToken);
+    // } else {
+    //   return nullCoordinator;
+    // }
   },
   (oldArgs: [IUser], newArgs: [IUser]) => oldArgs[0].id === newArgs[0].id
 );
@@ -50,6 +79,8 @@ export function Authenticated(props: AuthenticatedProps) {
               <Route path="/quotes" component={Quotes} />
               <Route path="/events" component={Events} />
               <Route path="/recent" component={Recent} />
+              <Route path="/admin/services" component={Services} exact />
+              <Route path="/admin/services/:id" component={ServiceEditor} />
             </div>
           </div>
         </PendingDiff>
