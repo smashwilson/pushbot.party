@@ -42,17 +42,11 @@ export const Banner = (props: BannerProps) => {
     accountControl = (
       <>
         {accountElements}
-        <ul className="navbar-nav">
-          <li className="navbar-item">
-            <img className="pushbot-navbar-avatar" src={props.avatar} alt="" />
-          </li>
-          <li className="navbar-item">
-            <a href={LOGOUT_URL} className="pushbot-navbar-logout">
-              <i className="fas fa-sign-out-alt" aria-hidden="true" />
-              Log out
-            </a>
-          </li>
-        </ul>
+        <img className="navbar-item pushbot-navbar-avatar" src={props.avatar} alt="" />
+        <a href={LOGOUT_URL} className="navbar-item pushbot-navbar-logout">
+          <i className="fas fa-sign-out-alt" aria-hidden="true" />
+          Log out
+        </a>
       </>
     );
   }
