@@ -5,7 +5,7 @@ import {graphql} from "babel-plugin-relay/macro";
 import {Quote} from "./Quote";
 import {getEnvironment} from "../common/Transport";
 import {QueryMode} from "./queryMode";
-import {QuotesPageQuery, QuotesPageResult, IQuotes} from "./queryTypes";
+import {QuotePageQuery, QuotePageResult, IQuotes} from "./queryTypes";
 
 interface QuotePageProps {
   query: string;
@@ -27,7 +27,7 @@ export class QuotePage extends Component<QuotePageProps> {
 
   render() {
     const query = graphql`
-      query QuotesPageQuery($c: Criteria!) {
+      query QuotePageQuery($c: Criteria!) {
         documents(set: "quote") {
           all(criteria: $c, first: 20) {
             edges {
@@ -61,7 +61,7 @@ export class QuotePage extends Component<QuotePageProps> {
     };
 
     return (
-      <QueryRenderer<QuotesPageQuery>
+      <QueryRenderer<QuotePageQuery>
         environment={this.environment}
         query={query}
         variables={variables}
@@ -70,7 +70,7 @@ export class QuotePage extends Component<QuotePageProps> {
     );
   }
 
-  renderResult = ({error, props}: QuotesPageResult) => {
+  renderResult = ({error, props}: QuotePageResult) => {
     if (error) {
       return <div>{error.message}</div>;
     }

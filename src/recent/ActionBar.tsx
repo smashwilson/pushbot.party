@@ -85,7 +85,7 @@ export class ActionBar extends Component<ActionBarProps> {
     if (!this.props.channel) return;
 
     const mutation = graphql`
-      mutation RecentSubmitMutation(
+      mutation ActionBarSubmitMutation(
         $set: String!
         $channel: String!
         $lines: [ID!]!

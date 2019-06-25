@@ -3,7 +3,7 @@ import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 
 import {getEnvironment} from "../common/Transport";
-import {QuotesRandomQuery, QuotesRandomResult} from "./queryTypes";
+import {RandomQuoteQuery, RandomQuoteResult} from "./queryTypes";
 import {Quote} from "./Quote";
 
 interface RandomQuoteState {
@@ -24,7 +24,7 @@ export class RandomQuote extends Component<{}, RandomQuoteState> {
 
   render() {
     const query = graphql`
-      query QuotesRandomQuery {
+      query RandomQuoteQuery {
         documents(set: "quote") {
           random(criteria: {}) {
             found
@@ -35,7 +35,7 @@ export class RandomQuote extends Component<{}, RandomQuoteState> {
     `;
 
     return (
-      <QueryRenderer<QuotesRandomQuery>
+      <QueryRenderer<RandomQuoteQuery>
         environment={this.state.environment}
         query={query}
         variables={{}}
@@ -44,7 +44,7 @@ export class RandomQuote extends Component<{}, RandomQuoteState> {
     );
   }
 
-  renderResult = ({error, props}: QuotesRandomResult) => {
+  renderResult = ({error, props}: RandomQuoteResult) => {
     if (error) {
       return <div>{error.message}</div>;
     }

@@ -1,27 +1,27 @@
 import {
-  QuotesPageQuery,
-  QuotesPageQueryVariables,
-  QuotesPageQueryResponse,
-} from "../__generated__/QuotesPageQuery.graphql";
+  QuotePageQuery,
+  QuotePageQueryVariables,
+  QuotePageQueryResponse,
+} from "../__generated__/QuotePageQuery.graphql";
 
 import {
-  QuotesRandomQuery,
-  QuotesRandomQueryVariables,
-  QuotesRandomQueryResponse,
-} from "../__generated__/QuotesRandomQuery.graphql";
+  RandomQuoteQuery,
+  RandomQuoteQueryVariables,
+  RandomQuoteQueryResponse,
+} from "../__generated__/RandomQuoteQuery.graphql";
 
 import {QueryResult} from "../common/Transport";
 
-export type QuotesPageQuery = QuotesPageQuery;
-export type QuotesPageQueryResponse = QuotesPageQueryResponse;
-export type QuotesPageQueryVariables = QuotesPageQueryVariables;
-export type QuotesPageResult = QueryResult<QuotesPageQuery>;
+export type QuotePageQuery = QuotePageQuery;
+export type QuotePageQueryResponse = QuotePageQueryResponse;
+export type QuotePageQueryVariables = QuotePageQueryVariables;
+export type QuotePageResult = QueryResult<QuotePageQuery>;
 
 export type IQuotes = NonNullable<
-  QuotesPageQueryResponse["documents"]
+  QuotePageQueryResponse["documents"]
 >["all"]["edges"];
 
-export type QuotesRandomQuery = QuotesRandomQuery;
-export type QuotesRandomQueryVariables = QuotesRandomQueryVariables;
-export type QuotesRandomQueryResponse = QuotesRandomQueryResponse;
-export type QuotesRandomResult = QueryResult<QuotesRandomQuery>;
+export type RandomQuoteQuery = RandomQuoteQuery;
+export type RandomQuoteQueryVariables = RandomQuoteQueryVariables;
+export type RandomQuoteQueryResponse = RandomQuoteQueryResponse;
+export type RandomQuoteResult = QueryResult<RandomQuoteQuery>;
