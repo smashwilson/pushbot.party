@@ -13,8 +13,8 @@ interface RandomQuoteState {
 export class RandomQuote extends Component<{}, RandomQuoteState> {
   private lastQuote: string | null;
 
-  constructor() {
-    super({});
+  constructor(props: {}) {
+    super(props);
 
     this.lastQuote = null;
     this.state = {

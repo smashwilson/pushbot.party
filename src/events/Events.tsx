@@ -12,8 +12,8 @@ import "./Events.css";
 export class Events extends Component {
   private environment: Environment;
 
-  constructor() {
-    super({});
+  constructor(props: {}) {
+    super(props);
     this.environment = getEnvironment();
   }
 
