@@ -1,60 +1,13 @@
 import React, {Component} from "react";
 import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
-import {Link} from "react-router-dom";
 
 import {getEnvironment, QueryResult} from "../common/Transport";
+import {User, Person} from "./Person";
 
 import {PeopleQuery} from "../__generated__/PeopleQuery.graphql";
 
 import "./People.css";
-
-interface User {
-  readonly name: string;
-  readonly presence: string;
-  readonly avatar: {image48: string | null};
-  readonly status: {readonly message: string | null};
-}
-
-interface PersonProps {
-  user: User;
-  title: string;
-}
-
-const Person = (props: PersonProps) => {
-  const {name, presence, avatar, status} = props.user;
-  const avatarURL = avatar.image48;
-  const presenceIcon =
-    presence === "ACTIVE"
-      ? "pushbot-status-active fa-dot-circle"
-      : "pushbot-status-inactive fa-circle";
-  const {message} = status;
-
-  return (
-    <div className="pushbot-person row">
-      <div className="col-xs-1 px-2">
-        <img src={avatarURL!} className="rounded" alt="" />
-      </div>
-      <div className="col-xs-11 px-2">
-        <p>
-          <i
-            className={`far pushbot-status mr-2 ${presenceIcon}`}
-            aria-hidden="true"
-          />
-          <Link to={`/people/${name}`} className="pushbot-person-name mr-2">
-            {name}
-          </Link>
-          <span className="pushbot-person-title font-weight-bold">
-            {props.title}
-          </span>
-        </p>
-        <p className="pushbot-person-status-message font-italic font-weight-light">
-          {message}
-        </p>
-      </div>
-    </div>
-  );
-};
 
 export class People extends Component {
   private environment: Environment;
