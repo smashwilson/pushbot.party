@@ -3,21 +3,21 @@ import {createNetworkError} from "./errors";
 
 const COORDINATOR_URL = `${process.env.REACT_APP_AZ_COORDINATOR_URL}`;
 
-interface IContainer {
+export interface IContainer {
   name?: string;
   image_name: string;
   image_tag: string;
 }
 
-interface IEnvMap {
+export interface IEnvMap {
   [varName: string]: string;
 }
 
-interface IPortMap {
+export interface IPortMap {
   [hostPort: string]: number;
 }
 
-interface IVolumeMap {
+export interface IVolumeMap {
   [hostPath: string]: string;
 }
 
