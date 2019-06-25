@@ -27,8 +27,8 @@ export class Recent extends Component<{}, RecentState> {
   private knownChannels: ReadonlyArray<string> | null;
   private history: ReadonlyArray<ILine> | null;
 
-  constructor() {
-    super({});
+  constructor(props: {}) {
+    super(props);
 
     this.knownChannels = null;
     this.history = null;
