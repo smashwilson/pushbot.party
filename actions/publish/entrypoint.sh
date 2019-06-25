@@ -24,6 +24,7 @@ npm run build
 printf "Writing to gh-pages\n"
 
 git branch --track gh-pages refs/remotes/origin/gh-pages
+cat 'pushbot.party' > build/CNAME
 git add -f build/
 TREE=$(git write-tree --prefix=build/)
 COMMIT=$(git commit-tree "${TREE}" -p gh-pages -m "Built from ${GITHUB_SHA:-unknown sha}")
