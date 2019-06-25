@@ -3,12 +3,8 @@ import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import {BrowserRouter as Router} from "react-router-dom";
 
-import {
-  getEnvironment,
-  AUTH_URL,
-  QueryResult,
-  isNetworkError,
-} from "./common/Transport";
+import {getEnvironment, AUTH_URL, QueryResult} from "./common/Transport";
+import {isNetworkError} from "./common/errors";
 import {Authenticated} from "./Authenticated";
 import {Banner} from "./Banner";
 import {Login} from "./Login";
@@ -38,6 +34,7 @@ export class App extends Component {
             roles {
               name
             }
+            coordinatorToken
           }
         }
 
