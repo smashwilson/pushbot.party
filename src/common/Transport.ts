@@ -8,6 +8,8 @@ import {
   Variables,
 } from "relay-runtime";
 
+import {createNetworkError} from "./errors";
+
 const API_URL = `${process.env.REACT_APP_API_BASE_URL}/graphql`;
 export const AUTH_URL = `${process.env.REACT_APP_API_BASE_URL}/auth/${process.env.REACT_APP_API_AUTH_TYPE}`;
 
@@ -15,26 +17,6 @@ export interface QueryResult<T extends OperationType> {
   error: Error | null;
   props: T["response"] | null;
   retry: (() => void) | null;
-}
-
-const NETWORK_ERROR_MARKER = Symbol("is-network-error");
-
-export interface NetworkError extends Error {
-  status: number;
-  text: string;
-  marker: typeof NETWORK_ERROR_MARKER;
-}
-
-export function isNetworkError(err: Error | null): err is NetworkError {
-  return err ? (err as NetworkError).marker === NETWORK_ERROR_MARKER : false;
-}
-
-async function createNetworkError(message: string, response: Response) {
-  const err = new Error(message) as NetworkError;
-  err.status = response.status;
-  err.text = await response.text();
-  err.marker = NETWORK_ERROR_MARKER;
-  return err as NetworkError;
 }
 
 async function fetchQuery(
