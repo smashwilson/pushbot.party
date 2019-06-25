@@ -26,27 +26,27 @@ const Person = (props: PersonProps) => {
   const avatarURL = avatar.image48;
   const presenceIcon =
     presence === "ACTIVE"
-      ? "pushbot-status-active fa-dot-circle-o"
-      : "pushbot-status-inactive fa-circle-o";
+      ? "pushbot-status-active fa-dot-circle"
+      : "pushbot-status-inactive fa-circle";
   const {message} = status;
 
   return (
     <div className="pushbot-person row">
-      <div className="col-xs-1">
-        <img src={avatarURL!} className="img-rounded" alt="" />
+      <div className="col-xs-1 px-2">
+        <img src={avatarURL!} className="rounded" alt="" />
       </div>
-      <div className="col-xs-11">
+      <div className="col-xs-11 px-2">
         <p>
           <i
-            className={`fa pushbot-status ${presenceIcon}`}
+            className={`far pushbot-status mr-2 ${presenceIcon}`}
             aria-hidden="true"
           />
-          <Link to={`/people/${name}`} className="pushbot-person-name">
+          <Link to={`/people/${name}`} className="pushbot-person-name mr-2">
             {name}
           </Link>
-          <span className="pushbot-person-title">{props.title}</span>
+          <span className="pushbot-person-title font-weight-bold">{props.title}</span>
         </p>
-        <p className="pushbot-person-status-message">{message}</p>
+        <p className="pushbot-person-status-message font-italic font-weight-light">{message}</p>
       </div>
     </div>
   );
