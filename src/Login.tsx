@@ -13,7 +13,7 @@ export class Login extends Component<LoginProps> {
 
   render() {
     return (
-      <div className="jumbotron pushbot-login">
+      <div className="jumbotron pushbot-login mt-md-5">
         <h1>Are there stairs in your house?</h1>
         <p>
           <a href={this.props.authUrl} className="pushbot-signin-slack">
