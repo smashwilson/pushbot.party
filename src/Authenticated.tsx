@@ -11,6 +11,7 @@ import {Events} from "./events/Events";
 import {Recent} from "./recent/Recent";
 import {Services} from "./admin/services/Services";
 import {ServiceEditor} from "./admin/services/ServiceEditor";
+import {Sync} from "./admin/sync/Sync";
 import {UserContext, IUser} from "./common/Role";
 import {CoordinatorContext, Coordinator} from "./common/coordinator";
 import {PendingDiff} from "./common/PendingDiff";
@@ -50,6 +51,88 @@ class StubCoordinator extends Coordinator {
   async getSecrets() {
     return ["AZ_COORDINATOR_TOKEN", "TLS_PRIVATE_KEY", "ABC_STUFF"];
   }
+
+  async getDiff() {
+    return {
+      units_to_add: [
+        {
+          id: 1,
+          path: "/etc/systemd/system/az-added-0.service",
+          type: "simple" as "simple",
+          container: {
+            name: "az-added-0",
+            image_name: "quay.io/smashwilson/az-added-0",
+            image_tag: "latest",
+          },
+          secrets: [],
+          env: {},
+          ports: {},
+          volumes: {},
+        },
+        {
+          id: 2,
+          path: "/etc/systemd/system/az-added-1.service",
+          type: "simple" as "simple",
+          container: {
+            name: "az-added-1",
+            image_name: "quay.io/smashwilson/az-added-1",
+            image_tag: "branch",
+          },
+          secrets: [],
+          env: {},
+          ports: {},
+          volumes: {},
+        },
+      ],
+      units_to_change: [
+        {
+          id: 3,
+          path: "/etc/systemd/system/az-changed-1.service",
+          type: "simple" as "simple",
+          container: {
+            name: "az-changed-1",
+            image_name: "quay.io/smashwilson/az-changed-1",
+            image_tag: "latest",
+          },
+          secrets: [],
+          env: {},
+          ports: {},
+          volumes: {},
+        },
+      ],
+      units_to_restart: [
+        {
+          id: 3,
+          path: "/etc/systemd/system/az-restart-0.service",
+          type: "oneshot" as "oneshot",
+          container: {
+            image_name: "quay.io/smashwilson/az-restart-0",
+            image_tag: "latest",
+          },
+          secrets: [],
+          env: {},
+          ports: {},
+          volumes: {},
+        },
+      ],
+      units_to_remove: [
+        {path: "/etc/systemd/system/az-remove-0.service"},
+        {path: "/etc/systemd/system/az-remove-1.service"},
+      ],
+      files_to_write: [
+        "/etc/ssl/az/dhparams.pem",
+        "/etc/ssl/az/backend.azurefire.net/privkey.pem",
+      ],
+    };
+  }
+
+  async getSync() {
+    return {
+      in_progress: false,
+      reports: [],
+      errors: [],
+    };
+  }
 }
 
 const coordinatorForUser = memo(
@@ -85,6 +168,7 @@ export function Authenticated(props: AuthenticatedProps) {
               <Route path="/recent" component={Recent} />
               <Route path="/admin/services" component={Services} exact />
               <Route path="/admin/services/:id" component={ServiceEditor} />
+              <Route path="/admin/sync" component={Sync} />
             </div>
           </div>
         </PendingDiff>
