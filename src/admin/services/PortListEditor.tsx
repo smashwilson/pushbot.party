@@ -31,7 +31,16 @@ export function PortListEditor(props: PortListProps) {
           {hostPorts.map((hostPort, i) => (
             <li key={`hostPort-${i}`} className="list-group-item">
               {hostPort} <i className="fas fa-arrow-right mx-2" />{" "}
-              {props.portMap[hostPort]}
+              {props.portMap[hostPort]}{" "}
+              <button
+                className="btn btn-outline-danger ml-3"
+                onClick={evt => {
+                  evt.preventDefault();
+                  props.onDelete(hostPort);
+                }}
+              >
+                <i className="far fa-trash-alt" />
+              </button>
             </li>
           ))}
         </ul>
