@@ -5,3 +5,11 @@
 .pushbot-serviceDisplay:hover .pushbot-serviceDisplay--controls {
   visibility: visible;
 }
+
+.pushbot-portMapping .pushbot-portMapping--deleteButton {
+  visibility: hidden;
+}
+
+.pushbot-portMapping:hover .pushbot-portMapping--deleteButton {
+  visibility: visible;
+}

@@ -29,11 +29,14 @@ export function PortListEditor(props: PortListProps) {
       <div className="form-row mb-2">
         <ul className="list-group list-group-horizontal">
           {hostPorts.map((hostPort, i) => (
-            <li key={`hostPort-${i}`} className="list-group-item">
+            <li
+              key={`hostPort-${i}`}
+              className="list-group-item pushbot-portMapping"
+            >
               {hostPort} <i className="fas fa-arrow-right mx-2" />{" "}
               {props.portMap[hostPort]}{" "}
               <button
-                className="btn btn-outline-danger ml-3"
+                className="btn btn-outline-danger ml-3 pushbot-portMapping--deleteButton"
                 onClick={evt => {
                   evt.preventDefault();
                   props.onDelete(hostPort);
