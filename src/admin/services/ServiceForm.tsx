@@ -1,40 +1,227 @@
-import React, {useState} from "react";
+import React, {useState, useMemo} from "react";
 import {Link} from "react-router-dom";
+import cx from "classnames";
 
 import {IDesiredUnit} from "../../common/coordinator";
+import {serviceTypes, getServiceType} from "./serviceTypes";
+import {EnvVarListEditor} from "./EnvVarListEditor";
+import {SecretListEditor} from "./SecretListEditor";
+
+interface CreatedSecret {
+  name: string;
+  value: string;
+}
 
 interface ServiceFormProps {
   mode: "create" | "update";
   original: IDesiredUnit;
+  knownSecrets: string[];
 }
 
-export function ServiceForm({mode, original}: ServiceFormProps) {
-  const [currentPath, setCurrentPath] = useState(original.path);
+export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
+  const [currentPath, setPath] = useState(original.path);
+  const [currentType, setType] = useState(getServiceType(original.type));
+  const [currentContainerName, setContainerName] = useState(
+    original.container ? original.container.name : ""
+  );
+  const [currentContainerImageName, setContainerImageName] = useState(
+    original.container
+      ? original.container.image_name
+      : "quay.io/smashwilson/az-"
+  );
+  const [currentContainerImageTag, setContainerImageTag] = useState(
+    original.container ? original.container.image_tag : "latest"
+  );
+  const [currentEnvVars, setEnvVars] = useState(original.env);
+  const [currentSecrets, setSecrets] = useState(original.secrets);
+  const [createdSecrets, setCreatedSecrets] = useState<CreatedSecret[]>([]);
+
+  function deleteSecret(name: string) {
+    setSecrets(currentSecrets.filter(each => each !== name));
+  }
+
+  function addSecret(name: string) {
+    setSecrets([...currentSecrets, name]);
+  }
+
+  function createSecret(name: string, value: string) {
+    setSecrets([...currentSecrets, name]);
+    setCreatedSecrets([...createdSecrets, {name, value}]);
+  }
+
+  const availableSecrets = useMemo(() => {
+    const used = new Set(currentSecrets);
+    return knownSecrets.filter(each => !used.has(each));
+  }, [knownSecrets, currentSecrets]);
 
   return (
     <form className="border rounded p-3">
+      {/* path */}
       <div className="form-row">
         <label htmlFor="serviceEditor--path" className="col-sm-2">
           Path:
         </label>
-        <div className="col-sm-10">
+        <div className={cx("col-sm-10", {disabled: mode === "update"})}>
           <input
             id="serviceEditor--path"
-            className="form-control"
+            className="form-control text-monospace"
             type="text"
             value={currentPath}
-            onChange={evt => setCurrentPath(evt.target.value)}
+            onChange={evt => setPath(evt.target.value)}
             readOnly={mode === "update"}
           />
         </div>
       </div>
+
+      {/* type */}
+      <div className="form-row">
+        <label htmlFor="serviceEditor--type" className="col-sm-2">
+          Type:
+        </label>
+        <div className="col-sm-2">
+          <select
+            className="form-control"
+            id="serviceEditor--type"
+            onChange={evt => setType(getServiceType(evt.target.value))}
+          >
+            {serviceTypes.map(tp => (
+              <option selected={tp === currentType} value={tp.name}>
+                {tp.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* invalid type detection */}
+      {currentType.ifInvalid(() => (
+        <div className="form-row my-2">
+          <div className="alert alert-danger px-3 col">
+            <p>
+              Invalid service type:{" "}
+              <span className="font-weight-bold">{currentType.name}</span>.
+            </p>
+            <p>Please choose another.</p>
+          </div>
+        </div>
+      ))}
+
+      <hr />
+
+      {currentType.ifAnyContainer(() => (
+        <div className="form-row mt-4 mb-2">
+          <div className="col">
+            <h6 className="text-secondary">Container details</h6>
+          </div>
+        </div>
+      ))}
+
+      {/* container name */}
+      {currentType.ifContainerName(() => (
+        <div className="form-row">
+          <label htmlFor="serviceEditor--containerName" className="col-sm-2">
+            Name:
+          </label>
+          <div className="col-sm-10">
+            <input
+              id="serviceEditor--containerName"
+              className="form-control"
+              type="text"
+              value={currentContainerName}
+              onChange={evt => setContainerName(evt.target.value)}
+            />
+          </div>
+        </div>
+      ))}
+
+      {/* container image name and tag */}
+      {currentType.ifContainerConfig(() => (
+        <div className="form-row">
+          <label
+            htmlFor="serviceEditor--containerImageName"
+            className="col-sm-2"
+          >
+            Image:
+          </label>
+          <div className="col-sm-4">
+            <input
+              id="serviceEditor--containerImageName"
+              className="form-control"
+              type="text"
+              value={currentContainerImageName}
+              onChange={evt => setContainerImageName(evt.target.value)}
+              placeholder="quay.io/smashwilson/az-"
+            />
+          </div>
+          <div className="col-sm-3">
+            <input
+              id="serviceEditor--containerImageTag"
+              className="form-control"
+              type="text"
+              value={currentContainerImageTag}
+              onChange={evt => setContainerImageTag(evt.target.value)}
+              placeholder="latest"
+            />
+          </div>
+        </div>
+      ))}
+
+      {/* environment variables and secrets */}
+      {currentType.ifEnvAndSecrets(() => (
+        <>
+          <div className="form-row mt-4 mb-2">
+            <div className="col">
+              <h6 className="text-secondary">Environment variables</h6>
+            </div>
+          </div>
+          <EnvVarListEditor
+            envVars={currentEnvVars}
+            onChange={(name, value) => {
+              const nextVars = {
+                ...currentEnvVars,
+                [name]: value,
+              };
+              setEnvVars(nextVars);
+            }}
+            onDelete={name => {
+              const nextVars = {...currentEnvVars};
+              delete nextVars[name];
+              setEnvVars(nextVars);
+            }}
+          />
+          <div className="form-row mt-4 mb-2">
+            <div className="col">
+              <h6 className="text-secondary">Secrets</h6>
+            </div>
+          </div>
+          <SecretListEditor
+            availableSecrets={availableSecrets}
+            secrets={currentSecrets}
+            onDelete={deleteSecret}
+            onAdd={addSecret}
+            onCreate={createSecret}
+          />
+        </>
+      ))}
+
+      {/* volumes */}
+
+      {/* port mappings */}
+
+      {/* schedule */}
+
+      <hr />
+
+      {/* controls */}
       <div className="form-row d-flex align-items-baseline justify-content-end m-3">
-        <Link to="/admin/services" className="btn btn-secondary">
-          Cancel
-        </Link>
-        <button type="submit" className="btn btn-primary">
-          {mode === "create" ? "Create" : "Update"}
-        </button>
+        <div className="btn-group">
+          <Link to="/admin/services" className="btn btn-secondary">
+            Cancel
+          </Link>
+          <button type="submit" className="btn btn-primary">
+            {mode === "create" ? "Create" : "Update"}
+          </button>
+        </div>
       </div>
     </form>
   );

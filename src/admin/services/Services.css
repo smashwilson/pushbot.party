@@ -1,0 +1,7 @@
+.pushbot-serviceDisplay .pushbot-serviceDisplay--controls {
+  visibility: hidden;
+}
+
+.pushbot-serviceDisplay:hover .pushbot-serviceDisplay--controls {
+  visibility: visible;
+}

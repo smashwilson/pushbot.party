@@ -5,6 +5,8 @@ import {CoordinatorContainer} from "../../common/CoordinatorContainer";
 import {Loading} from "../../common/Loading";
 import {ServiceDisplay} from "./ServiceDisplay";
 
+import "./Services.css";
+
 const nullDesiredState: IDesiredState = {units: []};
 
 export function Services() {
