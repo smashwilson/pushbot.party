@@ -21,7 +21,7 @@ export function VolumeListEditor(props: VolumeListProps) {
     if (expanded && hostPathRef.current) {
       hostPathRef.current.focus();
     }
-  });
+  }, [expanded]);
 
   const hostPaths = Object.keys(props.volumeMap);
   const existingVolumes = hostPaths.map((hostPath, i) => (
