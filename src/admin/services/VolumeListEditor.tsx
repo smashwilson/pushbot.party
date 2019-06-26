@@ -13,7 +13,15 @@ export function VolumeListEditor(props: VolumeListProps) {
   const [hostPath, setHostPath] = useState("/etc/ssl/az/");
   const [containerPath, setContainerPath] = useState("");
 
+  const hostPathRef = useRef<HTMLInputElement>(null);
+
   const canCreate = hostPath.length > 0 && containerPath.length > 0;
+
+  useEffect(() => {
+    if (expanded && hostPathRef.current) {
+      hostPathRef.current.focus();
+    }
+  });
 
   const hostPaths = Object.keys(props.volumeMap);
   const existingVolumes = hostPaths.map((hostPath, i) => (
@@ -46,6 +54,7 @@ export function VolumeListEditor(props: VolumeListProps) {
           <span className="input-group-text">host</span>
         </div>
         <input
+          ref={hostPathRef}
           type="text"
           value={hostPath}
           onChange={evt => setHostPath(evt.target.value)}
