@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export REACT_APP_API_BASE_URL=http://localhost:8080
+export REACT_APP_API_AUTH_TYPE=slack
+
+exec npm start
