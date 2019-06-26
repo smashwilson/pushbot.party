@@ -28,6 +28,7 @@ interface IDesiredUnitCommon {
   env: IEnvMap;
   ports: IPortMap;
   volumes: IVolumeMap;
+  schedule?: string;
 }
 
 export interface IDesiredUnit extends IDesiredUnitCommon {
