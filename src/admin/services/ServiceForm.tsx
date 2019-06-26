@@ -6,6 +6,7 @@ import {IDesiredUnit} from "../../common/coordinator";
 import {serviceTypes, getServiceType} from "./serviceTypes";
 import {EnvVarListEditor} from "./EnvVarListEditor";
 import {SecretListEditor} from "./SecretListEditor";
+import {VolumeListEditor} from "./VolumeListEditor";
 
 interface CreatedSecret {
   name: string;
@@ -34,6 +35,8 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   );
   const [currentEnvVars, setEnvVars] = useState(original.env);
   const [currentSecrets, setSecrets] = useState(original.secrets);
+  const [currentVolumes, setVolumes] = useState(original.volumes);
+
   const [createdSecrets, setCreatedSecrets] = useState<CreatedSecret[]>([]);
 
   function deleteSecret(name: string) {
@@ -47,6 +50,19 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   function createSecret(name: string, value: string) {
     setSecrets([...currentSecrets, name]);
     setCreatedSecrets([...createdSecrets, {name, value}]);
+  }
+
+  function deleteVolume(hostPath: string) {
+    const nextVolumes = {...currentVolumes};
+    delete nextVolumes[hostPath];
+    setVolumes(nextVolumes);
+  }
+
+  function createVolume(hostPath: string, containerPath: string) {
+    setVolumes({
+      ...currentVolumes,
+      [hostPath]: containerPath,
+    });
   }
 
   const availableSecrets = useMemo(() => {
@@ -205,6 +221,20 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
       ))}
 
       {/* volumes */}
+      {currentType.ifVolumes(() => (
+        <>
+          <div className="form-row mt-4 mb-2">
+            <div className="col">
+              <h6 className="text-secondary">Volumes</h6>
+            </div>
+          </div>
+          <VolumeListEditor
+            volumeMap={currentVolumes}
+            onCreate={createVolume}
+            onDelete={deleteVolume}
+          />
+        </>
+      ))}
 
       {/* port mappings */}
 
