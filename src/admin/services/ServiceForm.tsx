@@ -1,18 +1,19 @@
-import React, {useState, useMemo} from "react";
-import {Link} from "react-router-dom";
+import React, {useState, useMemo, useContext} from "react";
+import {Link, Redirect} from "react-router-dom";
 import cx from "classnames";
 
-import {IDesiredUnit} from "../../common/coordinator";
+import {
+  IDesiredUnit,
+  IDesiredUnitCreate,
+  IDesiredUnitUpdate,
+  ISecretsCreate,
+  CoordinatorContext,
+} from "../../common/coordinator";
 import {serviceTypes, getServiceType} from "./serviceTypes";
 import {EnvVarListEditor} from "./EnvVarListEditor";
 import {SecretListEditor} from "./SecretListEditor";
 import {VolumeListEditor} from "./VolumeListEditor";
 import {PortListEditor} from "./PortListEditor";
-
-interface CreatedSecret {
-  name: string;
-  value: string;
-}
 
 interface ServiceFormProps {
   mode: "create" | "update";
@@ -21,10 +22,12 @@ interface ServiceFormProps {
 }
 
 export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
+  const [nextRoute, setNextRoute] = useState<string | null>(null);
+
   const [currentPath, setPath] = useState(original.path);
   const [currentType, setType] = useState(getServiceType(original.type));
-  const [currentContainerName, setContainerName] = useState(
-    original.container ? original.container.name : ""
+  const [currentContainerName, setContainerName] = useState<string>(
+    original.container ? original.container.name || "" : ""
   );
   const [currentContainerImageName, setContainerImageName] = useState(
     original.container
@@ -40,7 +43,7 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   const [currentPorts, setPorts] = useState(original.ports);
   const [currentSchedule, setSchedule] = useState(original.schedule);
 
-  const [createdSecrets, setCreatedSecrets] = useState<CreatedSecret[]>([]);
+  const [createdSecrets, setCreatedSecrets] = useState<ISecretsCreate>({});
 
   function deleteSecret(name: string) {
     setSecrets(currentSecrets.filter(each => each !== name));
@@ -52,7 +55,7 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
 
   function createSecret(name: string, value: string) {
     setSecrets([...currentSecrets, name]);
-    setCreatedSecrets([...createdSecrets, {name, value}]);
+    setCreatedSecrets({...createdSecrets, [name]: value});
   }
 
   function deleteVolume(hostPath: string) {
@@ -85,6 +88,49 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
     const used = new Set(currentSecrets);
     return knownSecrets.filter(each => !used.has(each));
   }, [knownSecrets, currentSecrets]);
+
+  const coordinator = useContext(CoordinatorContext);
+
+  if (nextRoute) {
+    return <Redirect to={nextRoute} />;
+  }
+
+  async function apply(evt: React.MouseEvent<HTMLButtonElement>) {
+    evt.preventDefault();
+    const common = {
+      type: currentType.name as any,
+      container:
+        currentType.ifAnyContainer(() => ({
+          name: currentType.ifContainerName(() => currentContainerName) || "",
+          image_name: currentContainerImageName,
+          image_tag: currentContainerImageTag,
+        })) || undefined,
+      secrets: currentType.ifEnvAndSecrets(() => currentSecrets) || [],
+      env: currentType.ifEnvAndSecrets(() => currentEnvVars) || {},
+      ports: currentType.ifPorts(() => currentPorts) || {},
+      volumes: currentType.ifVolumes(() => currentVolumes) || {},
+      schedule: currentType.ifSchedule(() => currentSchedule) || "",
+    };
+
+    if (Object.keys(createdSecrets).length > 0) {
+      await coordinator.createSecrets(createdSecrets);
+    }
+
+    if (mode === "create") {
+      const payload: IDesiredUnitCreate = {
+        path: currentPath,
+        ...common,
+      };
+      const created = await coordinator.createDesiredUnit(payload);
+      setNextRoute(
+        `/admin/services/${encodeURIComponent(created.id.toString())}`
+      );
+    } else {
+      const payload: IDesiredUnitUpdate = common;
+      await coordinator.updateDesiredUnit(original.id, payload);
+      setNextRoute("/admin/services");
+    }
+  }
 
   return (
     <form className="border rounded p-3">
@@ -303,7 +349,7 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
           <Link to="/admin/services" className="btn btn-secondary">
             Cancel
           </Link>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" onClick={apply}>
             {mode === "create" ? "Create" : "Update"}
           </button>
         </div>
