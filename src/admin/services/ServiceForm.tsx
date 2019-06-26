@@ -38,6 +38,7 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   const [currentSecrets, setSecrets] = useState(original.secrets);
   const [currentVolumes, setVolumes] = useState(original.volumes);
   const [currentPorts, setPorts] = useState(original.ports);
+  const [currentSchedule, setSchedule] = useState(original.schedule);
 
   const [createdSecrets, setCreatedSecrets] = useState<CreatedSecret[]>([]);
 
@@ -268,6 +269,31 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
       ))}
 
       {/* schedule */}
+      {currentType.ifSchedule(() => (
+        <div className="form-row">
+          <label htmlFor="serviceEditor--schedule" className="col-sm-2">
+            Schedule:
+          </label>
+          <div className="col-sm-8">
+            <input
+              id="serviceEditor--schedule"
+              className="form-control"
+              type="text"
+              value={currentSchedule}
+              onChange={evt => setSchedule(evt.target.value)}
+            />
+          </div>
+          <div className="col-sm-2">
+            <a
+              target="_new"
+              href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#"
+            >
+              <i className="fas fa-book mr-2" />
+              reference
+            </a>
+          </div>
+        </div>
+      ))}
 
       <hr />
 
