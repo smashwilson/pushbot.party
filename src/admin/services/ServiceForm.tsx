@@ -7,6 +7,7 @@ import {serviceTypes, getServiceType} from "./serviceTypes";
 import {EnvVarListEditor} from "./EnvVarListEditor";
 import {SecretListEditor} from "./SecretListEditor";
 import {VolumeListEditor} from "./VolumeListEditor";
+import {PortListEditor} from "./PortListEditor";
 
 interface CreatedSecret {
   name: string;
@@ -36,6 +37,7 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   const [currentEnvVars, setEnvVars] = useState(original.env);
   const [currentSecrets, setSecrets] = useState(original.secrets);
   const [currentVolumes, setVolumes] = useState(original.volumes);
+  const [currentPorts, setPorts] = useState(original.ports);
 
   const [createdSecrets, setCreatedSecrets] = useState<CreatedSecret[]>([]);
 
@@ -62,6 +64,19 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
     setVolumes({
       ...currentVolumes,
       [hostPath]: containerPath,
+    });
+  }
+
+  function deletePort(hostPort: string) {
+    const nextPorts = {...currentPorts};
+    delete nextPorts[hostPort];
+    setPorts(nextPorts);
+  }
+
+  function createPort(hostPort: string, containerPort: number) {
+    setPorts({
+      ...currentPorts,
+      [hostPort]: containerPort,
     });
   }
 
@@ -237,6 +252,20 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
       ))}
 
       {/* port mappings */}
+      {currentType.ifPorts(() => (
+        <>
+          <div className="form-row mt-4 mb-2">
+            <div className="col">
+              <h6 className="text-secondary">Port mappings</h6>
+            </div>
+          </div>
+          <PortListEditor
+            portMap={currentPorts}
+            onCreate={createPort}
+            onDelete={deletePort}
+          />
+        </>
+      ))}
 
       {/* schedule */}
 
