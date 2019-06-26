@@ -42,6 +42,7 @@ export function NewSecretEditor(props: AddSecretProps) {
   const [currentName, setName] = useState("");
   const [currentValue, setValue] = useState("");
 
+  const canAdd = currentName.length > 0;
   const canCreate = currentName.length > 0 && currentValue.length > 0;
   const nameFieldRef = useRef<HTMLInputElement>(null);
 
@@ -80,7 +81,9 @@ export function NewSecretEditor(props: AddSecretProps) {
             className="form-control text-success"
             value={currentName}
             onChange={evt => setName(evt.target.value)}
+            required={true}
           >
+            <option value="">Choose an existing secret</option>
             {props.availableSecrets.map(secretName => (
               <option key={`secret-${secretName}`} value={secretName}>
                 {secretName}
@@ -92,12 +95,10 @@ export function NewSecretEditor(props: AddSecretProps) {
           <div className="btn-group">
             <button
               className="btn btn-outline-success"
+              disabled={!canAdd}
               onClick={evt => {
                 evt.preventDefault();
-                props.onCreateNew(
-                  currentName.toLocaleUpperCase(),
-                  currentValue
-                );
+                props.onAddExisting(currentName.toLocaleUpperCase());
                 setName("");
                 setValue("");
                 setDisplayMode("collapsed");
