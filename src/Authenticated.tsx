@@ -46,6 +46,10 @@ class StubCoordinator extends Coordinator {
       ],
     };
   }
+
+  async getSecrets() {
+    return ["AZ_COORDINATOR_TOKEN", "TLS_PRIVATE_KEY", "ABC_STUFF"];
+  }
 }
 
 const coordinatorForUser = memo(
