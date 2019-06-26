@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 import {IDesiredState} from "../../common/coordinator";
 import {CoordinatorContainer} from "../../common/CoordinatorContainer";
@@ -12,7 +13,7 @@ const nullDesiredState: IDesiredState = {units: []};
 export function Services() {
   return (
     <>
-      <h3>Services</h3>
+      <h3>services</h3>
       <CoordinatorContainer<IDesiredState>
         getter={c => c.getDesiredState()}
         nullValue={nullDesiredState}
@@ -27,6 +28,11 @@ export function Services() {
               {state.units.map(unit => (
                 <ServiceDisplay unit={unit} key={unit.id} />
               ))}
+              <div className="my-3">
+                <Link className="btn btn-primary" to="/admin/services/create">
+                  Create
+                </Link>
+              </div>
             </>
           );
         }}
