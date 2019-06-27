@@ -19,7 +19,7 @@ function plural(count: number, noun: string) {
 function ports(p: IPortMap) {
   const keys = Object.keys(p);
   if (keys.length === 0) {
-    return <span className="font-italic">No ports mapped</span>;
+    return null;
   }
 
   const mappings: string[] = [];
