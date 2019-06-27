@@ -10,6 +10,10 @@ const nullDesiredState: IDesiredState = {units: []};
 const initialValues: IDesiredUnit = {
   id: 0,
   path: "/etc/systemd/system/",
+  container: {
+    image_name: "quay.io/smashwilson/az-",
+    image_tag: "latest",
+  },
   type: "simple",
   secrets: [],
   env: {},
