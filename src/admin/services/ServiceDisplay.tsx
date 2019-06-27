@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 
 import {IDesiredUnit, IPortMap} from "../../common/coordinator";
+import {ServicePath} from "./ServicePath";
 
 interface ServiceDisplayProps {
   unit: IDesiredUnit;
@@ -43,7 +44,7 @@ export function ServiceDisplay(props: ServiceDisplayProps) {
           edit
         </Link>
       </div>
-      <p className="text-monospace font-weight-bold">{unit.path}</p>
+      <ServicePath path={unit.path} />
       <p>
         type <span className="font-weight-bold">{unit.type}</span>
         {" | "}
