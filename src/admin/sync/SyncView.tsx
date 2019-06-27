@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import cx from "classnames";
 
-import {ISync} from "../../common/coordinator";
+import {CoordinatorContext, ISync} from "../../common/coordinator";
 import {PendingDiffContext} from "../../common/PendingDiff";
 import {DeltaView, pastTense, futureTense} from "./DeltaView";
 import {SyncReportView, PlaceholderSyncReportView} from "./SyncReportView";
@@ -11,6 +11,7 @@ interface SyncViewProps {
 }
 
 export function SyncView(props: SyncViewProps) {
+  const coordinator = useContext(CoordinatorContext);
   const delta = useContext(PendingDiffContext);
   const lastDelta = props.lastSync.delta;
   const lastReport = props.lastSync.reports[props.lastSync.reports.length - 1];
@@ -27,6 +28,10 @@ export function SyncView(props: SyncViewProps) {
         <button
           className="btn btn-primary"
           disabled={props.lastSync.in_progress}
+          onClick={evt => {
+            evt.preventDefault();
+            coordinator.createSync();
+          }}
         >
           <i
             className={cx("fas fa-sync-alt mr-2", {
