@@ -3,7 +3,7 @@ import React from "react";
 import {ISync} from "../../common/coordinator";
 import {CoordinatorContainer} from "../../common/CoordinatorContainer";
 import {Loading} from "../../common/Loading";
-import {NextDelta} from "./NextDelta";
+import {SyncView} from "./SyncView";
 
 const nullSync: ISync = {
   in_progress: false,
@@ -22,9 +22,9 @@ export function Sync() {
         {(lastSync, isLoading) => {
           if (isLoading) {
             return <Loading />;
+          } else {
+            return <SyncView lastSync={lastSync} />;
           }
-
-          return <NextDelta />;
         }}
       </CoordinatorContainer>
     </>
