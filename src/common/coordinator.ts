@@ -28,7 +28,7 @@ interface IDesiredUnitCommon {
   ports: IPortMap;
   volumes: IVolumeMap;
   container?: IContainer;
-  schedule?: string;
+  calendar?: string;
 }
 
 export interface IDesiredUnit extends IDesiredUnitCommon {

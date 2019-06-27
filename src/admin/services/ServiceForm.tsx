@@ -52,7 +52,7 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   const [currentSecrets, setSecrets] = useState(original.secrets);
   const [currentVolumes, setVolumes] = useState(original.volumes);
   const [currentPorts, setPorts] = useState(original.ports);
-  const [currentSchedule, setSchedule] = useState(original.schedule);
+  const [currentCalendar, setCalendar] = useState(original.calendar);
 
   const [createdSecrets, setCreatedSecrets] = useState<ISecretsCreate>({});
 
@@ -114,7 +114,6 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
       env: currentType.ifEnvAndSecrets(() => currentEnvVars) || {},
       ports: currentType.ifPorts(() => currentPorts) || {},
       volumes: currentType.ifVolumes(() => currentVolumes) || {},
-      schedule: currentType.ifSchedule(() => currentSchedule) || "",
     };
 
     currentType.ifAnyContainer(() => {
@@ -123,6 +122,10 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
         image_name: currentContainerImageName,
         image_tag: currentContainerImageTag,
       };
+    });
+
+    currentType.ifSchedule(() => {
+      common.calendar = currentCalendar;
     });
 
     if (Object.keys(createdSecrets).length > 0) {
@@ -338,8 +341,8 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
               id="serviceEditor--schedule"
               className="form-control"
               type="text"
-              value={currentSchedule}
-              onChange={evt => setSchedule(evt.target.value)}
+              value={currentCalendar}
+              onChange={evt => setCalendar(evt.target.value)}
             />
           </div>
           <div className="col-sm-2">
