@@ -6,6 +6,7 @@ import {
   IDesiredUnit,
   IDesiredUnitCreate,
   IDesiredUnitUpdate,
+  IContainer,
   ISecretsCreate,
   CoordinatorContext,
 } from "../../common/coordinator";
@@ -14,6 +15,18 @@ import {EnvVarListEditor} from "./EnvVarListEditor";
 import {SecretListEditor} from "./SecretListEditor";
 import {VolumeListEditor} from "./VolumeListEditor";
 import {PortListEditor} from "./PortListEditor";
+
+function withContainer<D>(
+  unit: IDesiredUnit,
+  present: (container: IContainer) => D,
+  absent: () => D
+): D {
+  if (!unit.container) {
+    return absent();
+  }
+
+  return present(unit.container);
+}
 
 interface ServiceFormProps {
   mode: "create" | "update";
@@ -26,16 +39,14 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
 
   const [currentPath, setPath] = useState(original.path);
   const [currentType, setType] = useState(getServiceType(original.type));
-  const [currentContainerName, setContainerName] = useState<string>(
-    original.container ? original.container.name || "" : ""
+  const [currentContainerName, setContainerName] = useState(
+    withContainer(original, c => c.name || "", () => "")
   );
   const [currentContainerImageName, setContainerImageName] = useState(
-    original.container
-      ? original.container.image_name
-      : "quay.io/smashwilson/az-"
+    withContainer(original, c => c.image_name, () => "quay.io/smashwilson/az-")
   );
   const [currentContainerImageTag, setContainerImageTag] = useState(
-    original.container ? original.container.image_tag : "latest"
+    withContainer(original, c => c.image_tag, () => "latest")
   );
   const [currentEnvVars, setEnvVars] = useState(original.env);
   const [currentSecrets, setSecrets] = useState(original.secrets);
@@ -97,20 +108,22 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
 
   async function apply(evt: React.MouseEvent<HTMLButtonElement>) {
     evt.preventDefault();
-    const common = {
-      type: currentType.name as any,
-      container:
-        currentType.ifAnyContainer(() => ({
-          name: currentType.ifContainerName(() => currentContainerName) || "",
-          image_name: currentContainerImageName,
-          image_tag: currentContainerImageTag,
-        })) || undefined,
+    const common: IDesiredUnitCreate | IDesiredUnitUpdate = {
+      type: currentType.name as "simple" | "oneshot" | "timer" | "self",
       secrets: currentType.ifEnvAndSecrets(() => currentSecrets) || [],
       env: currentType.ifEnvAndSecrets(() => currentEnvVars) || {},
       ports: currentType.ifPorts(() => currentPorts) || {},
       volumes: currentType.ifVolumes(() => currentVolumes) || {},
       schedule: currentType.ifSchedule(() => currentSchedule) || "",
     };
+
+    currentType.ifAnyContainer(() => {
+      common.container = {
+        name: currentType.ifContainerName(() => currentContainerName) || "",
+        image_name: currentContainerImageName,
+        image_tag: currentContainerImageTag,
+      };
+    });
 
     if (Object.keys(createdSecrets).length > 0) {
       await coordinator.createSecrets(createdSecrets);
