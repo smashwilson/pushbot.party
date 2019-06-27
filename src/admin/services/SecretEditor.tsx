@@ -10,7 +10,7 @@ interface ExistingSecretProps {
 export function ExistingSecretEditor(props: ExistingSecretProps) {
   return (
     <div className="form-row">
-      <div className="col-sm-2">
+      <div className="col-sm-3">
         <label className="text-monospace text-success">
           <i className="fas fa-lock d-inline mr-2" />
           {props.name}
@@ -18,7 +18,7 @@ export function ExistingSecretEditor(props: ExistingSecretProps) {
       </div>
       <div className="col-sm-8" />
       <div
-        className="col-sm-2 d-flex justify-content-end"
+        className="col-sm-1 d-flex justify-content-end"
         onClick={props.onDelete}
       >
         <button className="btn btn-outline-danger">
@@ -55,7 +55,7 @@ export function NewSecretEditor(props: AddSecretProps) {
   if (displayMode === "collapsed") {
     return (
       <div className="form-row">
-        <div className="col-sm-2">
+        <div className="col-sm-3">
           <button
             className="btn btn-outline-info"
             onClick={evt => {

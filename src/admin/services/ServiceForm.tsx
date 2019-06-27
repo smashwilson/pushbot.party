@@ -136,10 +136,10 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
     <form className="border rounded p-3">
       {/* path */}
       <div className="form-row">
-        <label htmlFor="serviceEditor--path" className="col-sm-2">
+        <label htmlFor="serviceEditor--path" className="col-sm-3">
           Path:
         </label>
-        <div className={cx("col-sm-10", {disabled: mode === "update"})}>
+        <div className={cx("col-sm-9", {disabled: mode === "update"})}>
           <input
             id="serviceEditor--path"
             className="form-control text-monospace"
@@ -153,7 +153,7 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
 
       {/* type */}
       <div className="form-row">
-        <label htmlFor="serviceEditor--type" className="col-sm-2">
+        <label htmlFor="serviceEditor--type" className="col-sm-3">
           Type:
         </label>
         <div className="col-sm-2">
@@ -197,10 +197,10 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
       {/* container name */}
       {currentType.ifContainerName(() => (
         <div className="form-row">
-          <label htmlFor="serviceEditor--containerName" className="col-sm-2">
+          <label htmlFor="serviceEditor--containerName" className="col-sm-3">
             Name:
           </label>
-          <div className="col-sm-10">
+          <div className="col-sm-9">
             <input
               id="serviceEditor--containerName"
               className="form-control"
@@ -217,11 +217,11 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
         <div className="form-row">
           <label
             htmlFor="serviceEditor--containerImageName"
-            className="col-sm-2"
+            className="col-sm-3"
           >
             Image:
           </label>
-          <div className="col-sm-4">
+          <div className="col-sm-5">
             <input
               id="serviceEditor--containerImageName"
               className="form-control"
@@ -317,10 +317,10 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
       {/* schedule */}
       {currentType.ifSchedule(() => (
         <div className="form-row">
-          <label htmlFor="serviceEditor--schedule" className="col-sm-2">
+          <label htmlFor="serviceEditor--schedule" className="col-sm-3">
             Schedule:
           </label>
-          <div className="col-sm-8">
+          <div className="col-sm-7">
             <input
               id="serviceEditor--schedule"
               className="form-control"

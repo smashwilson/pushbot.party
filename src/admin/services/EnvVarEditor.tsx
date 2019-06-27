@@ -18,7 +18,7 @@ function EnvVarEditor(props: EnvVarEditorProps) {
 
   return (
     <div className="form-row">
-      <div className="col-sm-2">{props.renderName(uniqueID)}</div>
+      <div className="col-sm-3">{props.renderName(uniqueID)}</div>
       <div className="col-sm-8">
         <ToggleableInput
           controlID={uniqueID}
@@ -27,7 +27,7 @@ function EnvVarEditor(props: EnvVarEditorProps) {
           onChange={props.onChangeValue}
         />
       </div>
-      <div className="col-sm-2 d-flex justify-content-end">
+      <div className="col-sm-1 d-flex justify-content-end">
         {props.renderControls()}
       </div>
     </div>
@@ -81,7 +81,7 @@ export function NewEnvVarEditor(props: NewEnvVarProps) {
   if (!expanded) {
     return (
       <div className="form-row">
-        <div className="col-sm-2">
+        <div className="col-sm-3">
           <button
             className="btn btn-outline-info"
             onClick={evt => {
