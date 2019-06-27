@@ -31,10 +31,12 @@ export function SyncReportView(props: SyncReportViewProps) {
       <li className="list-group-item row" key={index}>
         <div className="container">
           <div className="row">
-            <div className="col-1 border-right">
+            <div className="col-1 px-2 border-right d-flex justify-content-center pushbot-syncReport--timestamp">
               <abbr title={absolute}>{relative}</abbr>
             </div>
-            <div className="col-1 border-right">{reportDuration(duration)}</div>
+            <div className="col-1 px-2 border-right d-flex justify-content-center pushbot-syncReport--duration">
+              {reportDuration(duration)}
+            </div>
             <div className="col-10 text-dark">{report.message}</div>
           </div>
         </div>
@@ -42,7 +44,7 @@ export function SyncReportView(props: SyncReportViewProps) {
     );
   });
 
-  return <ul className="list-group">{reportRows}</ul>;
+  return <ul className="list-group pushbot-syncReport">{reportRows}</ul>;
 }
 
 interface PlaceholderSyncReportView {

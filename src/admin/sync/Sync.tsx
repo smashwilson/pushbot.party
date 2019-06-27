@@ -5,6 +5,8 @@ import {CoordinatorContainer} from "../../common/CoordinatorContainer";
 import {Loading} from "../../common/Loading";
 import {SyncView} from "./SyncView";
 
+import "./Sync.css";
+
 const nullSync: ISync = {
   in_progress: false,
   reports: [],
