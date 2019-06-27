@@ -23,11 +23,11 @@ export interface IVolumeMap {
 
 interface IDesiredUnitCommon {
   type: "simple" | "oneshot" | "timer" | "self";
-  container?: IContainer;
   secrets: string[];
   env: IEnvMap;
   ports: IPortMap;
   volumes: IVolumeMap;
+  container?: IContainer;
   schedule?: string;
 }
 
@@ -87,18 +87,18 @@ export class Coordinator {
   constructor(private readonly token: string) {}
 
   async getDesiredState(): Promise<IDesiredState> {
-    return this.request<IDesiredState>("GET", "/desired");
+    return this.requestJSON<IDesiredState>("GET", "/desired");
   }
 
   async createDesiredUnit(unit: IDesiredUnitCreate): Promise<IDesiredUnit> {
-    return this.request<IDesiredUnit>("POST", "/desired", unit);
+    return this.requestJSON<IDesiredUnit>("POST", "/desired", unit);
   }
 
   async updateDesiredUnit(
     id: number,
     unit: IDesiredUnitUpdate
   ): Promise<IDesiredUnit> {
-    return this.request<IDesiredUnit>(
+    return this.requestJSON<IDesiredUnit>(
       "PUT",
       `/desired/${encodeURIComponent(id.toString())}`,
       unit
@@ -106,50 +106,50 @@ export class Coordinator {
   }
 
   async deleteDesiredUnit(id: number): Promise<void> {
-    return this.request<void>(
+    await this.request(
       "DELETE",
       `/desired/${encodeURIComponent(id.toString())}`
     );
   }
 
   async getActualUnits(): Promise<IActualState> {
-    return this.request<IActualState>("GET", "/actual");
+    return this.requestJSON<IActualState>("GET", "/actual");
   }
 
   async getSecrets(): Promise<ISecrets> {
-    return this.request<ISecrets>("GET", "/secrets");
+    return this.requestJSON<ISecrets>("GET", "/secrets");
   }
 
   async createSecrets(secrets: ISecretsCreate): Promise<void> {
-    return this.request<void>("POST", "/secrets", secrets);
+    await this.request("POST", "/secrets", secrets);
   }
 
   async deleteSecrets(secretNames: ISecretsDelete): Promise<void> {
-    return this.request<void>("DELETE", "/secrets", secretNames);
+    await this.request("DELETE", "/secrets", secretNames);
   }
 
   async getDiff(): Promise<IDelta> {
-    return this.request<IDelta>("GET", "/diff");
+    return this.requestJSON<IDelta>("GET", "/diff");
   }
 
   async getSync(): Promise<ISync> {
-    return this.request<ISync>("GET", "/sync");
+    return this.requestJSON<ISync>("GET", "/sync");
   }
 
   async createSync(): Promise<void> {
-    return this.request<void>("POST", "/sync");
+    await this.request("POST", "/sync");
   }
 
   isPresent(): boolean {
     return true;
   }
 
-  protected async request<R>(
+  protected async request(
     method: string,
     subPath: string,
     payload?: any
-  ): Promise<R> {
-    const url = `${COORDINATOR_URL}/${subPath}`;
+  ): Promise<Response> {
+    const url = `${COORDINATOR_URL}${subPath}`;
     const headers: HeadersInit = {
       Authorization: `Basic ${btoa("token:" + this.token)}`,
     };
@@ -169,6 +169,15 @@ export class Coordinator {
     if (!response.ok) {
       throw await createNetworkError("Unable to contact coordinator", response);
     }
+    return response;
+  }
+
+  protected async requestJSON<R>(
+    method: string,
+    subPath: string,
+    payload?: any
+  ): Promise<R> {
+    const response = await this.request(method, subPath, payload);
     return response.json() as any;
   }
 }
