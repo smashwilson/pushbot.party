@@ -3,6 +3,7 @@ import cx from "classnames";
 
 import {CoordinatorContext, ISync} from "../../common/coordinator";
 import {PendingDiffContext} from "../../common/PendingDiff";
+import {NotificationContext} from "../../common/Notifications";
 import {DeltaView, pastTense, futureTense} from "./DeltaView";
 import {SyncReportView, PlaceholderSyncReportView} from "./SyncReportView";
 
@@ -13,8 +14,15 @@ interface SyncViewProps {
 export function SyncView(props: SyncViewProps) {
   const coordinator = useContext(CoordinatorContext);
   const delta = useContext(PendingDiffContext);
+  const hub = useContext(NotificationContext);
   const lastDelta = props.lastSync.delta;
   const lastReport = props.lastSync.reports[props.lastSync.reports.length - 1];
+
+  async function startSync(evt: React.MouseEvent<HTMLButtonElement>) {
+    evt.preventDefault();
+    await coordinator.createSync();
+    hub.addSuccessMessage("Sync started.");
+  }
 
   return (
     <>
@@ -28,10 +36,7 @@ export function SyncView(props: SyncViewProps) {
         <button
           className="btn btn-primary"
           disabled={props.lastSync.in_progress}
-          onClick={evt => {
-            evt.preventDefault();
-            coordinator.createSync();
-          }}
+          onClick={startSync}
         >
           <i
             className={cx("fas fa-sync-alt mr-2", {

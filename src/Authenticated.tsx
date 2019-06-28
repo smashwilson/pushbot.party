@@ -19,6 +19,7 @@ import {
   nullCoordinator,
 } from "./common/coordinator";
 import {PendingDiff} from "./common/PendingDiff";
+import {NotificationsProvider, NotificationsView} from "./common/Notifications";
 
 interface AuthenticatedProps {
   user: IUser;
@@ -42,22 +43,25 @@ export function Authenticated(props: AuthenticatedProps) {
     <UserContext.Provider value={props.user}>
       <CoordinatorContext.Provider value={coordinator}>
         <PendingDiff coordinator={coordinator}>
-          <div className="row mt-md-5">
-            <div className="col-md-2">
-              <SideNav />
+          <NotificationsProvider>
+            <div className="row mt-md-5">
+              <div className="col-md-2">
+                <SideNav />
+              </div>
+              <div className="col-md-8">
+                <NotificationsView />
+                <Route path="/" component={Dashboard} exact />
+                <Route path="/people" component={People} exact />
+                <Route path="/people/:name" component={Profile} />
+                <Route path="/quotes" component={Quotes} />
+                <Route path="/events" component={Events} />
+                <Route path="/recent" component={Recent} />
+                <Route path="/admin/services" component={Services} exact />
+                <Route path="/admin/services/:id" component={ServiceEditor} />
+                <Route path="/admin/sync" component={Sync} />
+              </div>
             </div>
-            <div className="col-md-8">
-              <Route path="/" component={Dashboard} exact />
-              <Route path="/people" component={People} exact />
-              <Route path="/people/:name" component={Profile} />
-              <Route path="/quotes" component={Quotes} />
-              <Route path="/events" component={Events} />
-              <Route path="/recent" component={Recent} />
-              <Route path="/admin/services" component={Services} exact />
-              <Route path="/admin/services/:id" component={ServiceEditor} />
-              <Route path="/admin/sync" component={Sync} />
-            </div>
-          </div>
+          </NotificationsProvider>
         </PendingDiff>
       </CoordinatorContext.Provider>
     </UserContext.Provider>
