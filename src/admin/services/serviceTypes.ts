@@ -380,6 +380,14 @@ export class DesiredUnitPayload {
     return payload;
   }
 
+  withID<R>(fn: (id: number) => R): R | null {
+    if (this.original) {
+      return fn(this.original.id);
+    }
+
+    return null;
+  }
+
   getCreatePayload(): IDesiredUnitCreate {
     return {
       ...this.getCommonPayload(),

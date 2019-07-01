@@ -118,6 +118,19 @@ export function ServiceForm({payload, knownSecrets}: ServiceFormProps) {
     }
   }
 
+  async function deleteService(evt: React.MouseEvent<HTMLButtonElement>) {
+    try {
+      evt.preventDefault();
+
+      await payload.withID(id => coordinator.deleteDesiredUnit(id));
+
+      refreshDiff();
+      setNextRoute("/admin/services");
+    } catch (err) {
+      hub.addError(err);
+    }
+  }
+
   return (
     <form className="border rounded p-3">
       {/* path */}
@@ -330,22 +343,36 @@ export function ServiceForm({payload, knownSecrets}: ServiceFormProps) {
       <hr />
 
       {/* controls */}
-      <div className="form-row d-flex align-items-baseline justify-content-end m-3">
-        <div className="btn-group">
-          <Link to="/admin/services" className="btn btn-secondary">
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={apply}
-            disabled={!payload.isValid()}
-          >
-            {payload.withAction({
-              create: () => "Create",
-              update: () => "Update",
-            })}
-          </button>
+      <div className="form-row m-3">
+        {payload.isUpdate() && (
+          <div className="col d-flex align-items-baseline">
+            <button
+              type="submit"
+              className="btn btn-danger"
+              onClick={deleteService}
+              disabled={payload.isCreate()}
+            >
+              Delete
+            </button>
+          </div>
+        )}
+        <div className="col d-flex align-items-baseline justify-content-end">
+          <div className="btn-group">
+            <Link to="/admin/services" className="btn btn-secondary">
+              Cancel
+            </Link>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={apply}
+              disabled={!payload.isValid()}
+            >
+              {payload.withAction({
+                create: () => "Create",
+                update: () => "Update",
+              })}
+            </button>
+          </div>
         </div>
       </div>
     </form>
