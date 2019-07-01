@@ -18,18 +18,31 @@ export function Services() {
         getter={c => c.getDesiredState()}
         nullValue={nullDesiredState}
       >
-        {(state, isLoading) => {
-          if (isLoading) {
-            return <Loading />;
-          }
+        {(state, isLoading, refresh) => {
+          const list = isLoading ? (
+            <Loading />
+          ) : (
+            state.units.map(unit => (
+              <ServiceDisplay unit={unit} key={unit.id} />
+            ))
+          );
 
           return (
             <>
-              {state.units.map(unit => (
-                <ServiceDisplay unit={unit} key={unit.id} />
-              ))}
-              <div className="my-3">
+              <div className="my-3 d-flex justify-content-end">
+                <button
+                  className="btn btn-secondary"
+                  onClick={refresh}
+                  disabled={isLoading}
+                >
+                  <i className="fas fa-sync-alt mr-2" />
+                  Refresh
+                </button>
+              </div>
+              {list}
+              <div className="my-3 d-flex justify-content-end">
                 <Link className="btn btn-primary" to="/admin/services/create">
+                  <i className="fas fa-plus mr-2" />
                   Create
                 </Link>
               </div>

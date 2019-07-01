@@ -5,7 +5,7 @@ import {Coordinator, CoordinatorContext} from "./coordinator";
 interface CoordinatorContainerProps<R> {
   getter: (c: Coordinator) => Promise<R>;
   nullValue: R;
-  children: (value: R, isLoading: boolean) => JSX.Element;
+  children: (value: R, isLoading: boolean, refresh: () => void) => JSX.Element;
 }
 
 export function CoordinatorContainer<R>(props: CoordinatorContainerProps<R>) {
@@ -13,6 +13,7 @@ export function CoordinatorContainer<R>(props: CoordinatorContainerProps<R>) {
   const {getter} = props;
   const [value, setValue] = useState<R>(props.nullValue);
   const [isLoading, setLoading] = useState(true);
+  const [latch, setLatch] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -28,7 +29,11 @@ export function CoordinatorContainer<R>(props: CoordinatorContainerProps<R>) {
     return () => {
       ignore = true;
     };
-  }, [coordinator, getter]);
+  }, [coordinator, getter, latch]);
 
-  return props.children(value, isLoading);
+  function refresh() {
+    setLatch(!latch);
+  }
+
+  return props.children(value, isLoading, refresh);
 }
