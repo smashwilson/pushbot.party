@@ -3,6 +3,8 @@ import {createNetworkError} from "./errors";
 
 const COORDINATOR_URL = `${process.env.REACT_APP_AZ_COORDINATOR_URL}`;
 
+export type ServiceType = "simple" | "oneshot" | "timer" | "self";
+
 export interface IContainer {
   name?: string;
   image_name: string;
@@ -22,7 +24,7 @@ export interface IVolumeMap {
 }
 
 interface IDesiredUnitCommon {
-  type: "simple" | "oneshot" | "timer" | "self";
+  type: ServiceType;
   secrets: string[];
   env: IEnvMap;
   ports: IPortMap;
