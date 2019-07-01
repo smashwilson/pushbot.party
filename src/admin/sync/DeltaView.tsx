@@ -57,7 +57,10 @@ export function DeltaView(props: DeltaViewProps) {
     iconClass: string
   ): React.ReactNode {
     return (
-      <p className={cx("card-text", textClass)}>
+      <p
+        key={`key-${action}-${unit.id}`}
+        className={cx("card-text", textClass)}
+      >
         <i className={cx("mr-3", iconClass)} />
         {action}{" "}
         <Link
@@ -103,7 +106,7 @@ export function DeltaView(props: DeltaViewProps) {
   }
   for (const unit of props.delta.units_to_remove) {
     changeRows.push(
-      <p className="card-text text-danger">
+      <p key={`remove-${unit.path}`} className="card-text text-danger">
         <i className="mr-3 fas fa-fire" />
         {props.tense.remove} unit{" "}
         <span className="font-weight-bold">{unit.path}</span>
