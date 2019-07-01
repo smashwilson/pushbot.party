@@ -7,7 +7,7 @@
     "chartist": "^0.11.2",
     "core-js": "2.6.9",
     "emoji-js": "^3.4.1",
-    "graphql": "^14.4.0",
+    "graphql": "^14.4.1",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "popper.js": "^1.15.0",
