@@ -2,58 +2,46 @@ import React, {useState, useMemo, useContext} from "react";
 import {Link, Redirect} from "react-router-dom";
 import cx from "classnames";
 
-import {
-  IDesiredUnit,
-  IDesiredUnitCreate,
-  IDesiredUnitUpdate,
-  IContainer,
-  ISecretsCreate,
-  CoordinatorContext,
-} from "../../common/coordinator";
+import {ISecretsCreate, CoordinatorContext} from "../../common/coordinator";
 import {NotificationContext} from "../../common/Notifications";
-import {serviceTypes, getServiceType} from "./serviceTypes";
+import {
+  DesiredUnitPayload,
+  usePayloadState,
+  serviceTypes,
+  getServiceType,
+} from "./serviceTypes";
 import {EnvVarListEditor} from "./EnvVarListEditor";
 import {SecretListEditor} from "./SecretListEditor";
 import {VolumeListEditor} from "./VolumeListEditor";
 import {PortListEditor} from "./PortListEditor";
 
-function withContainer<D>(
-  unit: IDesiredUnit,
-  present: (container: IContainer) => D,
-  absent: () => D
-): D {
-  if (!unit.container) {
-    return absent();
-  }
-
-  return present(unit.container);
-}
-
 interface ServiceFormProps {
-  mode: "create" | "update";
-  original: IDesiredUnit;
+  payload: DesiredUnitPayload;
   knownSecrets: string[];
 }
 
-export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
+export function ServiceForm({payload, knownSecrets}: ServiceFormProps) {
   const [nextRoute, setNextRoute] = useState<string | null>(null);
 
-  const [currentPath, setPath] = useState(original.path);
-  const [currentType, setType] = useState(getServiceType(original.type));
-  const [currentContainerName, setContainerName] = useState(
-    withContainer(original, c => c.name || "", () => "")
+  const [currentPath, setPath] = usePayloadState(payload, "path");
+  const [currentType, setType] = usePayloadState(payload, "currentType");
+  const [currentContainerName, setContainerName] = usePayloadState(
+    payload,
+    "containerName"
   );
-  const [currentContainerImageName, setContainerImageName] = useState(
-    withContainer(original, c => c.image_name, () => "quay.io/smashwilson/az-")
+  const [currentContainerImageName, setContainerImageName] = usePayloadState(
+    payload,
+    "containerImageName"
   );
-  const [currentContainerImageTag, setContainerImageTag] = useState(
-    withContainer(original, c => c.image_tag, () => "latest")
+  const [currentContainerImageTag, setContainerImageTag] = usePayloadState(
+    payload,
+    "containerImageTag"
   );
-  const [currentEnvVars, setEnvVars] = useState(original.env);
-  const [currentSecrets, setSecrets] = useState(original.secrets);
-  const [currentVolumes, setVolumes] = useState(original.volumes);
-  const [currentPorts, setPorts] = useState(original.ports);
-  const [currentCalendar, setCalendar] = useState(original.calendar);
+  const [currentEnvVars, setEnvVars] = usePayloadState(payload, "env");
+  const [currentSecrets, setSecrets] = usePayloadState(payload, "secrets");
+  const [currentVolumes, setVolumes] = usePayloadState(payload, "volumes");
+  const [currentPorts, setPorts] = usePayloadState(payload, "ports");
+  const [currentCalendar, setCalendar] = usePayloadState(payload, "calendar");
 
   const [createdSecrets, setCreatedSecrets] = useState<ISecretsCreate>({});
 
@@ -111,44 +99,17 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   async function apply(evt: React.MouseEvent<HTMLButtonElement>) {
     try {
       evt.preventDefault();
-      const common: IDesiredUnitCreate | IDesiredUnitUpdate = {
-        type: currentType.name as "simple" | "oneshot" | "timer" | "self",
-        secrets: currentType.ifEnvAndSecrets(() => currentSecrets) || [],
-        env: currentType.ifEnvAndSecrets(() => currentEnvVars) || {},
-        ports: currentType.ifPorts(() => currentPorts) || {},
-        volumes: currentType.ifVolumes(() => currentVolumes) || {},
-      };
-
-      currentType.ifAnyContainer(() => {
-        common.container = {
-          name: currentType.ifContainerName(() => currentContainerName) || "",
-          image_name: currentContainerImageName,
-          image_tag: currentContainerImageTag,
-        };
-      });
-
-      currentType.ifSchedule(() => {
-        common.calendar = currentCalendar;
-      });
 
       if (Object.keys(createdSecrets).length > 0) {
         await coordinator.createSecrets(createdSecrets);
       }
 
-      if (mode === "create") {
-        const payload: IDesiredUnitCreate = {
-          path: currentPath,
-          ...common,
-        };
-        const created = await coordinator.createDesiredUnit(payload);
-        setNextRoute(
-          `/admin/services/${encodeURIComponent(created.id.toString())}`
-        );
-      } else {
-        const payload: IDesiredUnitUpdate = common;
-        await coordinator.updateDesiredUnit(original.id, payload);
-        setNextRoute("/admin/services");
-      }
+      await payload.withAction({
+        create: () => coordinator.createDesiredUnit(payload.getCreatePayload()),
+        update: (id: number) =>
+          coordinator.updateDesiredUnit(id, payload.getUpdatePayload()),
+      });
+      setNextRoute("/admin/services");
     } catch (err) {
       hub.addError(err);
     }
@@ -161,14 +122,14 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
         <label htmlFor="serviceEditor--path" className="col-sm-3">
           Path:
         </label>
-        <div className={cx("col-sm-9", {disabled: mode === "update"})}>
+        <div className={cx("col-sm-9", {disabled: payload.isUpdate()})}>
           <input
             id="serviceEditor--path"
             className="form-control text-monospace"
             type="text"
             value={currentPath}
             onChange={evt => setPath(evt.target.value)}
-            readOnly={mode === "update"}
+            readOnly={payload.isUpdate()}
           />
         </div>
       </div>
@@ -371,8 +332,16 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
           <Link to="/admin/services" className="btn btn-secondary">
             Cancel
           </Link>
-          <button type="submit" className="btn btn-primary" onClick={apply}>
-            {mode === "create" ? "Create" : "Update"}
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={apply}
+            disabled={!payload.isValid()}
+          >
+            {payload.withAction({
+              create: () => "Create",
+              update: () => "Update",
+            })}
           </button>
         </div>
       </div>

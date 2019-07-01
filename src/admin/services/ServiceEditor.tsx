@@ -1,25 +1,12 @@
 import React from "react";
 
-import {IDesiredState, IDesiredUnit} from "../../common/coordinator";
+import {IDesiredState} from "../../common/coordinator";
 import {CoordinatorContainer} from "../../common/CoordinatorContainer";
 import {Loading} from "../../common/Loading";
 import {ServiceForm} from "./ServiceForm";
+import {DesiredUnitPayload} from "./serviceTypes";
 
 const nullDesiredState: IDesiredState = {units: []};
-
-const initialValues: IDesiredUnit = {
-  id: 0,
-  path: "/etc/systemd/system/",
-  container: {
-    image_name: "quay.io/smashwilson/az-",
-    image_tag: "latest",
-  },
-  type: "simple",
-  secrets: [],
-  env: {},
-  volumes: {},
-  ports: {},
-};
 
 interface ServiceEditorProps {
   match: {
@@ -36,8 +23,7 @@ export function ServiceEditor(props: ServiceEditorProps) {
         if (props.match.params.id === "create") {
           return (
             <ServiceForm
-              mode="create"
-              original={initialValues}
+              payload={new DesiredUnitPayload()}
               knownSecrets={knownSecrets}
             />
           );
@@ -59,8 +45,7 @@ export function ServiceEditor(props: ServiceEditorProps) {
               if (original) {
                 return (
                   <ServiceForm
-                    mode="update"
-                    original={original}
+                    payload={new DesiredUnitPayload(original)}
                     knownSecrets={knownSecrets}
                   />
                 );
