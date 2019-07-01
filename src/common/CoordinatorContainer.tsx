@@ -11,20 +11,22 @@ interface CoordinatorContainerProps<R> {
 export function CoordinatorContainer<R>(props: CoordinatorContainerProps<R>) {
   const coordinator = useContext(CoordinatorContext);
   const {getter} = props;
-  const [value, setValue] = useState<R>(props.nullValue);
   const [isLoading, setLoading] = useState(true);
-  const [latch, setLatch] = useState(false);
+  const [value, setValue] = useState(props.nullValue);
+  const [latch, setLatch] = useState(0);
 
   useEffect(() => {
     let ignore = false;
 
-    setLoading(true);
-    getter(coordinator).then(v => {
+    (async function() {
+      setLoading(true);
+      const v = await getter(coordinator);
+
       if (!ignore) {
+        setLoading(false);
         setValue(v);
       }
-      setLoading(false);
-    });
+    })();
 
     return () => {
       ignore = true;
@@ -32,7 +34,7 @@ export function CoordinatorContainer<R>(props: CoordinatorContainerProps<R>) {
   }, [coordinator, getter, latch]);
 
   function refresh() {
-    setLatch(!latch);
+    setLatch(current => current + 1);
   }
 
   return props.children(value, isLoading, refresh);
