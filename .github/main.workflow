@@ -15,5 +15,6 @@ action "Build GitHub page" {
   env = {
     REACT_APP_API_BASE_URL = "https://api.pushbot.party"
     REACT_APP_API_AUTH_TYPE = "slack"
+    REACT_APP_AZ_COORDINATOR_URL = "https://coordinator.azurefire.net:8443"
   }
 }
