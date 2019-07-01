@@ -64,7 +64,7 @@ export class App extends Component {
     let avatar = "";
 
     if (isNetworkError(result.error)) {
-      if (result.error.status === 401) {
+      if (result.error.responseStatus === 401) {
         const backTo = encodeURIComponent(document.location!.pathname);
         body = <Login authUrl={`${AUTH_URL}?backTo=${backTo}`} />;
       } else {

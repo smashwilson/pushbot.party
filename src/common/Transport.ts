@@ -8,7 +8,7 @@ import {
   Variables,
 } from "relay-runtime";
 
-import {createNetworkError} from "./errors";
+import {createNetworkError, createGraphQLError} from "./errors";
 
 const API_URL = `${process.env.REACT_APP_API_BASE_URL}/graphql`;
 export const AUTH_URL = `${process.env.REACT_APP_API_BASE_URL}/auth/${process.env.REACT_APP_API_AUTH_TYPE}`;
@@ -36,10 +36,19 @@ async function fetchQuery(
   });
 
   if (response.ok) {
-    return response.json();
+    const payload = await response.json();
+    if (payload.errors) {
+      throw createGraphQLError(
+        `API server responded with GraphQL errors`,
+        API_URL,
+        payload.errors
+      );
+    }
+    return payload;
   } else {
     throw await createNetworkError(
       `API server responded with ${response.status}`,
+      API_URL,
       response
     );
   }

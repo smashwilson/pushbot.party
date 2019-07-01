@@ -167,7 +167,11 @@ export class Coordinator {
 
     const response = await fetch(url, options);
     if (!response.ok) {
-      throw await createNetworkError("Unable to contact coordinator", response);
+      throw await createNetworkError(
+        "Unable to contact coordinator",
+        url,
+        response
+      );
     }
     return response;
   }
