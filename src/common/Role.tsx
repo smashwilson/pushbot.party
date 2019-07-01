@@ -1,15 +1,8 @@
 import React, {useContext} from "react";
 
-interface IRole {
-  readonly name: string;
-}
+import {IUser} from "./userTypes";
 
-export interface IUser {
-  readonly id: string;
-  readonly name: string;
-  readonly roles: ReadonlyArray<IRole>;
-}
-
+export type IUser = IUser;
 export const UserContext = React.createContext<IUser | null>(null);
 
 interface RoleProps {
