@@ -1,6 +1,8 @@
 import React, {useState, useContext, useEffect} from "react";
 import cx from "classnames";
 
+import {isNetworkError, isGraphQLError} from "./errors";
+
 export type Severity = "info" | "success" | "danger";
 
 interface Notification {
@@ -22,6 +24,7 @@ class NotificationHub {
 
   deleteNotification(n: Notification) {
     this.notifications = this.notifications.filter(each => each !== n);
+    this.notify();
   }
 
   addInfo(body: React.ReactNode) {
@@ -29,7 +32,7 @@ class NotificationHub {
   }
 
   addSuccess(body: React.ReactNode) {
-    this.add("info", body);
+    this.add("success", body);
   }
 
   addSuccessMessage(message: string) {
@@ -37,7 +40,41 @@ class NotificationHub {
   }
 
   addDanger(body: React.ReactNode) {
-    this.add("info", body);
+    this.add("danger", body);
+  }
+
+  addError(err: Error) {
+    if (isNetworkError(err)) {
+      this.addDanger(
+        <>
+          <h5>Error: {err.message}</h5>
+          <p>
+            {err.requestURL} {err.responseStatus}
+          </p>
+          <pre>{err.responseText}</pre>
+        </>
+      );
+      return;
+    }
+
+    if (isGraphQLError(err)) {
+      this.addDanger(
+        <>
+          <h5>Error: {err.message}</h5>
+          {err.errors.map((each, i) => (
+            <p key={i}>{each}</p>
+          ))}
+        </>
+      );
+      return;
+    }
+
+    this.addDanger(
+      <>
+        <h5>Error: {err.message}</h5>
+        <pre className="bg-light px-2 py-1 mt-4">{err.stack}</pre>
+      </>
+    );
   }
 
   onNotification(callback: (ns: Notification[]) => any) {
@@ -55,8 +92,9 @@ class NotificationHub {
   }
 
   protected notify() {
+    const current = [...this.notifications];
     for (const subscriber of this.subscribers) {
-      subscriber(this.notifications);
+      subscriber(current);
     }
   }
 }
@@ -106,7 +144,7 @@ export function NotificationsView() {
     <div className="px-2 mt-2 mb-3">
       {notifications.map(n => (
         <div key={n.id} className={cx("alert", `alert-${n.severity}`, "my-2")}>
-          <button className="btn btn-link float-right" onClick={makeCloser(n)}>
+          <button className="close" onClick={makeCloser(n)}>
             <i className="fa far fa-window-close" />
           </button>
           {n.body}
