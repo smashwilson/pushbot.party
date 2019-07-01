@@ -10,6 +10,7 @@ import {
   ISecretsCreate,
   CoordinatorContext,
 } from "../../common/coordinator";
+import {NotificationContext} from "../../common/Notifications";
 import {serviceTypes, getServiceType} from "./serviceTypes";
 import {EnvVarListEditor} from "./EnvVarListEditor";
 import {SecretListEditor} from "./SecretListEditor";
@@ -101,50 +102,55 @@ export function ServiceForm({mode, original, knownSecrets}: ServiceFormProps) {
   }, [knownSecrets, currentSecrets]);
 
   const coordinator = useContext(CoordinatorContext);
+  const hub = useContext(NotificationContext);
 
   if (nextRoute) {
     return <Redirect to={nextRoute} />;
   }
 
   async function apply(evt: React.MouseEvent<HTMLButtonElement>) {
-    evt.preventDefault();
-    const common: IDesiredUnitCreate | IDesiredUnitUpdate = {
-      type: currentType.name as "simple" | "oneshot" | "timer" | "self",
-      secrets: currentType.ifEnvAndSecrets(() => currentSecrets) || [],
-      env: currentType.ifEnvAndSecrets(() => currentEnvVars) || {},
-      ports: currentType.ifPorts(() => currentPorts) || {},
-      volumes: currentType.ifVolumes(() => currentVolumes) || {},
-    };
-
-    currentType.ifAnyContainer(() => {
-      common.container = {
-        name: currentType.ifContainerName(() => currentContainerName) || "",
-        image_name: currentContainerImageName,
-        image_tag: currentContainerImageTag,
+    try {
+      evt.preventDefault();
+      const common: IDesiredUnitCreate | IDesiredUnitUpdate = {
+        type: currentType.name as "simple" | "oneshot" | "timer" | "self",
+        secrets: currentType.ifEnvAndSecrets(() => currentSecrets) || [],
+        env: currentType.ifEnvAndSecrets(() => currentEnvVars) || {},
+        ports: currentType.ifPorts(() => currentPorts) || {},
+        volumes: currentType.ifVolumes(() => currentVolumes) || {},
       };
-    });
 
-    currentType.ifSchedule(() => {
-      common.calendar = currentCalendar;
-    });
+      currentType.ifAnyContainer(() => {
+        common.container = {
+          name: currentType.ifContainerName(() => currentContainerName) || "",
+          image_name: currentContainerImageName,
+          image_tag: currentContainerImageTag,
+        };
+      });
 
-    if (Object.keys(createdSecrets).length > 0) {
-      await coordinator.createSecrets(createdSecrets);
-    }
+      currentType.ifSchedule(() => {
+        common.calendar = currentCalendar;
+      });
 
-    if (mode === "create") {
-      const payload: IDesiredUnitCreate = {
-        path: currentPath,
-        ...common,
-      };
-      const created = await coordinator.createDesiredUnit(payload);
-      setNextRoute(
-        `/admin/services/${encodeURIComponent(created.id.toString())}`
-      );
-    } else {
-      const payload: IDesiredUnitUpdate = common;
-      await coordinator.updateDesiredUnit(original.id, payload);
-      setNextRoute("/admin/services");
+      if (Object.keys(createdSecrets).length > 0) {
+        await coordinator.createSecrets(createdSecrets);
+      }
+
+      if (mode === "create") {
+        const payload: IDesiredUnitCreate = {
+          path: currentPath,
+          ...common,
+        };
+        const created = await coordinator.createDesiredUnit(payload);
+        setNextRoute(
+          `/admin/services/${encodeURIComponent(created.id.toString())}`
+        );
+      } else {
+        const payload: IDesiredUnitUpdate = common;
+        await coordinator.updateDesiredUnit(original.id, payload);
+        setNextRoute("/admin/services");
+      }
+    } catch (err) {
+      hub.addError(err);
     }
   }
 

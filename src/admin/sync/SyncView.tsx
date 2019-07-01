@@ -19,9 +19,12 @@ export function SyncView(props: SyncViewProps) {
   const lastReport = props.lastSync.reports[props.lastSync.reports.length - 1];
 
   async function startSync(evt: React.MouseEvent<HTMLButtonElement>) {
-    evt.preventDefault();
-    await coordinator.createSync();
-    hub.addSuccessMessage("Sync started.");
+    try {
+      evt.preventDefault();
+      await coordinator.createSync();
+    } catch (err) {
+      hub.addError(err);
+    }
   }
 
   return (
