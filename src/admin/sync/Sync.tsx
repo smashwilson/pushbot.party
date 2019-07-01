@@ -21,11 +21,11 @@ export function Sync() {
         getter={c => c.getSync()}
         nullValue={nullSync}
       >
-        {(lastSync, isLoading) => {
-          if (isLoading) {
+        {(lastSync, isLoading, refresh) => {
+          if (isLoading && lastSync.reports.length === 0) {
             return <Loading />;
           } else {
-            return <SyncView lastSync={lastSync} />;
+            return <SyncView lastSync={lastSync} refresh={refresh} />;
           }
         }}
       </CoordinatorContainer>
