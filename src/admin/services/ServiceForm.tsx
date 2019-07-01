@@ -4,6 +4,7 @@ import cx from "classnames";
 
 import {ISecretsCreate, CoordinatorContext} from "../../common/coordinator";
 import {NotificationContext} from "../../common/Notifications";
+import {PendingDiffContext} from "../../common/PendingDiff";
 import {
   DesiredUnitPayload,
   usePayloadState,
@@ -89,6 +90,7 @@ export function ServiceForm({payload, knownSecrets}: ServiceFormProps) {
     return knownSecrets.filter(each => !used.has(each));
   }, [knownSecrets, currentSecrets]);
 
+  const {refresh: refreshDiff} = useContext(PendingDiffContext);
   const coordinator = useContext(CoordinatorContext);
   const hub = useContext(NotificationContext);
 
@@ -109,6 +111,7 @@ export function ServiceForm({payload, knownSecrets}: ServiceFormProps) {
         update: (id: number) =>
           coordinator.updateDesiredUnit(id, payload.getUpdatePayload()),
       });
+      refreshDiff();
       setNextRoute("/admin/services");
     } catch (err) {
       hub.addError(err);

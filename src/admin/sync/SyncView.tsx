@@ -14,7 +14,7 @@ interface SyncViewProps {
 
 export function SyncView(props: SyncViewProps) {
   const coordinator = useContext(CoordinatorContext);
-  const delta = useContext(PendingDiffContext);
+  const pendingDiff = useContext(PendingDiffContext);
   const hub = useContext(NotificationContext);
 
   const lastDelta = props.lastSync.delta;
@@ -32,13 +32,16 @@ export function SyncView(props: SyncViewProps) {
   }
 
   if (inProgress) {
-    setTimeout(props.refresh, 1000);
+    setTimeout(() => {
+      props.refresh();
+      pendingDiff.refresh();
+    }, 1000);
   }
 
   return (
     <>
       <DeltaView
-        delta={delta}
+        delta={pendingDiff.delta}
         emptyText="No changes waiting to be applied."
         headerText="changes to apply"
         tense={futureTense}

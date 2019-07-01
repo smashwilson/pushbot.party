@@ -26,7 +26,7 @@ function Pill(props: PillProps) {
 }
 
 export const SideNav = () => {
-  const showBadge = hasPendingDelta(useContext(PendingDiffContext));
+  const showBadge = hasPendingDelta(useContext(PendingDiffContext).delta);
 
   return (
     <ul className="nav nav-pills flex-column">

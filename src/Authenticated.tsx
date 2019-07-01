@@ -18,7 +18,7 @@ import {
   Coordinator,
   nullCoordinator,
 } from "./common/coordinator";
-import {PendingDiff} from "./common/PendingDiff";
+import {PendingDiffProvider} from "./common/PendingDiff";
 import {NotificationsProvider, NotificationsView} from "./common/Notifications";
 
 interface AuthenticatedProps {
@@ -42,7 +42,7 @@ export function Authenticated(props: AuthenticatedProps) {
   return (
     <UserContext.Provider value={props.user}>
       <CoordinatorContext.Provider value={coordinator}>
-        <PendingDiff coordinator={coordinator}>
+        <PendingDiffProvider coordinator={coordinator}>
           <NotificationsProvider>
             <div className="row mt-md-5">
               <div className="col-md-2">
@@ -62,7 +62,7 @@ export function Authenticated(props: AuthenticatedProps) {
               </div>
             </div>
           </NotificationsProvider>
-        </PendingDiff>
+        </PendingDiffProvider>
       </CoordinatorContext.Provider>
     </UserContext.Provider>
   );

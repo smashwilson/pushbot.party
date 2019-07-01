@@ -21,15 +21,24 @@ export function hasPendingDelta(delta: IDelta) {
   ].some(arr => arr.length > 0);
 }
 
-export const PendingDiffContext = React.createContext<IDelta>(nullDelta);
+export interface PendingDiff {
+  delta: IDelta;
+  refresh: () => void;
+}
+
+export const PendingDiffContext = React.createContext<PendingDiff>({
+  delta: nullDelta,
+  refresh: () => {},
+});
 
 interface PendingDiffProps {
   coordinator: Coordinator;
   children: JSX.Element;
 }
 
-export function PendingDiff(props: PendingDiffProps) {
+export function PendingDiffProvider(props: PendingDiffProps) {
   const [delta, setDelta] = useState<IDelta>(nullDelta);
+  const [, setLatch] = useState(0);
 
   useEffect(() => {
     let ignore = false;
@@ -47,8 +56,13 @@ export function PendingDiff(props: PendingDiffProps) {
     };
   });
 
+  const pendingDiff = {
+    delta,
+    refresh: () => setLatch(current => current + 1),
+  };
+
   return (
-    <PendingDiffContext.Provider value={delta}>
+    <PendingDiffContext.Provider value={pendingDiff}>
       {props.children}
     </PendingDiffContext.Provider>
   );
