@@ -1,6 +1,7 @@
 import React from "react";
 import {createPaginationContainer} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
+import {Link} from "react-router-dom";
 
 import {MatchingMemoryPageRem} from "./memoryTypes";
 
@@ -32,7 +33,9 @@ function MemoryPageView(props: Props) {
       <ul className="list-group">
         {props.rem.search.edges.map(edge => (
           <li key={edge.cursor} className="list-group-item">
-            {edge.node.key}
+            <Link to={`/rem/${encodeURIComponent(edge.node.key)}`}>
+              {edge.node.key}
+            </Link>
           </li>
         ))}
       </ul>
