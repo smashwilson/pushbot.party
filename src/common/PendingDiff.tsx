@@ -38,23 +38,22 @@ interface PendingDiffProps {
 
 export function PendingDiffProvider(props: PendingDiffProps) {
   const [delta, setDelta] = useState<IDelta>(nullDelta);
-  const [, setLatch] = useState(0);
+  const [latch, setLatch] = useState(0);
 
   useEffect(() => {
     let ignore = false;
 
-    async function fetchDelta() {
+    (async function() {
       const delta = await props.coordinator.getDiff().catch(() => nullDelta);
       if (!ignore) {
         setDelta(delta);
       }
-    }
+    })();
 
-    fetchDelta();
     return () => {
       ignore = true;
     };
-  });
+  }, [props.coordinator, latch]);
 
   const pendingDiff = {
     delta,
