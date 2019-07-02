@@ -37,6 +37,7 @@ export const SideNav = () => {
       <Pill to="/recent">recent chatter</Pill>
       <hr />
       <Pill to="/quotes">quotes</Pill>
+      <Pill to="/rem">rem</Pill>
       <Pill to="/events">events</Pill>
       <Role name="admin">
         <>
