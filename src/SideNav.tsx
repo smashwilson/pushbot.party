@@ -35,6 +35,7 @@ export const SideNav = () => {
       </Pill>
       <Pill to="/people">dramatis personae</Pill>
       <Pill to="/recent">recent chatter</Pill>
+      <Pill to="/rem">rem</Pill>
       <hr />
       <Pill to="/quotes">quotes</Pill>
       <Pill to="/events">events</Pill>
