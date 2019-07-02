@@ -77,10 +77,20 @@ function RemEntryResult(results: RemEntryQueryResult) {
   }
 
   const {key, value} = get;
+
+  if (/^http(?:s)?:\/\//.test(value)) {
+    return (
+      <div className="container-fluid">
+        <h2 className="my-5 text-center">{key}</h2>
+        <img className="d-block mx-auto" src={value} alt="" />
+      </div>
+    );
+  }
+
   return (
     <div className="row my-5">
       <h2 className="col-3 text-muted text-right">{key}</h2>
-      <h2 className="col-9 font-weight-bolder">{value}</h2>
+      <h2 className="col-9 font-weight-bolder text-monospace">{value}</h2>
     </div>
   );
 }
