@@ -10,6 +10,7 @@ import {Quotes} from "./quotes/Quotes";
 import {Events} from "./events/Events";
 import {Recent} from "./recent/Recent";
 import {Rem} from "./rem/Rem";
+import {RemEntry} from "./rem/RemEntry";
 import {Services} from "./admin/services/Services";
 import {ServiceEditor} from "./admin/services/ServiceEditor";
 import {Sync} from "./admin/sync/Sync";
@@ -55,7 +56,8 @@ export function Authenticated(props: AuthenticatedProps) {
                 <Route path="/people" component={People} exact />
                 <Route path="/people/:name" component={Profile} />
                 <Route path="/quotes" component={Quotes} />
-                <Route path="/rem" component={Rem} />
+                <Route path="/rem" component={Rem} exact />
+                <Route path="/rem/:key" component={RemEntry} />
                 <Route path="/events" component={Events} />
                 <Route path="/recent" component={Recent} />
                 <Route path="/admin/services" component={Services} exact />
