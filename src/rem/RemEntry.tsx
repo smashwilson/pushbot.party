@@ -82,7 +82,12 @@ function RemEntryResult(results: RemEntryQueryResult) {
     return (
       <div className="container-fluid">
         <h2 className="my-5 text-center">{key}</h2>
-        <img className="d-block mx-auto" src={value} alt="" />
+        <img
+          className="d-block mx-auto"
+          style={{maxWidth: "100%"}}
+          src={value}
+          alt=""
+        />
       </div>
     );
   }
