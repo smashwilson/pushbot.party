@@ -15,6 +15,35 @@ function reportDuration(d: moment.Duration): string {
   return "<1ms";
 }
 
+interface FieldsViewProps {
+  fields: {[fieldName: string]: any};
+}
+
+function FieldsView(props: FieldsViewProps) {
+  const keys = Object.keys(props.fields);
+  if (keys.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="row mt-1">
+      <div className="col-1 px-2" />
+      <div className="col-11">
+        <ul className="list-group-horizontal p-0">
+          {keys.map(key => (
+            <li key={key} className="list-group-item px-2 py-0">
+              <small className="text-muted mr-1">{key}:</small>
+              <small className="text-monospaced">
+                {props.fields[key].toString()}
+              </small>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 interface SyncReportViewProps {
   reports: ISyncReport[];
 }
@@ -32,6 +61,7 @@ export function SyncReportView(props: SyncReportViewProps) {
             </div>
             <div className="col-11 text-dark">{report.message}</div>
           </div>
+          <FieldsView fields={report.fields} />
         </div>
       </li>
     );

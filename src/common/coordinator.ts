@@ -76,6 +76,7 @@ export interface ISyncReport {
   timestamp: number;
   elapsed: number;
   message: string;
+  fields: {[fieldName: string]: any};
 }
 
 export interface ISync {
