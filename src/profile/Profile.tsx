@@ -79,7 +79,7 @@ export class Profile extends Component<ProfileProps> {
       }
     `;
 
-    const username = this.props.match.params.name;
+    const username = decodeURIComponent(this.props.match.params.name);
     const variables = {
       name: username,
       titleCriteria: {subject: username},
@@ -185,7 +185,10 @@ export class Profile extends Component<ProfileProps> {
       return (
         <p className="pushbot-profile-titles-empty">
           No titles yet. Set one with{" "}
-          <code>!settitle {this.props.match.params.name}: ...</code>.
+          <code>
+            !settitle {decodeURIComponent(this.props.match.params.name)}: ...
+          </code>
+          .
         </p>
       );
     }

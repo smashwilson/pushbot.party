@@ -32,7 +32,7 @@ export function RemEntry(props: Props) {
     }
   `;
 
-  const variables = {key: props.match.params.key};
+  const variables = {key: decodeURIComponent(props.match.params.key)};
 
   return (
     <QueryRenderer<RemEntryQuery>

@@ -39,9 +39,8 @@ export function ServiceEditor(props: ServiceEditorProps) {
                 return <Loading />;
               }
 
-              const original = state.units.find(
-                u => u.id.toString() === props.match.params.id
-              );
+              const reqID = decodeURIComponent(props.match.params.id);
+              const original = state.units.find(u => u.id.toString() === reqID);
               if (original) {
                 return (
                   <ServiceForm
