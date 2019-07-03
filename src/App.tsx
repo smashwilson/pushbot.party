@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
-import {BrowserRouter as Router} from "react-router-dom";
+import {HashRouter as Router} from "react-router-dom";
 
 import {getEnvironment, AUTH_URL, QueryResult} from "./common/Transport";
 import {isNetworkError} from "./common/errors";
