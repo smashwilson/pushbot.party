@@ -95,7 +95,7 @@ function RemEntryResult(results: RemEntryQueryResult) {
   return (
     <div className="row my-5">
       <h2 className="col-3 text-muted text-right">{key}</h2>
-      <h2 className="col-9 font-weight-bolder text-monospace">{value}</h2>
+      <h2 className="col-9 font-weight-bolder">{value}</h2>
     </div>
   );
 }
