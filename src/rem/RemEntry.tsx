@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import {QueryRenderer} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import {Link} from "react-router-dom";
+import {TwitterTweetEmbed} from "react-twitter-embed";
 
 import {getEnvironment, QueryResult} from "../common/Transport";
 import {NotificationContext} from "../common/Notifications";
@@ -77,6 +78,20 @@ function RemEntryResult(results: RemEntryQueryResult) {
   }
 
   const {key, value} = get;
+
+  const tweet = /^http(?:s)?:\/\/twitter\.com\/[^/]+\/status\/(\d+)/.exec(
+    value
+  );
+  if (tweet) {
+    return (
+      <div className="container-fluid">
+        <h2 className="my-5 text-center">{key}</h2>
+        <div className="d-flex justify-content-center">
+          <TwitterTweetEmbed tweetId={tweet[1]} />
+        </div>
+      </div>
+    );
+  }
 
   if (/^http(?:s)?:\/\//.test(value)) {
     return (

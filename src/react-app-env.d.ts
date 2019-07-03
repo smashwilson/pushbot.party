@@ -50,3 +50,11 @@ declare module "emoji-js" {
     img_sets: ImageSets;
   }
 }
+
+declare module "react-twitter-embed" {
+  interface Props {
+    tweetId: string;
+  }
+
+  export function TwitterTweetEmbed(props: Props): JSX.Element;
+}
