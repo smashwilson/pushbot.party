@@ -62,7 +62,7 @@
     "@types/node": "12.6.8",
     "@types/react": "16.8.23",
     "@types/react-copy-to-clipboard": "^4.2.6",
-    "@types/react-dom": "16.8.4",
+    "@types/react-dom": "16.8.5",
     "@types/react-relay": "^5.0.0",
     "@types/react-router-dom": "^4.3.4",
     "@types/relay-runtime": "5.0.2",
