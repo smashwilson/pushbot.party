@@ -54,7 +54,7 @@
     }
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.9.0",
+    "@fortawesome/fontawesome-free": "^5.10.0",
     "@types/chartist": "^0.9.46",
     "@types/classnames": "2.2.9",
     "@types/jest": "24.0.15",
