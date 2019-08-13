@@ -1,0 +1,19 @@
+on: push
+name: Publish
+jobs:
+  onlyOnMaster:
+    name: Only on master
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Only on master
+      uses: actions/bin/filter@master
+      with:
+        args: branch master
+    - name: Build GitHub page
+      uses: ./actions/publish
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        REACT_APP_API_AUTH_TYPE: slack
+        REACT_APP_API_BASE_URL: https://api.pushbot.party
+        REACT_APP_AZ_COORDINATOR_URL: https://coordinator.azurefire.net:8443
