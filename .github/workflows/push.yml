@@ -1,7 +1,7 @@
 on:
   push:
-    tags:
-      - "*"
+    branch:
+      - master
 name: Publish
 jobs:
   onlyOnMaster:
