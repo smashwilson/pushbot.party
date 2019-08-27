@@ -12,15 +12,6 @@ git remote add deploy "git@github.com:${GITHUB_REPOSITORY}.git"
 git config user.name "${GITHUB_ACTOR}"
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-printf "Installing dependencies\n"
-npm ci
-
-printf "Running Relay compiler\n"
-npm run relay-compiler
-
-printf "Creating production build\n"
-npm run build
-
 printf "Writing to gh-pages\n"
 
 git branch --track gh-pages refs/remotes/origin/gh-pages

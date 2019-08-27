@@ -4,12 +4,18 @@ on:
       - master
 name: Publish
 jobs:
-  onlyOnMaster:
-    name: Only on master
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Build GitHub page
+      - name: Install dependencies
+        runs: npm ci
+      - name: Relay
+        runs: npm run relay
+      - name: Webpack, Typescript
+        runs: npm run build
+      - name: Publish
         uses: ./actions/publish
         env:
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
