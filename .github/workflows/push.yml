@@ -9,7 +9,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Relay
-        run: npm run relay
+        run: npm run relay-compiler
       - name: Webpack, Typescript
         run: npm run build
       - name: Publish
