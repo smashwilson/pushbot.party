@@ -12,11 +12,12 @@ jobs:
         run: npm run relay-compiler
       - name: Webpack, Typescript
         run: npm run build
+        env:
+          REACT_APP_API_AUTH_TYPE: slack
+          REACT_APP_API_BASE_URL: https://api.pushbot.party
+          REACT_APP_AZ_COORDINATOR_URL: https://coordinator.azurefire.net:8443
       - name: Publish
         uses: ./actions/publish
         env:
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-          REACT_APP_API_AUTH_TYPE: slack
-          REACT_APP_API_BASE_URL: https://api.pushbot.party
-          REACT_APP_AZ_COORDINATOR_URL: https://coordinator.azurefire.net:8443
         if: github.ref == 'refs/heads/master'
