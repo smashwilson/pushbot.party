@@ -7,11 +7,11 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Install dependencies
-        runs: npm ci
+        run: npm ci
       - name: Relay
-        runs: npm run relay
+        run: npm run relay
       - name: Webpack, Typescript
-        runs: npm run build
+        run: npm run build
       - name: Publish
         uses: ./actions/publish
         env:
