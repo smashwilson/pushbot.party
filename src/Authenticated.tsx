@@ -35,7 +35,7 @@ const coordinatorForUser = memo(
       return nullCoordinator;
     }
   },
-  (oldArgs: [IUser], newArgs: [IUser]) => oldArgs[0].id === newArgs[0].id
+  (newArgs: IUser[], lastArgs: IUser[]) => newArgs[0].id === lastArgs[0].id
 );
 
 export function Authenticated(props: AuthenticatedProps) {

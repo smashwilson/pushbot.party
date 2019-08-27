@@ -1,18 +1,22 @@
-on:
-  push:
-    branches:
-      - master
+on: [push]
 name: Publish
 jobs:
-  onlyOnMaster:
-    name: Only on master
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Build GitHub page
+      - name: Install dependencies
+        run: npm ci
+      - name: Relay
+        run: npm run relay-compiler
+      - name: Webpack, Typescript
+        run: npm run build
+      - name: Publish
         uses: ./actions/publish
         env:
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
           REACT_APP_API_AUTH_TYPE: slack
           REACT_APP_API_BASE_URL: https://api.pushbot.party
           REACT_APP_AZ_COORDINATOR_URL: https://coordinator.azurefire.net:8443
+        if: github.ref == 'refs/heads/master'
