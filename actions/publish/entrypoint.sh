@@ -22,4 +22,4 @@ COMMIT=$(git commit-tree "${TREE}" -p gh-pages -m "Built from ${GITHUB_SHA:-unkn
 git update-ref refs/heads/gh-pages "${COMMIT}"
 
 printf "Pushing built files\n"
-git push --force-with-lease deploy gh-pages:gh-pages
+git push --force deploy gh-pages:gh-pages
