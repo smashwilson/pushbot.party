@@ -65,7 +65,7 @@
     "@types/react-dom": "16.9.0",
     "@types/react-relay": "^5.0.0",
     "@types/react-router-dom": "^4.3.5",
-    "@types/relay-runtime": "5.0.3",
+    "@types/relay-runtime": "5.0.4",
     "babel-plugin-relay": "5.0.0",
     "bootstrap": "^4.3.1",
     "prettier": "1.18.2",
