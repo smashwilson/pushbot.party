@@ -8,7 +8,7 @@
     "classnames": "2.2.6",
     "core-js": "2.6.9",
     "emoji-js": "^3.4.1",
-    "graphql": "^14.5.7",
+    "graphql": "^14.5.8",
     "jquery": "^3.4.1",
     "memoize-one": "5.1.1",
     "moment": "^2.24.0",
