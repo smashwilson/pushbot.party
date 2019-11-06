@@ -21,7 +21,7 @@
     "react-scripts": "3.2.0",
     "react-twitter-embed": "3.0.3",
     "relay-runtime": "7.0.0",
-    "typescript": "3.6.4"
+    "typescript": "3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
