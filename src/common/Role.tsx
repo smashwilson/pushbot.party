@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
 
-import {IUser} from "./userTypes";
+import {IUser as IRealUser} from "./userTypes";
+export type IUser = IRealUser;
 
-export type IUser = IUser;
 export const UserContext = React.createContext<IUser | null>(null);
 
 interface RoleProps {

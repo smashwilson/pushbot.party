@@ -1,14 +1,14 @@
 import {
-  RandomMemoryListQuery,
-  RandomMemoryListQueryVariables,
-  RandomMemoryListQueryResponse,
+  RandomMemoryListQuery as ORandomMemoryListQuery,
+  RandomMemoryListQueryVariables as ORandomMemoryListQueryVariables,
+  RandomMemoryListQueryResponse as ORandomMemoryListQueryResponse,
 } from "../__generated__/RandomMemoryListQuery.graphql";
 
 import {QueryResult} from "../common/Transport";
 
-export type RandomMemoryListQuery = RandomMemoryListQuery;
-export type RandomMemoryListQueryVariables = RandomMemoryListQueryVariables;
-export type RandomMemoryListQueryResponse = RandomMemoryListQueryResponse;
+export type RandomMemoryListQuery = ORandomMemoryListQuery;
+export type RandomMemoryListQueryVariables = ORandomMemoryListQueryVariables;
+export type RandomMemoryListQueryResponse = ORandomMemoryListQueryResponse;
 
 export type RandomMemoryListResult = QueryResult<RandomMemoryListQuery>;
 
