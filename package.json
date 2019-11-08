@@ -20,7 +20,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-twitter-embed": "3.0.3",
-    "relay-runtime": "7.0.0",
+    "relay-runtime": "7.1.0",
     "typescript": "3.7.2"
   },
   "scripts": {
@@ -62,14 +62,14 @@
     "@types/node": "12.12.6",
     "@types/react": "16.9.11",
     "@types/react-copy-to-clipboard": "^4.3.0",
-    "@types/react-dom": "16.9.3",
-    "@types/react-relay": "^7.0.0",
+    "@types/react-dom": "16.9.4",
+    "@types/react-relay": "7.0.1",
     "@types/react-router-dom": "^5.1.2",
-    "@types/relay-runtime": "6.0.6",
-    "babel-plugin-relay": "7.0.0",
+    "@types/relay-runtime": "6.0.10",
+    "babel-plugin-relay": "7.1.0",
     "bootstrap": "^4.3.1",
     "prettier": "1.18.2",
-    "relay-compiler": "^6.0.0",
-    "relay-compiler-language-typescript": "^8.0.3"
+    "relay-compiler": "7.1.0",
+    "relay-compiler-language-typescript": "10.1.0"
   }
 }
