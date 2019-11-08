@@ -16,7 +16,7 @@
     "react": "^16.11.0",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.11.0",
-    "react-relay": "^7.0.0",
+    "react-relay": "^7.1.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-twitter-embed": "3.0.3",
