@@ -14,7 +14,7 @@
     "moment": "^2.24.0",
     "popper.js": "^1.16.0",
     "react": "^16.11.0",
-    "react-copy-to-clipboard": "^5.0.1",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.11.0",
     "react-relay": "^7.0.0",
     "react-router-dom": "^5.1.2",
