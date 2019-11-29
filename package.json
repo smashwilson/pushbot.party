@@ -57,6 +57,7 @@
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@types/chartist": "^0.9.46",
     "@types/classnames": "2.2.9",
+    "@types/express": "4.17.2",
     "@types/jest": "24.0.23",
     "@types/memoize-one": "5.1.2",
     "@types/node": "12.12.14",
@@ -68,6 +69,7 @@
     "@types/relay-runtime": "6.0.11",
     "babel-plugin-relay": "7.1.0",
     "bootstrap": "^4.4.1",
+    "express": "4.17.1",
     "prettier": "1.19.1",
     "relay-compiler": "7.1.0",
     "relay-compiler-language-typescript": "10.1.1"
