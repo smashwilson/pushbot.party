@@ -14,6 +14,7 @@ git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
 printf "Writing to gh-pages\n"
 
+git fetch --depth 1 origin +refs/heads/gh-pages:refs/remotes/origin/gh-pages
 git branch --track gh-pages refs/remotes/origin/gh-pages
 echo 'pushbot.party' > build/CNAME
 git add -f build/
