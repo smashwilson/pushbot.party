@@ -70,6 +70,6 @@
     "bootstrap": "^4.4.1",
     "prettier": "2.0.2",
     "relay-compiler": "^8.0.0",
-    "relay-compiler-language-typescript": "10.1.4"
+    "relay-compiler-language-typescript": "10.1.5"
   }
 }
