@@ -67,7 +67,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/relay-runtime": "8.0.9",
     "babel-plugin-relay": "9.1.0",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^4.5.0",
     "prettier": "2.0.5",
     "relay-compiler": "^8.0.0",
     "relay-compiler-language-typescript": "10.1.5"
