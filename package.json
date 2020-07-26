@@ -8,7 +8,7 @@
     "classnames": "2.2.6",
     "core-js": "3.6.5",
     "emoji-js": "^3.5.0",
-    "graphql": "^14.7.0",
+    "graphql": "^15.3.0",
     "jquery": "^3.5.1",
     "memoize-one": "5.1.1",
     "moment": "^2.27.0",
@@ -31,7 +31,7 @@
     "format": "prettier --write src/**/*.{tsx,ts,d.ts} script/*",
     "lint": "prettier --check src/**/*.{tsx,ts,d.ts} script/*",
     "update-schema": "script/update-schema",
-    "relay-compiler": "relay-compiler --src ./src --schema ./schema/pushbot.graphql ---language typescript --artifactDirectory ./src/__generated__"
+    "relay-compiler": "relay-compiler --src ./src --schema ./schema/pushbot.graphql --language typescript --artifactDirectory ./src/__generated__"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -65,11 +65,11 @@
     "@types/react-dom": "16.9.8",
     "@types/react-relay": "7.0.8",
     "@types/react-router-dom": "^5.1.5",
-    "@types/relay-runtime": "10.0.0",
-    "babel-plugin-relay": "9.1.0",
+    "@types/relay-runtime": "^10.0.1",
+    "babel-plugin-relay": "^10.0.1",
     "bootstrap": "^4.5.0",
     "prettier": "2.0.5",
-    "relay-compiler": "^8.0.0",
+    "relay-compiler": "^10.0.1",
     "relay-compiler-language-typescript": "12.0.4"
   }
 }
