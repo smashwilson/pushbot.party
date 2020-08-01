@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
-    "@types/chartist": "^0.9.48",
+    "@types/chartist": "^0.11.0",
     "@types/classnames": "2.2.10",
     "@types/jest": "26.0.8",
     "@types/memoize-one": "5.1.2",
