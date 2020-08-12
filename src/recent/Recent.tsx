@@ -147,7 +147,8 @@ export class Recent extends Component<{}, RecentState> {
   ) {
     if (channelNames) {
       if (!this.state.currentChannel && channelNames.length > 0) {
-        setTimeout(() => this.setState({currentChannel: channelNames[0]}), 0);
+        const currentChannel = channelNames.includes("general") ? "general" : channelNames[0];
+        setTimeout(() => this.setState({currentChannel}), 0);
       }
       this.knownChannels = channelNames;
     }
