@@ -68,7 +68,7 @@
     "@types/relay-runtime": "^10.1.1",
     "babel-plugin-relay": "^10.1.0",
     "bootstrap": "^4.5.3",
-    "prettier": "2.1.2",
+    "prettier": "2.2.0",
     "relay-compiler": "^10.1.0",
     "relay-compiler-language-typescript": "13.0.2"
   }
