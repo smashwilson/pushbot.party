@@ -6,7 +6,7 @@
     "bootswatch": "4.5.3",
     "chartist": "^0.11.4",
     "classnames": "2.2.6",
-    "core-js": "3.8.0",
+    "core-js": "3.8.1",
     "emoji-js": "^3.5.0",
     "graphql": "^15.4.0",
     "jquery": "^3.5.1",
