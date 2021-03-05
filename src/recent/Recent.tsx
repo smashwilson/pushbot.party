@@ -135,7 +135,10 @@ export class Recent extends Component<{}, RecentState> {
       return this.renderError(error);
     }
 
-    const channelNames = props ? props.cache.knownChannels : this.knownChannels;
+    let channelNames = this.knownChannels;
+    if (props) {
+      channelNames = props.cache.knownChannels.slice().sort();
+    }
     const history = props ? props.cache.linesForChannel : this.history;
 
     return this.renderCurrent(channelNames, history);
