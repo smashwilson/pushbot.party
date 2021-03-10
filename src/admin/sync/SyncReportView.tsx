@@ -70,11 +70,11 @@ export function SyncReportView(props: SyncReportViewProps) {
   return <ul className="list-group pushbot-syncReport">{reportRows}</ul>;
 }
 
-interface PlaceholderSyncReportView {
+interface PlaceholderSyncReportViewProps {
   lastReport?: ISyncReport;
 }
 
-export function PlaceholderSyncReportView(props: PlaceholderSyncReportView) {
+export function PlaceholderSyncReportView(props: PlaceholderSyncReportViewProps) {
   const elapsed = props.lastReport
     ? reportDuration(
         moment.duration(moment().diff(moment.unix(props.lastReport.timestamp)))
