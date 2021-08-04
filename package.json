@@ -59,7 +59,7 @@
     "@types/classnames": "2.3.1",
     "@types/jest": "26.0.23",
     "@types/memoize-one": "5.1.2",
-    "@types/node": "15.0.1",
+    "@types/node": "16.4.12",
     "@types/react": "17.0.5",
     "@types/react-copy-to-clipboard": "^5.0.0",
     "@types/react-dom": "17.0.3",
