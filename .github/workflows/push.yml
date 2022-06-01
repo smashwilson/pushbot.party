@@ -20,4 +20,4 @@ jobs:
         uses: ./actions/publish
         env:
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/main'
