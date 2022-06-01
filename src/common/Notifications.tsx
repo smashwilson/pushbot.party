@@ -43,7 +43,7 @@ class NotificationHub {
     this.add("danger", body);
   }
 
-  addError(err: Error) {
+  addError(err: unknown) {
     if (isNetworkError(err)) {
       this.addDanger(
         <>
@@ -69,12 +69,21 @@ class NotificationHub {
       return;
     }
 
+    if (err instanceof Error) {
+      this.addDanger(
+        <>
+          <h5>Error: {err.message}</h5>
+          <pre className="bg-light px-2 py-1 mt-4">{err.stack}</pre>
+        </>
+      );
+      return;
+    }
+
     this.addDanger(
       <>
-        <h5>Error: {err.message}</h5>
-        <pre className="bg-light px-2 py-1 mt-4">{err.stack}</pre>
+        <h5>Error: {err}</h5>
       </>
-    );
+    )
   }
 
   onNotification(callback: (ns: Notification[]) => any) {

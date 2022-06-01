@@ -14,11 +14,11 @@ export interface GraphQLError extends Error {
   marker: typeof GRAPHQL_ERROR_MARKER;
 }
 
-export function isNetworkError(err: Error | null): err is NetworkError {
+export function isNetworkError(err: unknown): err is NetworkError {
   return err ? (err as NetworkError).marker === NETWORK_ERROR_MARKER : false;
 }
 
-export function isGraphQLError(err: Error | null): err is GraphQLError {
+export function isGraphQLError(err: unknown): err is GraphQLError {
   return err ? (err as GraphQLError).marker === GRAPHQL_ERROR_MARKER : false;
 }
 
