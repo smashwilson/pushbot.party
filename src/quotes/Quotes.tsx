@@ -117,9 +117,9 @@ export class Quotes extends Component {
   renderResult(search: Search) {
     const people = search.people
       .split(/[,+;]|\s/)
-      .map(person => person.replace(/^@/, ""))
-      .map(person => person.trim())
-      .filter(person => person.length > 0);
+      .map((person) => person.replace(/^@/, ""))
+      .map((person) => person.trim())
+      .filter((person) => person.length > 0);
 
     const noQuery = search.mode.when({
       containing: () => search.query.length === 0,
@@ -137,7 +137,7 @@ export class Quotes extends Component {
   }
 
   didChangeMode = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const mode = modes.find(mode => mode.label === event.target.value);
+    const mode = modes.find((mode) => mode.label === event.target.value);
     this.writeSearch({mode});
   };
 

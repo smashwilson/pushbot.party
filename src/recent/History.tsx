@@ -60,7 +60,7 @@ export class History extends Component<HistoryProps> {
           );
         })}
         <div
-          ref={element => {
+          ref={(element) => {
             this.bottom = element;
           }}
         />

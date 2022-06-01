@@ -29,7 +29,7 @@ export function ToggleableInput(props: ToggleableInputProps) {
           ref={controlRef}
           id={props.controlID}
           className={cn}
-          onChange={evt => {
+          onChange={(evt) => {
             evt.preventDefault();
             props.onChange(evt.target.value);
           }}
@@ -39,7 +39,7 @@ export function ToggleableInput(props: ToggleableInputProps) {
         <div className="input-group-append">
           <button
             className="btn btn-light"
-            onClick={evt => {
+            onClick={(evt) => {
               evt.preventDefault();
               setMode(false);
             }}
@@ -57,7 +57,7 @@ export function ToggleableInput(props: ToggleableInputProps) {
           id={props.controlID}
           type="text"
           className={cn}
-          onChange={evt => {
+          onChange={(evt) => {
             evt.preventDefault();
             props.onChange(evt.target.value);
           }}
@@ -66,7 +66,7 @@ export function ToggleableInput(props: ToggleableInputProps) {
         <div className="input-group-append">
           <button
             className="btn btn-light"
-            onClick={evt => {
+            onClick={(evt) => {
               evt.preventDefault();
               setMode(true);
             }}

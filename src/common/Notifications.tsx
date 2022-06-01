@@ -23,7 +23,7 @@ class NotificationHub {
   }
 
   deleteNotification(n: Notification) {
-    this.notifications = this.notifications.filter(each => each !== n);
+    this.notifications = this.notifications.filter((each) => each !== n);
     this.notify();
   }
 
@@ -83,13 +83,13 @@ class NotificationHub {
       <>
         <h5>Error: {err}</h5>
       </>
-    )
+    );
   }
 
   onNotification(callback: (ns: Notification[]) => any) {
     this.subscribers.push(callback);
     return () => {
-      this.subscribers = this.subscribers.filter(sub => sub === callback);
+      this.subscribers = this.subscribers.filter((sub) => sub === callback);
     };
   }
 
@@ -118,9 +118,8 @@ class DevNull extends NotificationHub {
 
 const nullHub = new DevNull();
 
-export const NotificationContext = React.createContext<NotificationHub>(
-  nullHub
-);
+export const NotificationContext =
+  React.createContext<NotificationHub>(nullHub);
 
 export function NotificationsProvider(props: {children: React.ReactNode}) {
   const [hub] = useState(() => new NotificationHub());
@@ -139,7 +138,7 @@ export function NotificationsView() {
   useEffect(() => hub.onNotification(setNotifications), [hub]);
 
   function makeCloser(n: Notification) {
-    return function(evt: React.MouseEvent<HTMLButtonElement>) {
+    return function (evt: React.MouseEvent<HTMLButtonElement>) {
       evt.preventDefault();
       hub.deleteNotification(n);
     };
@@ -151,7 +150,7 @@ export function NotificationsView() {
 
   return (
     <div className="px-2 mt-2 mb-3">
-      {notifications.map(n => (
+      {notifications.map((n) => (
         <div key={n.id} className={cx("alert", `alert-${n.severity}`, "my-2")}>
           <button className="close" onClick={makeCloser(n)}>
             <i className="fa far fa-window-close" />

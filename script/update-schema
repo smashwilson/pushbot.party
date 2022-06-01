@@ -8,13 +8,13 @@ const URL =
 const schemaFile = path.resolve(__dirname, "../schema/pushbot.graphql");
 
 fetch(URL)
-  .then(response => response.text())
-  .then(text => {
+  .then((response) => response.text())
+  .then((text) => {
     fs.writeFileSync(schemaFile, text, {encoding: "utf8"});
   })
   .then(
     () => console.log("Schema updated."),
-    err => {
+    (err) => {
       console.error("Unable to update schema:");
       console.error(err.stack);
       process.exit(1);

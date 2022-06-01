@@ -31,7 +31,7 @@ function MemoryPageView(props: Props) {
         {count > pageSize ? `out of ${count}` : ""}.
       </p>
       <ul className="list-group">
-        {props.rem.search.edges.map(edge => (
+        {props.rem.search.edges.map((edge) => (
           <li key={edge.cursor} className="list-group-item">
             <Link to={`/rem/${encodeURIComponent(edge.node.key)}`}>
               {edge.node.key}
@@ -55,11 +55,11 @@ export const MatchingMemoryPage = createPaginationContainer(
   {
     rem: graphql`
       fragment MatchingMemoryPage_rem on Rem
-        @argumentDefinitions(
-          pattern: {type: "String!"}
-          count: {type: "Int!"}
-          cursor: {type: "String"}
-        ) {
+      @argumentDefinitions(
+        pattern: {type: "String!"}
+        count: {type: "Int!"}
+        cursor: {type: "String"}
+      ) {
         search(query: $pattern, first: $count, after: $cursor)
           @connection(key: "MatchingMemoryPage_search") {
           pageInfo {

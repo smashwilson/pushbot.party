@@ -28,7 +28,7 @@ export function useQueryParameter(
     } else {
       window.location.href = nextURL;
     }
-    setLatch(latch => latch + 1);
+    setLatch((latch) => latch + 1);
   }
 
   return [current, setNext];

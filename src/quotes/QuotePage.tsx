@@ -93,7 +93,7 @@ export class QuotePage extends Component<QuotePageProps> {
   };
 
   renderDocuments(total: number, documents: IQuotes) {
-    const quotes = documents.map(document => {
+    const quotes = documents.map((document) => {
       return <Quote key={document.node.id!} text={document.node.text} />;
     });
 

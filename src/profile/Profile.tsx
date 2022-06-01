@@ -154,14 +154,14 @@ export class Profile extends Component<ProfileProps> {
 
   renderReactionChart(results: EmojiCount, name: string) {
     const data = {
-      labels: results.map(each => {
+      labels: results.map((each) => {
         if (each.emoji.url) {
           return `<img class="emoji" alt="${each.emoji.name}" src="${each.emoji.url}" title="${each.emoji.name}">`;
         }
 
         return this.emoji.replace_colons(`:${each.emoji.name}:`);
       }),
-      series: [results.map(each => each.count)],
+      series: [results.map((each) => each.count)],
     };
 
     const options = {
@@ -195,7 +195,7 @@ export class Profile extends Component<ProfileProps> {
 
     return (
       <p className="pushbot-profile-titles">
-        {edges.map(t => this.titleFrom(t.node.text))}
+        {edges.map((t) => this.titleFrom(t.node.text))}
       </p>
     );
   }

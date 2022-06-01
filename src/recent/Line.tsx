@@ -14,7 +14,7 @@ export class Line extends Component<LineProps> {
   private sub?: IDisposable;
 
   componentDidMount() {
-    this.sub = this.props.selection.onDidChange(kind => {
+    this.sub = this.props.selection.onDidChange((kind) => {
       if (kind === ALL) this.forceUpdate();
     });
   }

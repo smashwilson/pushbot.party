@@ -150,7 +150,9 @@ export class Recent extends Component<{}, RecentState> {
   ) {
     if (channelNames) {
       if (!this.state.currentChannel && channelNames.length > 0) {
-        const currentChannel = channelNames.includes("general") ? "general" : channelNames[0];
+        const currentChannel = channelNames.includes("general")
+          ? "general"
+          : channelNames[0];
         setTimeout(() => this.setState({currentChannel}), 0);
       }
       this.knownChannels = channelNames;
@@ -178,7 +180,7 @@ export class Recent extends Component<{}, RecentState> {
               disabled={!channelNames}
               onChange={this.didChangeChannel}
             >
-              {displayChannelNames.map(name => {
+              {displayChannelNames.map((name) => {
                 return (
                   <option key={name} value={name}>
                     {name}

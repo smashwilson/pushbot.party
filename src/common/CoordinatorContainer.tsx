@@ -18,7 +18,7 @@ export function CoordinatorContainer<R>(props: CoordinatorContainerProps<R>) {
   useEffect(() => {
     let ignore = false;
 
-    (async function() {
+    (async function () {
       setLoading(true);
       const v = await getter(coordinator);
 
@@ -34,7 +34,7 @@ export function CoordinatorContainer<R>(props: CoordinatorContainerProps<R>) {
   }, [coordinator, getter, latch]);
 
   function refresh() {
-    setLatch(current => current + 1);
+    setLatch((current) => current + 1);
   }
 
   return props.children(value, isLoading, refresh);
