@@ -1,19 +1,19 @@
 import React from "react";
-import * as path from "path";
 
 interface Props {
   path: string;
 }
 
 export function ServicePath(props: Props) {
-  const dirname = path.dirname(props.path);
-  const basename = path.basename(props.path);
+  const lastSlashIndex = props.path.lastIndexOf('/');
+  const dirname = props.path.slice(0, lastSlashIndex);
+  const basename = props.path.slice(lastSlashIndex + 1);
 
   return (
     <span className="text-monospace">
       <span className="text-muted">
         {dirname}
-        {path.sep}
+        /
       </span>
       <span className="font-weight-bold">{basename}</span>
     </span>
