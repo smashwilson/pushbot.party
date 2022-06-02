@@ -103,7 +103,7 @@ export class People extends Component {
       }
     }
 
-    const userData = props.users.all.map(user => {
+    const userData = props.users.all.map((user) => {
       return {user, title: titlesByUsername[user.name] || ""};
     });
 

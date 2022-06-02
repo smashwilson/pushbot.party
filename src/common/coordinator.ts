@@ -201,6 +201,5 @@ class NullCoordinator extends Coordinator {
 
 export const nullCoordinator = new NullCoordinator("");
 
-export const CoordinatorContext = React.createContext<Coordinator>(
-  nullCoordinator
-);
+export const CoordinatorContext =
+  React.createContext<Coordinator>(nullCoordinator);

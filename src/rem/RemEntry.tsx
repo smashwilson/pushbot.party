@@ -40,7 +40,7 @@ export function RemEntry(props: Props) {
       environment={env}
       query={query}
       variables={variables}
-      render={results => <RemEntryWrapper {...results} />}
+      render={(results) => <RemEntryWrapper {...results} />}
     />
   );
 }

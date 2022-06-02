@@ -1,20 +1,12 @@
-import {
-  QuotePageQuery as OQuotePageQuery,
-  QuotePageQueryVariables as OQuotePageQueryVariables,
-  QuotePageQueryResponse as OQuotePageQueryResponse,
-} from "../__generated__/QuotePageQuery.graphql";
+import {QuotePageQuery as OQuotePageQuery} from "../__generated__/QuotePageQuery.graphql";
 
-import {
-  RandomQuoteQuery as ORandomQuoteQuery,
-  RandomQuoteQueryVariables as ORandomQuoteQueryVariables,
-  RandomQuoteQueryResponse as ORandomQuoteQueryResponse,
-} from "../__generated__/RandomQuoteQuery.graphql";
+import {RandomQuoteQuery as ORandomQuoteQuery} from "../__generated__/RandomQuoteQuery.graphql";
 
 import {QueryResult} from "../common/Transport";
 
 export type QuotePageQuery = OQuotePageQuery;
-export type QuotePageQueryResponse = OQuotePageQueryResponse;
-export type QuotePageQueryVariables = OQuotePageQueryVariables;
+export type QuotePageQueryResponse = OQuotePageQuery["response"];
+export type QuotePageQueryVariables = OQuotePageQuery["variables"];
 export type QuotePageResult = QueryResult<QuotePageQuery>;
 
 export type IQuotes = NonNullable<
@@ -22,6 +14,6 @@ export type IQuotes = NonNullable<
 >["all"]["edges"];
 
 export type RandomQuoteQuery = ORandomQuoteQuery;
-export type RandomQuoteQueryVariables = ORandomQuoteQueryVariables;
-export type RandomQuoteQueryResponse = ORandomQuoteQueryResponse;
+export type RandomQuoteQueryVariables = ORandomQuoteQuery["variables"];
+export type RandomQuoteQueryResponse = ORandomQuoteQuery["response"];
 export type RandomQuoteResult = QueryResult<RandomQuoteQuery>;

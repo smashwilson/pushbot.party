@@ -23,7 +23,7 @@ class NotificationHub {
   }
 
   deleteNotification(n: Notification) {
-    this.notifications = this.notifications.filter(each => each !== n);
+    this.notifications = this.notifications.filter((each) => each !== n);
     this.notify();
   }
 
@@ -43,7 +43,7 @@ class NotificationHub {
     this.add("danger", body);
   }
 
-  addError(err: Error) {
+  addError(err: unknown) {
     if (isNetworkError(err)) {
       this.addDanger(
         <>
@@ -69,10 +69,19 @@ class NotificationHub {
       return;
     }
 
+    if (err instanceof Error) {
+      this.addDanger(
+        <>
+          <h5>Error: {err.message}</h5>
+          <pre className="bg-light px-2 py-1 mt-4">{err.stack}</pre>
+        </>
+      );
+      return;
+    }
+
     this.addDanger(
       <>
-        <h5>Error: {err.message}</h5>
-        <pre className="bg-light px-2 py-1 mt-4">{err.stack}</pre>
+        <h5>Error: {err}</h5>
       </>
     );
   }
@@ -80,7 +89,7 @@ class NotificationHub {
   onNotification(callback: (ns: Notification[]) => any) {
     this.subscribers.push(callback);
     return () => {
-      this.subscribers = this.subscribers.filter(sub => sub === callback);
+      this.subscribers = this.subscribers.filter((sub) => sub === callback);
     };
   }
 
@@ -109,9 +118,8 @@ class DevNull extends NotificationHub {
 
 const nullHub = new DevNull();
 
-export const NotificationContext = React.createContext<NotificationHub>(
-  nullHub
-);
+export const NotificationContext =
+  React.createContext<NotificationHub>(nullHub);
 
 export function NotificationsProvider(props: {children: React.ReactNode}) {
   const [hub] = useState(() => new NotificationHub());
@@ -130,7 +138,7 @@ export function NotificationsView() {
   useEffect(() => hub.onNotification(setNotifications), [hub]);
 
   function makeCloser(n: Notification) {
-    return function(evt: React.MouseEvent<HTMLButtonElement>) {
+    return function (evt: React.MouseEvent<HTMLButtonElement>) {
       evt.preventDefault();
       hub.deleteNotification(n);
     };
@@ -142,7 +150,7 @@ export function NotificationsView() {
 
   return (
     <div className="px-2 mt-2 mb-3">
-      {notifications.map(n => (
+      {notifications.map((n) => (
         <div key={n.id} className={cx("alert", `alert-${n.severity}`, "my-2")}>
           <button className="close" onClick={makeCloser(n)}>
             <i className="fa far fa-window-close" />

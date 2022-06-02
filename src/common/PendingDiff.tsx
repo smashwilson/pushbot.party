@@ -18,7 +18,7 @@ export function hasPendingDelta(delta: IDelta) {
     delta.units_to_restart,
     delta.units_to_remove,
     delta.files_to_write,
-  ].some(arr => arr.length > 0);
+  ].some((arr) => arr.length > 0);
 }
 
 export interface PendingDiff {
@@ -43,7 +43,7 @@ export function PendingDiffProvider(props: PendingDiffProps) {
   useEffect(() => {
     let ignore = false;
 
-    (async function() {
+    (async function () {
       const delta = await props.coordinator.getDiff().catch(() => nullDelta);
       if (!ignore) {
         setDelta(delta);
@@ -57,7 +57,7 @@ export function PendingDiffProvider(props: PendingDiffProps) {
 
   const pendingDiff = {
     delta,
-    refresh: () => setLatch(current => current + 1),
+    refresh: () => setLatch((current) => current + 1),
   };
 
   return (

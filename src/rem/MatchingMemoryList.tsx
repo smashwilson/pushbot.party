@@ -34,7 +34,7 @@ export function MatchingMemoryList(props: Props) {
       environment={env}
       query={query}
       variables={variables}
-      render={results => <MatchingMemoryResults {...results} />}
+      render={(results) => <MatchingMemoryResults {...results} />}
     />
   );
 }

@@ -31,7 +31,7 @@ export function RandomMemoryList() {
       environment={env}
       query={query}
       variables={{}}
-      render={result => <RandomMemoryResults {...result} />}
+      render={(result) => <RandomMemoryResults {...result} />}
     />
   );
 }
@@ -52,7 +52,7 @@ function RandomMemoryResults({error, props, retry}: RandomMemoryListResult) {
     return retry && retry();
   }
 
-  const results = props.rem.search.edges.map(edge => (
+  const results = props.rem.search.edges.map((edge) => (
     <li key={edge.cursor} className="list-group-item">
       <Link to={`/rem/${encodeURIComponent(edge.node.key)}`}>
         {edge.node.key}

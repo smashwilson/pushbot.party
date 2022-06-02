@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import Chartist from "chartist";
 
 Chartist.plugins = Chartist.plugins || {};
-Chartist.plugins.ctHtmlLabels = function() {
-  return function(chart: any) {
-    chart.on("draw", function(context: any) {
+Chartist.plugins.ctHtmlLabels = function () {
+  return function (chart: any) {
+    chart.on("draw", function (context: any) {
       if (context.type === "label") {
         context.element.empty()._node.innerHTML = context.text;
       }
@@ -25,7 +25,7 @@ export class Chart extends Component<ChartProps> {
     return (
       <div
         className="ct-chart ct-golden-section"
-        ref={c => {
+        ref={(c) => {
           this.refElement = c;
         }}
       />
