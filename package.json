@@ -8,7 +8,7 @@
     "classnames": "2.3.1",
     "core-js": "^3.22.7",
     "emoji-js": "^3.7.0",
-    "graphql": "^15.5.1",
+    "graphql": "^16.5.0",
     "jquery": "^3.6.0",
     "memoize-one": "^6.0.0",
     "moment": "^2.29.3",
@@ -16,11 +16,11 @@
     "react": "^17.0.1",
     "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^17.0.2",
-    "react-relay": "^11.0.2",
+    "react-relay": "^13.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",
     "react-twitter-embed": "3.0.3",
-    "relay-runtime": "^11.0.2",
+    "relay-runtime": "^13.2.0",
     "typescript": "^4.7.2"
   },
   "scripts": {
@@ -65,11 +65,11 @@
     "@types/react-dom": "17.0.9",
     "@types/react-relay": "13.0.2",
     "@types/react-router-dom": "^5.1.7",
-    "@types/relay-runtime": "^11.0.0",
-    "babel-plugin-relay": "^11.0.2",
+    "@types/relay-runtime": "^13.0.3",
+    "babel-plugin-relay": "^13.2.0",
     "bootstrap": "^5.1.3",
     "prettier": "^2.6.2",
-    "relay-compiler": "^11.0.2",
-    "relay-compiler-language-typescript": "14.0.0"
+    "relay-compiler": "^13.2.0",
+    "relay-compiler-language-typescript": "^15.0.1"
   }
 }
