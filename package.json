@@ -31,7 +31,7 @@
     "format": "prettier --write src/**/*.{tsx,ts,d.ts} script/*",
     "lint": "prettier --check src/**/*.{tsx,ts,d.ts} script/*",
     "update-schema": "script/update-schema",
-    "relay-compiler": "relay-compiler --src ./src --schema ./schema/pushbot.graphql --language typescript --artifactDirectory ./src/__generated__"
+    "relay-compiler": "relay-compiler"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,10 +48,11 @@
       "last 1 safari version"
     ]
   },
-  "babelMacros": {
-    "relay": {
-      "artifactDirectory": "./src/__generated__"
-    }
+  "relay": {
+    "src": "./src",
+    "schema": "./schema/pushbot.graphql",
+    "language": "typescript",
+    "artifactDirectory": "./src/__generated__"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
