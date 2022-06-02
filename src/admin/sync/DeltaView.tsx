@@ -73,7 +73,7 @@ export function DeltaView(props: DeltaViewProps) {
     );
   }
 
-  const changeRows: React.ReactNodeArray = [];
+  const changeRows: React.ReactNode[] = [];
   for (const unit of props.delta.units_to_add) {
     changeRows.push(
       createDesiredRow(

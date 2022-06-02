@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {QueryRenderer} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {TwitterTweetEmbed} from "react-twitter-embed";
 
 import {getEnvironment, QueryResult} from "../common/Transport";
@@ -11,16 +11,9 @@ import {RemEntryQuery} from "../__generated__/RemEntryQuery.graphql";
 
 type RemEntryQueryResult = QueryResult<RemEntryQuery>;
 
-interface Props {
-  match: {
-    params: {
-      key: string;
-    };
-  };
-}
-
-export function RemEntry(props: Props) {
+export function RemEntry() {
   const env = getEnvironment();
+  const params = useParams();
 
   const query = graphql`
     query RemEntryQuery($key: String!) {
@@ -33,7 +26,7 @@ export function RemEntry(props: Props) {
     }
   `;
 
-  const variables = {key: decodeURIComponent(props.match.params.key)};
+  const variables = {key: decodeURIComponent(params.key || "")};
 
   return (
     <QueryRenderer<RemEntryQuery>

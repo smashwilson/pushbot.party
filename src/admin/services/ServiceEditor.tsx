@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
 import {IDesiredState} from "../../common/coordinator";
 import {CoordinatorContainer} from "../../common/CoordinatorContainer";
@@ -8,19 +9,13 @@ import {DesiredUnitPayload} from "./serviceTypes";
 
 const nullDesiredState: IDesiredState = {units: []};
 
-interface ServiceEditorProps {
-  match: {
-    params: {
-      id: string;
-    };
-  };
-}
+export function ServiceEditor() {
+  const params = useParams();
 
-export function ServiceEditor(props: ServiceEditorProps) {
   return (
     <CoordinatorContainer<string[]> getter={c => c.getSecrets()} nullValue={[]}>
       {(knownSecrets, secretsLoading) => {
-        if (props.match.params.id === "create") {
+        if (params.id === "create") {
           return (
             <ServiceForm
               payload={new DesiredUnitPayload()}
@@ -39,7 +34,7 @@ export function ServiceEditor(props: ServiceEditorProps) {
                 return <Loading />;
               }
 
-              const reqID = decodeURIComponent(props.match.params.id);
+              const reqID = decodeURIComponent(params.id || "");
               const original = state.units.find(u => u.id.toString() === reqID);
               if (original) {
                 return (

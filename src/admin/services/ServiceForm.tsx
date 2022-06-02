@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useContext} from "react";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import cx from "classnames";
 
 import {ISecretsCreate, CoordinatorContext} from "../../common/coordinator";
@@ -95,7 +95,7 @@ export function ServiceForm({payload, knownSecrets}: ServiceFormProps) {
   const hub = useContext(NotificationContext);
 
   if (nextRoute) {
-    return <Redirect to={nextRoute} />;
+    return <Navigate to={nextRoute} />;
   }
 
   async function apply(evt: React.MouseEvent<HTMLButtonElement>) {

@@ -79,11 +79,7 @@ class NotificationHub {
       return;
     }
 
-    this.addDanger(
-      <>
-        <h5>Error: {err}</h5>
-      </>
-    );
+    this.addDanger(<h5>Unknown error</h5>);
   }
 
   onNotification(callback: (ns: Notification[]) => any) {

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {QueryRenderer, Environment} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
 import EmojiConverter from "emoji-js";
+import { useParams } from "react-router-dom";
 
 import {getEnvironment, QueryResult} from "../common/Transport";
 import {Chart} from "../common/Chart";
@@ -10,18 +11,14 @@ import {ProfileQuery} from "../__generated__/ProfileQuery.graphql";
 import "./Profile.css";
 
 interface ProfileProps {
-  match: {
-    params: {
-      name: string;
-    };
-  };
+  name: string;
 }
 
 type User = NonNullable<ProfileQuery["response"]["users"]["current"]>;
 
 type EmojiCount = User["topReactionsGiven"] | User["topReactionsReceived"];
 
-export class Profile extends Component<ProfileProps> {
+class ProfileComponent extends Component<ProfileProps> {
   private environment: Environment;
   private emoji: EmojiConverter;
 
@@ -79,7 +76,7 @@ export class Profile extends Component<ProfileProps> {
       }
     `;
 
-    const username = decodeURIComponent(this.props.match.params.name);
+    const username = decodeURIComponent(this.props.name);
     const variables = {
       name: username,
       titleCriteria: {subject: username},
@@ -129,7 +126,7 @@ export class Profile extends Component<ProfileProps> {
         </div>
         <div className="col-md-6">
           <h1 className="pushbot-profile-username">
-            @{this.props.match.params.name}
+            @{this.props.name}
           </h1>
           {this.renderTitles(props)}
           {this.renderQuoteRank(props)}
@@ -186,7 +183,7 @@ export class Profile extends Component<ProfileProps> {
         <p className="pushbot-profile-titles-empty">
           No titles yet. Set one with{" "}
           <code>
-            !settitle {decodeURIComponent(this.props.match.params.name)}: ...
+            !settitle {decodeURIComponent(this.props.name)}: ...
           </code>
           .
         </p>
@@ -230,4 +227,13 @@ export class Profile extends Component<ProfileProps> {
 
     return <span className="pushbot-profile-title">{title}</span>;
   }
+}
+
+export function Profile() {
+  const params = useParams();
+  if (!params.name) {
+    return null;
+  }
+
+  return <ProfileComponent name={params.name} />
 }

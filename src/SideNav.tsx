@@ -15,9 +15,8 @@ function Pill(props: PillProps) {
     <li role="presentation" className="nav-item">
       <NavLink
         to={props.to}
-        exact={props.exact}
-        className="nav-link"
-        activeClassName={"active"}
+        end={props.exact}
+        className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
       >
         {props.children}
       </NavLink>
