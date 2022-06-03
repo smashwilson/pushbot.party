@@ -75,39 +75,41 @@ export class Quotes extends Component {
     return (
       <div>
         <form
-          className={`pushbot-quote-form form-inline pushbot-mode-${search.mode.label}`}
+          className={`pushbot-quote-form row pushbot-mode-${search.mode.label}`}
         >
-          <select
-            className="pushbot-quote-mode form-control"
-            value={search.mode.label}
-            onChange={this.didChangeMode}
-          >
-            {modes.map((mode, index) => {
-              return (
-                <option key={index} value={mode.label}>
-                  {mode.label}
-                </option>
-              );
-            })}
-          </select>
-          {showPeople && (
+          <div className="input-group">
+            <select
+              className="pushbot-quote-mode form-select py-0"
+              value={search.mode.label}
+              onChange={this.didChangeMode}
+            >
+              {modes.map((mode, index) => {
+                return (
+                  <option key={index} value={mode.label}>
+                    {mode.label}
+                  </option>
+                );
+              })}
+            </select>
+            {showPeople && (
+              <input
+                type="text"
+                className="form-text my-0"
+                id="pushbot-quote-people"
+                placeholder="fenris, iguanaditty"
+                value={search.people}
+                onChange={this.didChangePeople}
+              />
+            )}
             <input
               type="text"
-              className="form-control"
-              id="pushbot-quote-people"
-              placeholder="fenris, iguanaditty"
-              value={search.people}
-              onChange={this.didChangePeople}
+              className="form-text my-0 w-50"
+              id="pushbot-quote-query"
+              placeholder='"query"'
+              value={search.query}
+              onChange={this.didChangeQuery}
             />
-          )}
-          <input
-            type="text"
-            className="form-control"
-            id="pushbot-quote-query"
-            placeholder='"query"'
-            value={search.query}
-            onChange={this.didChangeQuery}
-          />
+          </div>
         </form>
         {this.renderResult(search)}
       </div>

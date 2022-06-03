@@ -56,7 +56,7 @@ export function SyncReportView(props: SyncReportViewProps) {
       <li className="list-group-item row" key={index}>
         <div className="container">
           <div className="row">
-            <div className="col-1 px-2 border-right d-flex justify-content-end pushbot-syncReport--duration">
+            <div className="col-1 px-2 border-end d-flex justify-content-end pushbot-syncReport--duration">
               {reportDuration(duration)}
             </div>
             <div className="col-11 text-dark">{report.message}</div>
@@ -85,7 +85,7 @@ export function PlaceholderSyncReportView(props: PlaceholderSyncReportViewProps)
     <li className="list-group-item row">
       <div className="container">
         <div className="row">
-          <div className="col-1 border-right">{elapsed}</div>
+          <div className="col-1 border-end">{elapsed}</div>
           <div className="col-11">
             <i className="fas fa-circle-notch fa-spin text-dark" />
           </div>

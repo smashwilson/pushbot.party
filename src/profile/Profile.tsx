@@ -169,10 +169,10 @@ class ProfileComponent extends Component<ProfileProps> {
     };
 
     return (
-      <p className="pushbot-profile-reaction-chart">
+      <div className="pushbot-profile-reaction-chart">
         <h4>{name}</h4>
         <Chart data={data} options={options} />
-      </p>
+      </div>
     );
   }
 

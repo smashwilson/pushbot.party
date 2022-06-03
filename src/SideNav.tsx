@@ -49,7 +49,7 @@ export const SideNav = () => {
           <Pill to="/admin/sync">
             sync{" "}
             {showBadge && (
-              <span className="badge badge-info float-right">pending</span>
+              <span className="badge badge-info float-end">pending</span>
             )}
           </Pill>
         </>

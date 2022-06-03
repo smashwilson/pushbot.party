@@ -68,7 +68,7 @@ export class People extends Component {
     return (
       <div>
         <h3>Dramatis Personae</h3>
-        <blockquote className="blockquote text-right">
+        <blockquote className="blockquote text-end">
           Maybe the <em>real</em> lab was the friends we made along the way.
         </blockquote>
         <ul className="list-group">
