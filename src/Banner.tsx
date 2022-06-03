@@ -53,7 +53,7 @@ export const Banner = (props: BannerProps) => {
 
   return (
     <div className="container-fluid mx-0 px-0">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light mx-0">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light mx-0 px-4">
         <button
           type="button"
           className="navbar-toggler collapsed"

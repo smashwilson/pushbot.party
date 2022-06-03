@@ -35,14 +35,14 @@ export function Services() {
                   onClick={refresh}
                   disabled={isLoading}
                 >
-                  <i className="fas fa-sync-alt mr-2" />
+                  <i className="fas fa-sync-alt me-2" />
                   Refresh
                 </button>
               </div>
               {list}
               <div className="my-3 d-flex justify-content-end">
                 <Link className="btn btn-primary" to="/admin/services/create">
-                  <i className="fas fa-plus mr-2" />
+                  <i className="fas fa-plus me-2" />
                   Create
                 </Link>
               </div>

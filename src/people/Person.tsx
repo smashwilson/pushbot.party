@@ -30,10 +30,10 @@ export function Person(props: PersonProps) {
       <div className="col-xs-11 px-2">
         <p>
           <i
-            className={`far pushbot-status mr-2 ${presenceIcon}`}
+            className={`far pushbot-status me-2 ${presenceIcon}`}
             aria-hidden="true"
           />
-          <Link to={`/people/${name}`} className="pushbot-person-name mr-2">
+          <Link to={`/people/${name}`} className="pushbot-person-name me-2">
             {name}
           </Link>
           <span className="pushbot-person-title font-weight-bold">

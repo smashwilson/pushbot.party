@@ -36,7 +36,7 @@ export function PortListEditor(props: PortListProps) {
               {hostPort} <i className="fas fa-arrow-right mx-2" />{" "}
               {props.portMap[hostPort]}{" "}
               <button
-                className="btn btn-outline-danger ml-3 pushbot-portMapping--deleteButton"
+                className="btn btn-outline-danger ms-3 pushbot-portMapping--deleteButton"
                 onClick={evt => {
                   evt.preventDefault();
                   props.onDelete(hostPort);

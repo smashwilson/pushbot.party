@@ -44,7 +44,7 @@ function RemEntryWrapper(results: RemEntryQueryResult) {
       <h3>rem</h3>
       <p className="my-2">
         <Link to="/rem">
-          <i className="fas fa-angle-double-left mr-2" />
+          <i className="fas fa-angle-double-left me-2" />
           rem search
         </Link>
       </p>

@@ -333,7 +333,7 @@ export function ServiceForm({payload, knownSecrets}: ServiceFormProps) {
               target="_new"
               href="https://www.freedesktop.org/software/systemd/man/systemd.time.html#"
             >
-              <i className="fas fa-book mr-2" />
+              <i className="fas fa-book me-2" />
               reference
             </a>
           </div>

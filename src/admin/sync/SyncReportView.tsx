@@ -32,7 +32,7 @@ function FieldsView(props: FieldsViewProps) {
         <ul className="list-group-horizontal p-0">
           {keys.map(key => (
             <li key={key} className="list-group-item px-2 py-0">
-              <small className="text-muted mr-1">{key}:</small>
+              <small className="text-muted me-1">{key}:</small>
               <small className="text-monospaced">
                 {props.fields[key].toString()}
               </small>

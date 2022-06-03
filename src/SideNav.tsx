@@ -42,7 +42,7 @@ export const SideNav = () => {
         <>
           <hr />
           <p className="bg-warning text-white font-weight-bold p-2 rounded text-center">
-            <i className="fas fa-id-badge mr-2" />
+            <i className="fas fa-id-badge me-2" />
             admin only
           </p>
           <Pill to="/admin/services">services</Pill>

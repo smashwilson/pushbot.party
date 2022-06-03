@@ -40,7 +40,7 @@ export function ServiceDisplay(props: ServiceDisplayProps) {
           to={`/admin/services/${unit.id}`}
           className="btn btn-secondary d-flex align-items-baseline"
         >
-          <i className="fas fa-cog mr-2" />
+          <i className="fas fa-cog me-2" />
           edit
         </Link>
       </div>

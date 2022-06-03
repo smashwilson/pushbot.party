@@ -42,7 +42,7 @@ export function DeltaView(props: DeltaViewProps) {
       <div className="card border-success my-3 mx-0">
         <div className="card-body">
           <p className="card-text text-success">
-            <i className="fas fa-check-circle mr-3" />
+            <i className="fas fa-check-circle me-3" />
             {props.emptyText}
           </p>
         </div>
@@ -61,7 +61,7 @@ export function DeltaView(props: DeltaViewProps) {
         key={`key-${action}-${unit.id}`}
         className={cx("card-text", textClass)}
       >
-        <i className={cx("mr-3", iconClass)} />
+        <i className={cx("me-3", iconClass)} />
         {action}{" "}
         <Link
           to={`/admin/services/${encodeURIComponent(unit.id.toString())}`}
@@ -107,7 +107,7 @@ export function DeltaView(props: DeltaViewProps) {
   for (const unit of props.delta.units_to_remove) {
     changeRows.push(
       <p key={`remove-${unit.path}`} className="card-text text-danger">
-        <i className="mr-3 fas fa-fire" />
+        <i className="me-3 fas fa-fire" />
         {props.tense.remove} unit{" "}
         <span className="font-weight-bold">{unit.path}</span>
       </p>
@@ -116,7 +116,7 @@ export function DeltaView(props: DeltaViewProps) {
   for (const filePath of props.delta.files_to_write) {
     changeRows.push(
       <p className="card-text text-info">
-        <i className="mr-3 far fa-file-alt" />
+        <i className="me-3 far fa-file-alt" />
         {props.tense.write} file{" "}
         <span className="font-weight-bold">{filePath}</span>
       </p>

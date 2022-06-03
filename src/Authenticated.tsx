@@ -47,7 +47,7 @@ export function Authenticated(props: AuthenticatedProps) {
         <PendingDiffProvider coordinator={coordinator}>
           <NotificationsProvider>
             <div className="row mt-md-5">
-              <div className="col-md-2">
+              <div className="col-md-2 ps-3">
                 <SideNav />
               </div>
               <div className="col-md-8">

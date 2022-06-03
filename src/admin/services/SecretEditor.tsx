@@ -12,7 +12,7 @@ export function ExistingSecretEditor(props: ExistingSecretProps) {
     <div className="form-row">
       <div className="col-sm-3">
         <label className="text-monospace text-success">
-          <i className="fas fa-lock d-inline mr-2" />
+          <i className="fas fa-lock d-inline me-2" />
           {props.name}
         </label>
       </div>
@@ -75,7 +75,7 @@ export function NewSecretEditor(props: AddSecretProps) {
       <div className="form-row">
         <div className="col-sm-10 input-group">
           <div className="input-group-prepend d-flex align-items-center">
-            <i className="fas fa-lock-open text-success d-inline mr-2" />
+            <i className="fas fa-lock-open text-success d-inline me-2" />
           </div>
           <select
             className="form-control text-success"
@@ -137,7 +137,7 @@ export function NewSecretEditor(props: AddSecretProps) {
       <div className="col-sm-2">
         <div className="input-group">
           <div className="input-group-prepend d-flex align-items-center">
-            <i className="fas fa-lock-open text-success d-inline mr-2" />
+            <i className="fas fa-lock-open text-success d-inline me-2" />
           </div>
           <input
             ref={nameFieldRef}
