@@ -24,16 +24,16 @@ export function Person(props: PersonProps) {
 
   return (
     <div className="pushbot-person row">
-      <div className="col-xs-1 px-2">
+      <div className="col-sm-1 px-2">
         <img src={avatarURL!} className="rounded" alt="" />
       </div>
-      <div className="col-xs-11 px-2">
+      <div className="col-sm-11 px-2">
         <p>
           <i
-            className={`far pushbot-status mr-2 ${presenceIcon}`}
+            className={`far pushbot-status me-2 ${presenceIcon}`}
             aria-hidden="true"
           />
-          <Link to={`/people/${name}`} className="pushbot-person-name mr-2">
+          <Link to={`/people/${name}`} className="pushbot-person-name me-2">
             {name}
           </Link>
           <span className="pushbot-person-title font-weight-bold">

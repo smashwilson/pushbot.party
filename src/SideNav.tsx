@@ -15,9 +15,8 @@ function Pill(props: PillProps) {
     <li role="presentation" className="nav-item">
       <NavLink
         to={props.to}
-        exact={props.exact}
-        className="nav-link"
-        activeClassName={"active"}
+        end={props.exact}
+        className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
       >
         {props.children}
       </NavLink>
@@ -43,14 +42,14 @@ export const SideNav = () => {
         <>
           <hr />
           <p className="bg-warning text-white font-weight-bold p-2 rounded text-center">
-            <i className="fas fa-id-badge mr-2" />
+            <i className="fas fa-id-badge me-2" />
             admin only
           </p>
           <Pill to="/admin/services">services</Pill>
           <Pill to="/admin/sync">
             sync{" "}
             {showBadge && (
-              <span className="badge badge-info float-right">pending</span>
+              <span className="badge badge-info float-end">pending</span>
             )}
           </Pill>
         </>

@@ -69,7 +69,7 @@ function RandomMemoryResults({error, props, retry}: RandomMemoryListResult) {
         </p>
         <p className="card-text mt-1 mb-3">
           <button className="btn btn-secondary" onClick={another}>
-            <i className="fas fa-sync mr-2" aria-hidden="true" />
+            <i className="fas fa-sync me-2" aria-hidden="true" />
             Another
           </button>
         </p>

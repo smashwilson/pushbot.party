@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {QueryRenderer} from "react-relay";
 import {graphql} from "babel-plugin-relay/macro";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {TwitterTweetEmbed} from "react-twitter-embed";
 
 import {getEnvironment, QueryResult} from "../common/Transport";
@@ -11,16 +11,9 @@ import {RemEntryQuery} from "../__generated__/RemEntryQuery.graphql";
 
 type RemEntryQueryResult = QueryResult<RemEntryQuery>;
 
-interface Props {
-  match: {
-    params: {
-      key: string;
-    };
-  };
-}
-
-export function RemEntry(props: Props) {
+export function RemEntry() {
   const env = getEnvironment();
+  const params = useParams();
 
   const query = graphql`
     query RemEntryQuery($key: String!) {
@@ -33,7 +26,7 @@ export function RemEntry(props: Props) {
     }
   `;
 
-  const variables = {key: decodeURIComponent(props.match.params.key)};
+  const variables = {key: decodeURIComponent(params.key || "")};
 
   return (
     <QueryRenderer<RemEntryQuery>
@@ -51,7 +44,7 @@ function RemEntryWrapper(results: RemEntryQueryResult) {
       <h3>rem</h3>
       <p className="my-2">
         <Link to="/rem">
-          <i className="fas fa-angle-double-left mr-2" />
+          <i className="fas fa-angle-double-left me-2" />
           rem search
         </Link>
       </p>
@@ -109,7 +102,7 @@ function RemEntryResult(results: RemEntryQueryResult) {
 
   return (
     <div className="row my-5">
-      <h2 className="col-3 text-muted text-right">{key}</h2>
+      <h2 className="col-3 text-muted text-end">{key}</h2>
       <h2 className="col-9 font-weight-bolder">{value}</h2>
     </div>
   );

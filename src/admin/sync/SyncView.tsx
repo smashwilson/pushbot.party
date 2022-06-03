@@ -53,7 +53,7 @@ export function SyncView(props: SyncViewProps) {
           onClick={startSync}
         >
           <i
-            className={cx("fas fa-sync-alt mr-2", {
+            className={cx("fas fa-sync-alt me-2", {
               "fa-spin": inProgress,
             })}
           />

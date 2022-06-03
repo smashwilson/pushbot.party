@@ -23,21 +23,23 @@ export class FeedForm extends Component<FeedFormProps, FeedFormState> {
 
     return (
       <p className="form-inline">
-        <input
-          type="text"
-          id="pushbot-events-feedurl"
-          className="form-control"
-          value={this.props.feedURL}
-          readOnly
-        />
-        <CopyToClipboard
-          text={this.props.feedURL}
-          onCopy={() => this.setState({copied: true})}
-        >
-          <button className={btnClass} disabled={!this.props.ready}>
-            {btnMessage}
-          </button>
-        </CopyToClipboard>
+        <div className="input-group">
+          <input
+            type="text"
+            id="pushbot-events-feedurl"
+            className="form-control"
+            value={this.props.feedURL}
+            readOnly
+          />
+          <CopyToClipboard
+            text={this.props.feedURL}
+            onCopy={() => this.setState({copied: true})}
+          >
+            <button className={btnClass} disabled={!this.props.ready}>
+              {btnMessage}
+            </button>
+          </CopyToClipboard>
+        </div>
       </p>
     );
   }

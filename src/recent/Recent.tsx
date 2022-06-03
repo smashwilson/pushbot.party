@@ -169,7 +169,7 @@ export class Recent extends Component<{}, RecentState> {
       <div className="pushbot-recent">
         <h3>Recent Chatter</h3>
         <form className="pushbot-recent-form form-inline">
-          <label className="mr-md-3" htmlFor="pushbot-recent-channel">
+          <label className="me-md-3" htmlFor="pushbot-recent-channel">
             Channel
           </label>
           <div className="input-group">

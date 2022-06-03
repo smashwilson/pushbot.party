@@ -35,12 +35,12 @@ export function ServiceDisplay(props: ServiceDisplayProps) {
 
   return (
     <li className="list-group-item px-4 rounded pushbot-serviceDisplay">
-      <div className="float-right pushbot-serviceDisplay--controls">
+      <div className="float-end pushbot-serviceDisplay--controls">
         <Link
           to={`/admin/services/${unit.id}`}
           className="btn btn-secondary d-flex align-items-baseline"
         >
-          <i className="fas fa-cog mr-2" />
+          <i className="fas fa-cog me-2" />
           edit
         </Link>
       </div>

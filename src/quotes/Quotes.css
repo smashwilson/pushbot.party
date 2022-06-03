@@ -4,22 +4,15 @@
 
 .pushbot-quote-mode {
   font-weight: bold;
+  max-width: 10em;
+}
+
+.pushbot-quote-query {
+  width: 30em;
 }
 
 .pushbot-quote-mode option {
   font-weight: bold;
-}
-
-#pushbot-quote-people {
-  width: 10em;
-}
-
-#pushbot-quote-query {
-  width: 25em;
-}
-
-.pushbot-mode-containing #pushbot-quote-query {
-  width: 35em;
 }
 
 .pushbot-random-quote .well {
