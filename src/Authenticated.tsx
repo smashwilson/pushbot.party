@@ -1,5 +1,5 @@
 import React from "react";
-import {Route} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import memo from "memoize-one";
 
 import {SideNav} from "./SideNav";
@@ -52,25 +52,27 @@ export function Authenticated(props: AuthenticatedProps) {
               </div>
               <div className="col-md-8">
                 <NotificationsView />
-                <Route path="/" element={<Dashboard/>} />
-                <Route path="people">
-                  <Route index element={<People/>} />
-                  <Route path=":name" element={<Profile/>} />
-                </Route>
-                <Route path="quotes" element={<Quotes/>} />
-                <Route path="rem">
-                  <Route index element={<Rem/>} />
-                  <Route path=":key" element={<RemEntry/>} />
-                </Route>
-                <Route path="events" element={<Events/>} />
-                <Route path="recent" element={<Recent/>} />
-                <Route path="admin">
-                  <Route path="services">
-                    <Route index element={<Services/>} />
-                    <Route path=":id" element={<ServiceEditor/>} />
+                <Routes>
+                  <Route index element={<Dashboard/>} />
+                  <Route path="people">
+                    <Route index element={<People/>} />
+                    <Route path=":name" element={<Profile/>} />
                   </Route>
-                  <Route path="sync" element={<Sync/>} />
-                </Route>
+                  <Route path="quotes" element={<Quotes/>} />
+                  <Route path="rem">
+                    <Route index element={<Rem/>} />
+                    <Route path=":key" element={<RemEntry/>} />
+                  </Route>
+                  <Route path="events" element={<Events/>} />
+                  <Route path="recent" element={<Recent/>} />
+                  <Route path="admin">
+                    <Route path="services">
+                      <Route index element={<Services/>} />
+                      <Route path=":id" element={<ServiceEditor/>} />
+                    </Route>
+                    <Route path="sync" element={<Sync/>} />
+                  </Route>
+                </Routes>
               </div>
             </div>
           </NotificationsProvider>
