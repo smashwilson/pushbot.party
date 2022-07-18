@@ -65,7 +65,7 @@
     "@types/jest": "^28.1.6",
     "@types/memoize-one": "5.1.2",
     "@types/node": "^18.0.0",
-    "@types/react": "^18.0.14",
+    "@types/react": "^18.0.15",
     "@types/react-copy-to-clipboard": "^5.0.3",
     "@types/react-dom": "^18.0.6",
     "@types/react-relay": "13.0.2",
