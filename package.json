@@ -11,7 +11,7 @@
     "graphql": "^16.5.0",
     "jquery": "^3.6.0",
     "memoize-one": "^6.0.0",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "popper.js": "^1.16.1",
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
