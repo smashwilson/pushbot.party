@@ -20,7 +20,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "react-twitter-embed": "^4.0.4",
-    "relay-runtime": "^14.0.0",
+    "relay-runtime": "^14.1.0",
     "typescript": "^4.7.4"
   },
   "scripts": {
