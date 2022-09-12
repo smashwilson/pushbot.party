@@ -1,25 +1,22 @@
 import React, {Component} from "react";
-import Chartist from "chartist";
+import {BarChart, BarChartData, BarChartOptions, Plugin} from "chartist";
 
-Chartist.plugins = Chartist.plugins || {};
-Chartist.plugins.ctHtmlLabels = function () {
-  return function (chart: any) {
-    chart.on("draw", function (context: any) {
-      if (context.type === "label") {
-        context.element.empty()._node.innerHTML = context.text;
-      }
-    });
-  };
+const ctHtmlLabels: Plugin = function (chart: any) {
+  chart.on("draw", function (context: any) {
+    if (context.type === "label") {
+      context.element.empty()._node.innerHTML = context.text;
+    }
+  });
 };
 
 interface ChartProps {
-  data: Chartist.IChartistData;
-  options: Chartist.IBarChartOptions;
+  data: BarChartData;
+  options: BarChartOptions;
 }
 
 export class Chart extends Component<ChartProps> {
   private refElement?: HTMLElement | null;
-  private chart?: Chartist.IChartistBarChart;
+  private chart?: BarChart;
 
   render() {
     return (
@@ -34,9 +31,11 @@ export class Chart extends Component<ChartProps> {
 
   componentDidMount() {
     const options = this.props.options || {};
-    options.plugins = [Chartist.plugins.ctHtmlLabels()];
+    options.plugins = [ctHtmlLabels];
 
-    this.chart = new Chartist.Bar(this.refElement, this.props.data, options);
+    if (this.refElement) {
+      this.chart = new BarChart(this.refElement, this.props.data, options);
+    }
   }
 
   componentWillUnmount() {
