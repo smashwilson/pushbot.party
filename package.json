@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bootswatch": "^5.2.0",
+    "bootswatch": "^5.2.3",
     "chartist": "^1.1.2",
     "classnames": "2.3.1",
     "core-js": "^3.25.1",
